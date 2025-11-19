@@ -23,5 +23,11 @@ class AppColors{
   static const Color textWhite = Color(0xFFFFFFFF);
   static final Color textGrey = textBlack.withAlpha(70);
 
+  ///Indicator
+  static const Color indicatorBlack = Color(0xFF000000);
+  static const Color indicatorGray = Color(0xFFAFAFAF);
+
+
+
 
 }
