@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/common/app_themes.dart';
+import 'package:todo_app/router/router_config.dart';
 
-void main() {
+import 'database/app_share_preferences.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppSharePreferences.init();
   runApp(const MyApp());
 }
 
@@ -9,12 +15,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const Placeholder(),
+      theme: AppThemes().theme,
+      routerConfig: AppRouter.router,
     );
   }
 }
