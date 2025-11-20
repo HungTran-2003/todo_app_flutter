@@ -34,4 +34,10 @@ class AppTextStyles {
   static final TextStyle bMediumMedium = bMedium.copyWith(fontWeight: FontWeight.w500);
   static final TextStyle bMediumSemiBold = bMedium.copyWith(fontWeight: FontWeight.w600);
 
+  //MaxLarge
+  static final TextStyle bMaxLarge = black.copyWith(fontSize: AppDimens.fontMaxLarge);
+  static final TextStyle bMaxLargeMedium = bMaxLarge.copyWith(fontWeight: FontWeight.w500);
+  static final TextStyle bMaxLargeSemiBold = bMaxLarge.copyWith(fontWeight: FontWeight.w600);
+
+
 }

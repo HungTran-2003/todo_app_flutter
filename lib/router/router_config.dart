@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_navigator.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_page.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_navigator.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_page.dart';
-import 'package:todo_app/ui/pages/app_start/splash/splash_provider.dart';
 import 'package:todo_app/ui/pages/home/home_page.dart';
 
 class AppRouter {
@@ -32,7 +31,10 @@ class AppRouter {
         GoRoute(
           name: onBoarding,
           path: onBoarding,
-          builder: (context, state) => const OnboardingPage(),
+          builder: (context, state) {
+            final navigator = OnboardingNavigator(context: context);
+            return OnboardingPage(navigator: navigator);
+          }
         ),
         GoRoute(
           name: home,
