@@ -21,4 +21,15 @@ extension TodoCategoryExtension on TodoCategory {
         return "Goal";
       }
   }
+
+  String get name {
+    switch (this) {
+      case TodoCategory.task:
+        return "note";
+      case TodoCategory.event:
+        return "calendar";
+      case TodoCategory.goal:
+        return "goal";
+    }
+  }
 }

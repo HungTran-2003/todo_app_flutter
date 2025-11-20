@@ -46,4 +46,8 @@ class TodoEntity {
       'category': category.name,
     };
   }
+
+  String get assetsCategory {
+    return "assets/vectors/${category.name}.svg";
+  }
 }
