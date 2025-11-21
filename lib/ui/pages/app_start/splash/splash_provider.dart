@@ -21,10 +21,14 @@ class SplashProvider extends ChangeNotifier {
     await Future.delayed(const Duration(seconds: 2));
     isFirstRun = await AppSharePreferences.isFirstRun();
     log(isFirstRun.toString());
+  }
+
+  void nextPage() async {
+    await Future.delayed(const Duration(seconds: 1));
     if (isFirstRun) {
-      _navigator!.openOnBoardingPage();
+      _navigator?.openOnBoardingPage();
     } else {
-      _navigator!.openHomePage();
+      _navigator?.openHomePage();
     }
   }
 

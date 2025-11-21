@@ -4,6 +4,7 @@ import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_navigator.dar
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_page.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_navigator.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_page.dart';
+import 'package:todo_app/ui/pages/home/home_navigator.dart';
 import 'package:todo_app/ui/pages/home/home_page.dart';
 
 class AppRouter {
@@ -20,7 +21,7 @@ class AppRouter {
   static const String onBoarding = "onboarding";
   static const String home = "home";
 
-  static final _routes = <RouteBase> [
+  static final _routes = <RouteBase>[
     GoRoute(
       path: splash,
       builder: (context, state) {
@@ -34,15 +35,14 @@ class AppRouter {
           builder: (context, state) {
             final navigator = OnboardingNavigator(context: context);
             return OnboardingPage(navigator: navigator);
-          }
+          },
         ),
         GoRoute(
           name: home,
           path: home,
           builder: (context, state) => const HomePage(),
-        )
-      ]
-    )
+        ),
+      ],
+    ),
   ];
-
 }

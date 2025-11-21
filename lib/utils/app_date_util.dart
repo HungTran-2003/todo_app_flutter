@@ -8,11 +8,11 @@ class AppDateUtil {
   }
 
   static String toDateTodayString(DateTime dateTime){
-    String format = AppConfigs.timeDisplayFormat;
+    String format = AppConfigs.dateTimeDisplayFormat;
     if (dateTime.day == DateTime.now().day &&
         dateTime.month == DateTime.now().month &&
         dateTime.year == DateTime.now().year) {
-      format = AppConfigs.dateTimeDisplayFormat;
+      format = AppConfigs.timeDisplayFormat;
     }
     return DateFormat(format).format(dateTime);
   }

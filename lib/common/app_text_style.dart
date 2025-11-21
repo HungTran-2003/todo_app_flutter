@@ -29,6 +29,12 @@ class AppTextStyles {
   ///Black
   static const TextStyle black = TextStyle(color: AppColors.textBlack, fontWeight: FontWeight.w400);
 
+  //Small
+  static final TextStyle bSmall = black.copyWith(fontSize: AppDimens.fontsSmall);
+  static final TextStyle bSmallMedium = bSmall.copyWith(fontWeight: FontWeight.w500);
+  static final TextStyle bSmallSemiBold = bSmall.copyWith(fontWeight: FontWeight.w600);
+
+
   //Medium
   static final TextStyle bMedium = black.copyWith(fontSize: AppDimens.fontsMedium);
   static final TextStyle bMediumMedium = bMedium.copyWith(fontWeight: FontWeight.w500);
