@@ -32,7 +32,7 @@ class AppButton extends StatelessWidget {
           height ?? AppDimens.btHeightLarge,
         ),
       ),
-      child: Text(label, style: AppTextStyles.wMediumBold,),
+      child: Text(label, style: AppTextStyles.wMediumBold),
     );
   }
 }

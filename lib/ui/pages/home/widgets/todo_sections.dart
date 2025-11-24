@@ -9,26 +9,35 @@ class TodoSections extends StatelessWidget {
   final VoidCallback onPressed;
   final VoidCallback onPressedCB;
 
-  const TodoSections({super.key, required this.todos, this.sectionTitle, required this.onPressed, required this.onPressedCB});
+  const TodoSections({
+    super.key,
+    required this.todos,
+    this.sectionTitle,
+    required this.onPressed,
+    required this.onPressedCB,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if(sectionTitle != null)...[
+        if (sectionTitle != null) ...[
           Container(
             margin: const EdgeInsets.symmetric(vertical: 24),
-            child: Text(
-              sectionTitle!,
-              style: AppTextStyles.bMediumSemiBold,
-            ),
-          )
+            child: Text(sectionTitle!, style: AppTextStyles.bMediumSemiBold),
+          ),
         ],
-        ...List.generate(todos.length, (index){
+        ...List.generate(todos.length, (index) {
           final isFirst = index == 0;
           final isLast = index == todos.length - 1;
-          return TodoItem(checkboxPress: onPressedCB, first: isFirst, last: isLast, todo: todos[index], onPressed: onPressed,);
+          return TodoItem(
+            checkboxPress: onPressedCB,
+            first: isFirst,
+            last: isLast,
+            todo: todos[index],
+            onPressed: onPressed,
+          );
         }),
       ],
     );

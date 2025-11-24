@@ -8,7 +8,14 @@ class AppTextButton extends StatelessWidget {
   final Color? borderColor;
   final double? width;
 
-  const AppTextButton({super.key, required this.label, required this.onPressed, this.textStyle, this.borderColor, this.width});
+  const AppTextButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.textStyle,
+    this.borderColor,
+    this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,20 +24,11 @@ class AppTextButton extends StatelessWidget {
       style: TextButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
-          side: BorderSide(
-            color: borderColor ?? Colors.transparent,
-            width: 2,
-          ),
+          side: BorderSide(color: borderColor ?? Colors.transparent, width: 2),
         ),
-        minimumSize: Size(
-          width ?? 0,
-          0,
-        )
+        minimumSize: Size(width ?? 0, 0),
       ),
-      child: Text(
-        label,
-        style: textStyle ?? AppTextStyles.bMediumMedium
-      ),
+      child: Text(label, style: textStyle ?? AppTextStyles.bMediumMedium),
     );
   }
 }

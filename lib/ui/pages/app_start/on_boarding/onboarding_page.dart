@@ -19,7 +19,6 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-
   final provider = OnboardingProvider();
 
   @override
@@ -48,13 +47,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return ChangeNotifierProvider<OnboardingProvider>.value(
       value: provider,
       child: Builder(
-          builder: (context) {
-            return Scaffold(
-              body: SafeArea(
-                child: _buildBodyPage(),
-              ),
-            );
-          }
+        builder: (context) {
+          return Scaffold(body: SafeArea(child: _buildBodyPage()));
+        },
       ),
     );
   }
@@ -155,21 +150,33 @@ class _OnboardingPageState extends State<OnboardingPage> {
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
             children: [
-              AppButton(label: "Login" , height: AppDimens.btNormal, onPressed: (){
-                provider.setIsFirstRun();
-                widget.navigator.openLoginPage();
-              },),
-              SizedBox(height: 10,),
-              AppTextButton(label: "Create Account ",borderColor: AppColors.primary, width: double.infinity,onPressed: (){
-                widget.navigator.openSignUpPage();
-              } ,),
+              AppButton(
+                label: "Login",
+                height: AppDimens.btNormal,
+                onPressed: () {
+                  provider.setIsFirstRun();
+                  widget.navigator.openLoginPage();
+                },
+              ),
+              SizedBox(height: 10),
+              AppTextButton(
+                label: "Create Account ",
+                borderColor: AppColors.primary,
+                width: double.infinity,
+                onPressed: () {
+                  widget.navigator.openSignUpPage();
+                },
+              ),
 
-              AppTextButton(label: "Login as guest", onPressed: (){
-                widget.navigator.openHomePage();
-              })
+              AppTextButton(
+                label: "Login as guest",
+                onPressed: () {
+                  widget.navigator.openHomePage();
+                },
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

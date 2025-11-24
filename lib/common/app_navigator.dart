@@ -8,15 +8,15 @@ class AppNavigator {
 
   AppNavigator({required this.context});
 
-  void pop(){
+  void pop() {
     GoRouter.of(context).pop();
   }
 
-  Future<dynamic> pushName(String name){
+  Future<dynamic> pushName(String name) {
     return GoRouter.of(context).pushNamed(name);
   }
 
-  Future<dynamic> pushReplacementName(String name){
+  Future<dynamic> pushReplacementName(String name) {
     return GoRouter.of(context).pushReplacementNamed(name);
   }
 
@@ -47,30 +47,22 @@ class AppNavigator {
           actions: [
             if (textCancel != null)
               TextButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.of(context).pop();
                   onCancel?.call();
                 },
-                child: Text(
-                  textCancel,
-                  style: AppTextStyles.bMediumSemiBold,
-                ),
+                child: Text(textCancel, style: AppTextStyles.bMediumSemiBold),
               ),
             TextButton(
-              onPressed:() {
+              onPressed: () {
                 Navigator.of(context).pop();
                 onConfirm?.call();
               },
-              child: Text(
-                textConfirm,
-                style: AppTextStyles.bMediumSemiBold,
-              ),
+              child: Text(textConfirm, style: AppTextStyles.bMediumSemiBold),
             ),
           ],
         );
       },
     );
   }
-
-
 }

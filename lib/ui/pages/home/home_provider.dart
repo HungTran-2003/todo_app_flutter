@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
 
 class HomeProvider extends ChangeNotifier {
-
   final HomeNavigator navigator;
 
   HomeProvider({required this.navigator});
@@ -15,15 +14,14 @@ class HomeProvider extends ChangeNotifier {
       title: "Delete Todo",
       content: "You want to delete this Todo?",
       textCancel: "Cancel",
-      onConfirm: (){
+      onConfirm: () {
         navigator.showLoadingOverlay();
         completer.complete(true);
       },
-      onCancel: (){
+      onCancel: () {
         completer.complete(false);
-      }
+      },
     );
     return completer.future;
   }
-
 }

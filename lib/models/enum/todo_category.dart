@@ -1,14 +1,8 @@
-enum TodoCategory {
-  task,
-  event,
-  goal,
-}
+enum TodoCategory { task, event, goal }
 
 extension TodoCategoryExtension on TodoCategory {
   static TodoCategory fromString(String value) {
-    return TodoCategory.values.firstWhere(
-          (e) => e.typeName == value
-    );
+    return TodoCategory.values.firstWhere((e) => e.typeName == value);
   }
 
   String get typeName {
@@ -19,7 +13,7 @@ extension TodoCategoryExtension on TodoCategory {
         return "Event";
       case TodoCategory.goal:
         return "Goal";
-      }
+    }
   }
 
   String get name {

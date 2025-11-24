@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class AppLoadingIndicator extends StatelessWidget {
   final Color valueColor;
 
-  const AppLoadingIndicator({
-    super.key,
-    this.valueColor = Colors.blueAccent,
-  });
+  const AppLoadingIndicator({super.key, this.valueColor = Colors.blueAccent});
 
   @override
   Widget build(BuildContext context) {

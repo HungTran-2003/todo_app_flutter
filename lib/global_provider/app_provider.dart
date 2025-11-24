@@ -6,26 +6,22 @@ import 'package:todo_app/models/entities/todo_entity.dart';
 
 class TodoProvider extends ChangeNotifier {
   DateTime currentTime = DateTime.now();
-  bool isLoading = true;
   Timer? _timer;
 
   List<TodoEntity> _todos = [];
 
-  List<TodoEntity> get todos => _todos.where((todo) => todo.isComplete == false).toList();
-  List<TodoEntity> get completedTodos => _todos.where((todo) => todo.isComplete == true).toList();
+  List<TodoEntity> get todos =>
+      _todos.where((todo) => todo.isComplete == false).toList();
+  List<TodoEntity> get completedTodos =>
+      _todos.where((todo) => todo.isComplete == true).toList();
 
   TodoProvider() {
-    _startMinuteTimer();
-    _loadData();
+    startMinuteTimer();
   }
 
-  void _startMinuteTimer() {
+  void startMinuteTimer() {
     final now = DateTime.now();
-    final nextMinute = DateTime(
-      now.year,
-      now.month,
-      now.day + 1,
-    );
+    final nextMinute = DateTime(now.year, now.month, now.day + 1);
 
     final initialDelay = nextMinute.difference(now);
 
@@ -39,29 +35,20 @@ class TodoProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> _loadData() async {
-    try{
-      await Future.delayed(Duration(seconds: 2));
-      _todos = TodoEntity.mockData;
-      isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      log(e.toString());
-    }
+  void setTodos(List<TodoEntity> todos) {
+    log(todos.length.toString());
+    _todos = todos;
   }
 
   Future<bool> deleteTodo(int id) async {
-    isLoading = true;
     notifyListeners();
-    try{
+    try {
       await Future.delayed(Duration(seconds: 2));
       _todos.removeWhere((todo) => todo.id == id);
-      isLoading = false;
       notifyListeners();
       return true;
     } catch (e) {
       log(e.toString());
-      isLoading = false;
       notifyListeners();
       return false;
     }
@@ -72,5 +59,4 @@ class TodoProvider extends ChangeNotifier {
     _timer?.cancel();
     super.dispose();
   }
-
 }

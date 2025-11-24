@@ -1,13 +1,9 @@
-import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
-import 'package:todo_app/common/app_dimens.dart';
-import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/global_provider/app_provider.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
@@ -21,14 +17,21 @@ class TodoItem extends StatefulWidget {
   final bool last;
   final VoidCallback? onPressed;
   final VoidCallback checkboxPress;
-  const TodoItem({super.key, this.onPressed, required this.checkboxPress, required this.first, required this.last, required this.todo});
+  const TodoItem({
+    super.key,
+    this.onPressed,
+    required this.checkboxPress,
+    required this.first,
+    required this.last,
+    required this.todo,
+  });
 
   @override
   State<StatefulWidget> createState() => _TodoItemState();
 }
 
-class _TodoItemState extends State<TodoItem> with SingleTickerProviderStateMixin {
-
+class _TodoItemState extends State<TodoItem>
+    with SingleTickerProviderStateMixin {
   late final SlidableController _slidableController;
 
   @override
@@ -45,7 +48,6 @@ class _TodoItemState extends State<TodoItem> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-
     final todoProvider = context.read<TodoProvider>();
     final homeProvider = context.read<HomeProvider>();
 
@@ -57,14 +59,14 @@ class _TodoItemState extends State<TodoItem> with SingleTickerProviderStateMixin
         motion: const DrawerMotion(),
         extentRatio: 0.3,
         dismissible: DismissiblePane(
-          onDismissed: (){},
+          onDismissed: () {},
           confirmDismiss: () async {
             bool result = false;
             final isDelete = await homeProvider.deleteTodo();
-            if(isDelete){
+            if (isDelete) {
               result = await todoProvider.deleteTodo(widget.todo.id);
             }
-            if(result){
+            if (result) {
               homeProvider.navigator.hideLoadingOverlay();
               return true;
             }
@@ -76,7 +78,7 @@ class _TodoItemState extends State<TodoItem> with SingleTickerProviderStateMixin
           SlidableAction(
             onPressed: (context) async {
               final isDelete = await homeProvider.deleteTodo();
-              if(isDelete){
+              if (isDelete) {
                 todoProvider.deleteTodo(widget.todo.id);
               }
             },
@@ -117,7 +119,7 @@ class _TodoItemState extends State<TodoItem> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget _buildItemTodo(){
+  Widget _buildItemTodo() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -139,34 +141,41 @@ class _TodoItemState extends State<TodoItem> with SingleTickerProviderStateMixin
             ),
           ),
         ),
-        const SizedBox(width: 12,),
+        const SizedBox(width: 12),
         Opacity(
           opacity: widget.todo.isComplete ? 0.5 : 1,
           child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 2,
-              children: [
-                Text(
-                  widget.todo.title,
-                  style: AppTextStyles.bMediumSemiBold.copyWith(
-                    decoration: widget.todo.isComplete ? TextDecoration.lineThrough : TextDecoration.none,
-                  ),
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 2,
+            children: [
+              Text(
+                widget.todo.title,
+                style: AppTextStyles.bMediumSemiBold.copyWith(
+                  decoration: widget.todo.isComplete
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
                 ),
-                Text(
-                  AppDateUtil.toDateTodayString(widget.todo.duaDate),
-                  style: AppTextStyles.bSmallMedium.copyWith(
-                    color: AppColors.textBlack.withValues(alpha: 0.7),
-                    decoration: widget.todo.isComplete ? TextDecoration.lineThrough : TextDecoration.none,
-                  ),
+              ),
+              Text(
+                AppDateUtil.toDateTodayString(widget.todo.duaDate),
+                style: AppTextStyles.bSmallMedium.copyWith(
+                  color: AppColors.textBlack.withValues(alpha: 0.7),
+                  decoration: widget.todo.isComplete
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
                 ),
-              ]
+              ),
+            ],
           ),
         ),
         const Spacer(),
-        Checkbox(value: widget.todo.isComplete, onChanged: (value){
-          widget.checkboxPress();
-        })
+        Checkbox(
+          value: widget.todo.isComplete,
+          onChanged: (value) {
+            widget.checkboxPress();
+          },
+        ),
       ],
     );
   }
@@ -182,5 +191,4 @@ class _TodoItemState extends State<TodoItem> with SingleTickerProviderStateMixin
     }
     return Colors.red;
   }
-
 }
