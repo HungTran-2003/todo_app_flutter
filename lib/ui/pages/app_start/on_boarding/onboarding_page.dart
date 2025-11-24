@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_dimens.dart';
@@ -10,21 +11,30 @@ import 'package:todo_app/ui/pages/app_start/on_boarding/widgets/page_indicator/p
 import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/ui/widgets/button/app_text_button.dart';
 
-class OnboardingPage extends StatefulWidget {
-  final OnboardingNavigator navigator;
-  const OnboardingPage({super.key, required this.navigator});
+class OnboardingPage extends StatelessWidget {
+  const OnboardingPage({super.key});
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) {
+        return OnboardingProvider(navigator: OnboardingNavigator(context: context));
+      },
+      child: OnboardingChildPage(),
+    );
+  }
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
-  final provider = OnboardingProvider();
+
+class OnboardingChildPage extends StatefulWidget {
+  const OnboardingChildPage({super.key});
 
   @override
-  void initState() {
-    super.initState();
-  }
+  State<OnboardingChildPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingChildPage> {
+  late OnboardingProvider provider;
 
   final pageController = PageController();
   int _currentPage = 0;
@@ -43,14 +53,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    provider = context.read<OnboardingProvider>();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<OnboardingProvider>.value(
-      value: provider,
-      child: Builder(
-        builder: (context) {
-          return Scaffold(body: SafeArea(child: _buildBodyPage()));
-        },
-      ),
+    return Builder(
+      builder: (context) {
+        return Scaffold(body: SafeArea(child: _buildBodyPage()));
+      },
     );
   }
 
@@ -110,74 +123,75 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   Widget _buildBodyAppStart() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  isAppStart = false;
-                  _currentPage = 0;
-                });
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.black,
-                size: 24,
-              ),
-            ),
-          ],
-        ),
-
-        Image.asset(AppImages.splashScreen),
-
-        Text("Welcome to Todo", style: AppTextStyles.bMaxLargeSemiBold),
-        const SizedBox(height: 26.0),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Text(
-            "Login, create a new account, or skip signing in and continue enjoying the app.",
-            style: AppTextStyles.bMediumMedium,
-            textAlign: TextAlign.center,
-          ),
-        ),
-
-        const Spacer(),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
+    return LoaderOverlay(
+      child: Column(
+        children: [
+          Row(
             children: [
-              AppButton(
-                label: "Login",
-                height: AppDimens.btNormal,
+              IconButton(
                 onPressed: () {
-                  provider.setIsFirstRun();
-                  widget.navigator.openLoginPage();
+                  setState(() {
+                    isAppStart = false;
+                    _currentPage = 0;
+                  });
                 },
-              ),
-              SizedBox(height: 10),
-              AppTextButton(
-                label: "Create Account ",
-                borderColor: AppColors.primary,
-                width: double.infinity,
-                onPressed: () {
-                  widget.navigator.openSignUpPage();
-                },
-              ),
-
-              AppTextButton(
-                label: "Login as guest",
-                onPressed: () {
-                  widget.navigator.openHomePage();
-                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.black,
+                  size: 24,
+                ),
               ),
             ],
           ),
-        ),
-      ],
+      
+          Image.asset(AppImages.splashScreen),
+      
+          Text("Welcome to Todo", style: AppTextStyles.bMaxLargeSemiBold),
+          const SizedBox(height: 26.0),
+      
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Text(
+              "Login, create a new account, or skip signing in and continue enjoying the app.",
+              style: AppTextStyles.bMediumMedium,
+              textAlign: TextAlign.center,
+            ),
+          ),
+      
+          const Spacer(),
+      
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              children: [
+                AppButton(
+                  label: "Login",
+                  height: AppDimens.btNormal,
+                  onPressed: () {
+                    provider.nextPage(0);
+                  },
+                ),
+                SizedBox(height: 10),
+                AppTextButton(
+                  label: "Create Account ",
+                  borderColor: AppColors.primary,
+                  width: double.infinity,
+                  onPressed: () {
+                    provider.nextPage(1);
+                  },
+                ),
+      
+                AppTextButton(
+                  label: "Login as guest",
+                  onPressed: () {
+                    provider.nextPage(2);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
