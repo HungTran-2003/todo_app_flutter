@@ -24,11 +24,9 @@ class AppDimens {
   static const double paddingNormal = 16.0;
 
   ///Margin
-  static const double marginSmaller= 1.0;
+  static const double marginSmaller = 1.0;
   static const double marginSmall = 8.0;
   static const double marginNormal = 16.0;
   static const double marginLarge = 24.0;
   static const double marginExtraLarge = 32.0;
-
-
 }

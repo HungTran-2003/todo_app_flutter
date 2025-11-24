@@ -4,12 +4,11 @@ import 'package:todo_app/router/router_config.dart';
 class SplashNavigator extends AppNavigator {
   SplashNavigator({required super.context});
 
-  Future<void> openOnBoardingPage(){
+  Future<void> openOnBoardingPage() {
     return pushReplacementName(AppRouter.onBoarding);
   }
 
   Future<void> openHomePage() {
     return pushReplacementName(AppRouter.home);
   }
-
 }

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-class AppColors{
+class AppColors {
   AppColors._();
 
   /// Common
@@ -18,16 +18,16 @@ class AppColors{
   static const Color btBorderWhite = Color(0xFFFFFFFF);
   static const Color btBorderBlack = Color(0xFF000000);
 
-   ///Text
+  ///Text
   static const Color textBlack = Color(0xFF1B1B1D);
   static const Color textWhite = Color(0xFFFFFFFF);
-  static final Color textGrey = textBlack.withAlpha(70);
 
   ///Indicator
   static const Color indicatorBlack = Color(0xFF000000);
   static const Color indicatorGray = Color(0xFFAFAFAF);
 
-
-
-
+  ///IconCategory
+  static const Color iconTask = Color(0xFFDBECF6);
+  static const Color iconGoal = Color(0xFFFEF5D3);
+  static const Color iconEvent = Color(0xFFE7E2F3);
 }

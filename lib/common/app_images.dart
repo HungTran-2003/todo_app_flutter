@@ -8,5 +8,4 @@ class AppImages {
 
   static const header1 = "assets/images/header_1.png";
   static const header2 = "assets/images/header_2.png";
-
 }
