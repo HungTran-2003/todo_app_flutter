@@ -36,6 +36,15 @@ class HomeChildPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<HomeChildPage> {
+
+  late HomeProvider _provider;
+
+  @override
+  void initState() {
+    super.initState();
+    _provider = context.read<HomeProvider>();
+  }
+
   List<TodoEntity> _todos = [];
   List<TodoEntity> _completedTodos = [];
 
@@ -70,7 +79,9 @@ class _MyPageState extends State<HomeChildPage> {
                       const SizedBox(height: 32.0),
                       Expanded(child: _buildBodyPage()),
                       const SizedBox(height: 24.0),
-                      AppButton(label: "Add New Task", onPressed: () {}),
+                      AppButton(label: "Add New Task", onPressed: () {
+                        _provider.openPageDetail();
+                      }),
                       const SizedBox(height: 10.0),
                     ],
                   ),

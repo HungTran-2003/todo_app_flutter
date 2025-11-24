@@ -24,4 +24,8 @@ class HomeProvider extends ChangeNotifier {
     );
     return completer.future;
   }
+
+  Future<void> openPageDetail({int? todoId}) async{
+    await navigator.openDetailPage(todoId: todoId);
+  }
 }

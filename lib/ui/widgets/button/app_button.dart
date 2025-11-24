@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_text_style.dart';
@@ -8,6 +9,9 @@ class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final double? width;
   final double? height;
+  final String? assetIcon;
+  final Color? bgColor;
+
 
   const AppButton({
     super.key,
@@ -15,6 +19,8 @@ class AppButton extends StatelessWidget {
     this.onPressed,
     this.width,
     this.height,
+    this.assetIcon,
+    this.bgColor
   });
 
   @override
@@ -22,7 +28,7 @@ class AppButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.btPrimary,
+        backgroundColor: bgColor ?? AppColors.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimens.btCornerRadius),
         ),
@@ -32,7 +38,19 @@ class AppButton extends StatelessWidget {
           height ?? AppDimens.btHeightLarge,
         ),
       ),
-      child: Text(label, style: AppTextStyles.wMediumBold),
+      child: _buildChildButton()
+    );
+  }
+
+  Widget _buildChildButton(){
+    if(assetIcon == null){
+      return Text(label, style: AppTextStyles.wMediumBold);
+    }
+    return SvgPicture.asset(
+      assetIcon!,
+      width: 24,
+      height: 24,
+      semanticsLabel: label,
     );
   }
 }

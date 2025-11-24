@@ -30,4 +30,8 @@ class AppColors {
   static const Color iconTask = Color(0xFFDBECF6);
   static const Color iconGoal = Color(0xFFFEF5D3);
   static const Color iconEvent = Color(0xFFE7E2F3);
+
+  ///TextField
+  static const Color tfBorder = Color(0xFFE0E0E0);
+
 }

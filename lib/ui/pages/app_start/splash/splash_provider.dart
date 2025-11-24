@@ -34,7 +34,7 @@ class SplashProvider extends ChangeNotifier {
       try {
         message = "Fetching data";
         notifyListeners();
-        await Future.delayed(const Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 1));
         message = "Success";
         todoProvider.setTodos(TodoEntity.mockData);
         await Future.delayed(const Duration(seconds: 1));
@@ -51,7 +51,7 @@ class SplashProvider extends ChangeNotifier {
 
   Future<bool> _checkLogin() async {
     final isLogin = true;
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     return isLogin;
   }
 }
