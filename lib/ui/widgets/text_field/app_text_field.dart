@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_text_style.dart';
 
@@ -6,9 +7,9 @@ class AppTextField extends StatefulWidget {
   final TextEditingController controller;
   final String title;
   final String hint;
-  final bool? enabled;
   final String? assetIcon;
   final int? maxLines;
+  final double? height;
   final String? Function(String?)? validator;
 
   const AppTextField({
@@ -17,9 +18,9 @@ class AppTextField extends StatefulWidget {
     required this.title,
     required this.hint,
     this.assetIcon,
-    this.enabled = true,
     this.maxLines = 1,
     this.validator,
+    this.height,
   });
 
   @override
@@ -37,12 +38,13 @@ class _AppTextFieldState extends State<AppTextField> {
           widget.title, style: AppTextStyles.bSmallSemiBold,
         ),
 
-        Expanded(
+        SizedBox(
+          height: widget.height,
           child: TextFormField(
             controller: widget.controller,
-            enabled: widget.enabled,
             maxLines: widget.maxLines,
             expands: widget.maxLines == null ? true : false,
+            style: AppTextStyles.bMedium,
             textAlignVertical: TextAlignVertical.top,
             decoration: InputDecoration(
               filled: true,
@@ -71,11 +73,24 @@ class _AppTextFieldState extends State<AppTextField> {
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: AppColors.error, width: 1.0),
               ),
+              suffixIcon: _buildIcon(),
             ),
             validator: widget.validator,
           ),
         )
       ],
     );
+  }
+
+  Widget? _buildIcon(){
+    if(widget.assetIcon != null){
+      return SvgPicture.asset(
+        widget.assetIcon!,
+        width: 20,
+        height: 20,
+        fit: BoxFit.scaleDown,
+      );
+    }
+    return null;
   }
 }

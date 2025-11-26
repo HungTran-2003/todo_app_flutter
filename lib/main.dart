@@ -19,10 +19,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: AppThemes().theme,
-      routerConfig: AppRouter.router,
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).unfocus();
+      },
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        theme: AppThemes().theme,
+        routerConfig: AppRouter.router,
+      ),
     );
   }
 }

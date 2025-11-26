@@ -1,20 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/ui/pages/home/home_provider.dart';
 import 'package:todo_app/ui/pages/home/widgets/todo_item.dart';
 
 class TodoSections extends StatelessWidget {
   final List<TodoEntity> todos;
   final String? sectionTitle;
-  final VoidCallback onPressed;
-  final VoidCallback onPressedCB;
+  final HomeProvider provider;
 
   const TodoSections({
     super.key,
     required this.todos,
     this.sectionTitle,
-    required this.onPressed,
-    required this.onPressedCB,
+    required this.provider,
   });
 
   @override
@@ -32,11 +33,16 @@ class TodoSections extends StatelessWidget {
           final isFirst = index == 0;
           final isLast = index == todos.length - 1;
           return TodoItem(
-            checkboxPress: onPressedCB,
+            checkboxPress: (){
+              log("checkbox: ${todos[index].id}");
+            },
             first: isFirst,
             last: isLast,
             todo: todos[index],
-            onPressed: onPressed,
+            onPressed: (){
+              log("item: ${todos[index].id}");
+              provider.navigator.openDetailPage(todoId: todos[index].id);
+            },
           );
         }),
       ],

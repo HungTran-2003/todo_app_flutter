@@ -109,14 +109,12 @@ class _MyPageState extends State<HomeChildPage> {
         children: [
           TodoSections(
             todos: _todos,
-            onPressed: clickItem,
-            onPressedCB: clickItem,
+            provider: _provider,
           ),
           TodoSections(
             todos: _completedTodos,
-            onPressed: clickItem,
-            onPressedCB: clickCheckBox,
             sectionTitle: "Completed",
+            provider: _provider,
           ),
         ],
       ),

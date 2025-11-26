@@ -35,13 +35,17 @@ class TodoProvider extends ChangeNotifier {
     });
   }
 
+  TodoEntity getTodoById(int id){
+    return _todos.firstWhere((todo) => todo.id == id);
+  }
+
   void setTodos(List<TodoEntity> todos) {
     log(todos.length.toString());
     _todos = todos;
+    _sortTodosByDuaDateDesc();
   }
 
   Future<bool> deleteTodo(int id) async {
-    notifyListeners();
     try {
       await Future.delayed(Duration(seconds: 2));
       _todos.removeWhere((todo) => todo.id == id);
@@ -52,6 +56,49 @@ class TodoProvider extends ChangeNotifier {
       notifyListeners();
       return false;
     }
+  }
+
+  Future<TodoEntity?> addTodo(TodoEntity todo) async {
+    try{
+      await Future.delayed(Duration(seconds: 1));
+      _todos.add(todo);
+      _sortTodosByDuaDateDesc();
+      return todo;
+    } catch(e){
+      log(e.toString());
+      notifyListeners();
+      return null;
+    }
+  }
+
+  Future<TodoEntity?> changeTodo(TodoEntity todo) async {
+    try {
+      await Future.delayed(Duration(seconds: 1));
+      final index = _todos.indexWhere((element) => element.id == todo.id);
+      final updatedTodo = TodoEntity(
+        id: todo.id,
+        title: todo.title,
+        note: todo.note,
+        duaDate: todo.duaDate,
+        isComplete: todo.isComplete,
+        createAt: todo.createAt,
+        updateAt: todo.updateAt,
+        category: todo.category,
+      );
+
+      _todos[index] = updatedTodo;
+      _sortTodosByDuaDateDesc();
+      return todo;
+    } catch(e){
+      log(e.toString());
+      notifyListeners();
+      return null;
+    }
+  }
+
+  void _sortTodosByDuaDateDesc() {
+    _todos.sort((a, b) => a.duaDate.compareTo(b.duaDate));
+    notifyListeners();
   }
 
   @override

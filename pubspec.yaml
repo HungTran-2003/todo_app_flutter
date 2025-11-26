@@ -41,6 +41,8 @@ dependencies:
   loader_overlay: ^4.0.0
   flutter_slidable: ^3.0.0
 
+  flutter_udid: ^4.1.0
+
 
 dev_dependencies:
   flutter_test:

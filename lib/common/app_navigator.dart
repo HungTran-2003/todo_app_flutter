@@ -12,8 +12,8 @@ class AppNavigator {
     GoRouter.of(context).pop();
   }
 
-  Future<dynamic> pushName(String name) {
-    return GoRouter.of(context).pushNamed(name);
+  Future<dynamic> pushName(String name, {Object? arguments}) {
+    return GoRouter.of(context).pushNamed(name, extra: arguments);
   }
 
   Future<dynamic> pushReplacementName(String name) {

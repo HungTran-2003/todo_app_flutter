@@ -5,6 +5,6 @@ class HomeNavigator extends AppNavigator {
   HomeNavigator({required super.context});
 
   Future<void> openDetailPage({int? todoId}) async{
-    pushName(AppRouter.detail);
+    pushName(AppRouter.detail, arguments: todoId);
   }
 }

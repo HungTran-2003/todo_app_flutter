@@ -1,23 +1,23 @@
 import 'package:todo_app/models/enum/todo_category.dart';
 
 class TodoEntity {
-  int id;
+  int? id;
   String title;
   String? note;
   DateTime duaDate;
   bool isComplete = false;
   DateTime createAt;
-  DateTime updateAt;
+  DateTime? updateAt;
   TodoCategory category = TodoCategory.task;
 
   TodoEntity({
-    required this.id,
+    this.id,
     required this.title,
     this.note,
     required this.duaDate,
     this.isComplete = false,
     required this.createAt,
-    required this.updateAt,
+    this.updateAt,
     this.category = TodoCategory.task,
   });
 
@@ -36,13 +36,13 @@ class TodoEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'title': title,
       'note': note,
       'duaDate': duaDate.toIso8601String(),
       'isComplete': isComplete,
       'createAt': createAt.toIso8601String(),
-      'updateAt': updateAt.toIso8601String(),
+      'updateAt': updateAt?.toIso8601String(),
       'category': category.name,
     };
   }

@@ -64,7 +64,7 @@ class _TodoItemState extends State<TodoItem>
             bool result = false;
             final isDelete = await homeProvider.deleteTodo();
             if (isDelete) {
-              result = await todoProvider.deleteTodo(widget.todo.id);
+              result = await todoProvider.deleteTodo(widget.todo.id!);
             }
             if (result) {
               homeProvider.navigator.hideLoadingOverlay();
@@ -79,7 +79,7 @@ class _TodoItemState extends State<TodoItem>
             onPressed: (context) async {
               final isDelete = await homeProvider.deleteTodo();
               if (isDelete) {
-                todoProvider.deleteTodo(widget.todo.id);
+                todoProvider.deleteTodo(widget.todo.id!);
               }
             },
             backgroundColor: Colors.red,

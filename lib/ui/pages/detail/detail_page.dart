@@ -1,18 +1,21 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
-import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/global_provider/app_provider.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
 import 'package:todo_app/ui/pages/detail/detail_provider.dart';
 import 'package:todo_app/ui/pages/detail/widgets/buttons/app_icon_button.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
+import 'package:todo_app/ui/widgets/picker/app_date_input.dart';
 import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
+import 'package:todo_app/utils/app_date_util.dart';
+import 'package:todo_app/utils/app_validartor.dart';
 
 class DetailPage extends StatelessWidget {
   final int? todoId;
@@ -22,7 +25,11 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return DetailProvider(navigator: DetailNavigator(context: context));
+        final todoProvider = context.read<TodoProvider>();
+        return DetailProvider(
+          navigator: DetailNavigator(context: context),
+          provider: todoProvider,
+        );
       },
       child: DetailChildPage(todoId: todoId),
     );
@@ -39,60 +46,116 @@ class DetailChildPage extends StatefulWidget {
 }
 
 class _DetailChildPageState extends State<DetailChildPage> {
+  final _formKey = GlobalKey<FormState>();
+  late DetailProvider _localProvider;
+
   final _titleController = TextEditingController();
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
   final _noteController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _localProvider = context.read<DetailProvider>();
+    _setup();
+  }
+
+  void _setup() async {
+    await _localProvider.fetchInitialData(widget.todoId);
+    if (_localProvider.todo != null) {
+      _titleController.text = _localProvider.todo!.title;
+      _dateController.text = AppDateUtil.toDatePickerString(
+        _localProvider.todo!.duaDate,
+      );
+      _timeController.text = AppDateUtil.toTimePickerString(
+        _localProvider.todo!.duaDate,
+      );
+      _noteController.text = _localProvider.todo!.note ?? "";
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final categoryIndex = context.select<DetailProvider, int>(
+      (p) => p.categoryIndex,
+    );
     return Scaffold(
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height,
-          ),
-          child: Stack(
-            children: [Image.asset(AppImages.header2), _buildBodyPage()],
-          ),
+      body: LoaderOverlay(
+        child: Stack(
+          children: [
+            Image.asset(AppImages.header2),
+        
+            SafeArea(
+              child: Container(
+                margin: const EdgeInsets.only(
+                  left: AppDimens.marginNormal,
+                  right: AppDimens.marginNormal,
+                ),
+                child: Column(
+                  spacing: AppDimens.marginNormal,
+                  children: [
+                    _buildAppBar(),
+                    Expanded(child: _buildBodyPage(categoryIndex)),
+                    AppButton(
+                      label: "Save",
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          log("title: ${_titleController.text}");
+                          log("date: ${_dateController.text}");
+                          log("time: ${_timeController.text}");
+                          log("note: ${_noteController.text}");
+                          _localProvider.saveTodo(
+                            _titleController.text,
+                            _dateController.text,
+                            _timeController.text,
+                            _noteController.text,
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildBodyPage() {
-    return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.only(
-          left: AppDimens.marginNormal,
-          right: AppDimens.marginNormal,
-          bottom: AppDimens.marginSmall,
+  Widget _buildAppBar() {
+    return Row(
+      children: [
+        AppIconButton(assetIcon: AppSvgs.closeX, onPressed: () {}),
+        Expanded(
+          child: Center(
+            child: Text(
+              widget.todoId == null ? 'Add New Task' : 'Detail Task',
+              style: AppTextStyles.wMediumSemiBold,
+            ),
+          ),
         ),
+        SizedBox(height: AppDimens.btNormal, width: AppDimens.btNormal),
+      ],
+    );
+  }
+
+  Widget _buildBodyPage(int categoryIndex) {
+    return SingleChildScrollView(
+      physics: const ClampingScrollPhysics(),
+      child: Form(
+        key: _formKey,
         child: Column(
           spacing: AppDimens.marginLarge,
           children: [
-            Row(
-              children: [
-                AppIconButton(assetIcon: AppSvgs.closeX, onPressed: () {}),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      widget.todoId == null ? 'Add New Task' : 'Detail Task',
-                      style: AppTextStyles.wMediumSemiBold,
-                    ),
-                  ),
-                ),
-                SizedBox(height: AppDimens.btNormal, width: AppDimens.btNormal),
-              ],
-            ),
-
-            SizedBox(
-              height: 78,
-              child: AppTextField(
-                controller: _titleController,
-                title: "Task Title",
-                hint: "Task Title",
-              ),
+            AppTextField(
+              controller: _titleController,
+              title: "Task Title",
+              hint: "Task Title",
+              validator: (value) {
+                return AppValidator.validateEmpty(value);
+              },
             ),
 
             Row(
@@ -101,62 +164,78 @@ class _DetailChildPageState extends State<DetailChildPage> {
                 const SizedBox(width: 24.0),
                 AppIconButton(
                   assetIcon: AppSvgs.note,
-                  onPressed: () {},
-                  colorBorder: Colors.black,
+                  onPressed: () {
+                    _localProvider.changeCategory(1);
+                  },
+                  colorBorder: categoryIndex == 1 ? Colors.black : Colors.white,
                 ),
                 const SizedBox(width: 16.0),
                 AppIconButton(
                   assetIcon: AppSvgs.calendar,
-                  onPressed: () {},
-                  colorBorder: Colors.white,
+                  onPressed: () {
+                    _localProvider.changeCategory(2);
+                  },
+                  colorBorder: categoryIndex == 2 ? Colors.black : Colors.white,
                 ),
                 const SizedBox(width: 16.0),
                 AppIconButton(
                   assetIcon: AppSvgs.goal,
-                  onPressed: () {},
-                  colorBorder: Colors.white,
+                  onPressed: () {
+                    _localProvider.changeCategory(3);
+                  },
+                  colorBorder: categoryIndex == 3 ? Colors.black : Colors.white,
+                ),
+              ],
+            ),
+            Row(
+              spacing: 8.0,
+              children: [
+                Expanded(
+                  child: AppDateInput(
+                    controller: _dateController,
+                    hintText: "Date",
+                    title: "Date",
+                    assetIcon: AppSvgs.iconCalendar,
+                    validator: (value) {
+                      String? errorText;
+                      errorText = AppValidator.validateEmpty(value);
+                      errorText ??= AppValidator.validateTime(
+                        _dateController.text,
+                        _timeController.text,
+                      );
+                      return errorText;
+                    },
+                  ),
+                ),
+
+                Expanded(
+                  child: AppDateInput(
+                    controller: _timeController,
+                    hintText: "Time",
+                    title: "Time",
+                    assetIcon: AppSvgs.iconClock,
+                    isTime: true,
+                    validator: (value) {
+                      String? errorText;
+                      errorText = AppValidator.validateEmpty(value);
+                      errorText ??= AppValidator.validateTime(
+                        _dateController.text,
+                        _timeController.text,
+                      );
+                      return errorText;
+                    },
+                  ),
                 ),
               ],
             ),
 
-            SizedBox(
-              height: 78.0,
-              child: Row(
-                spacing: 8.0,
-                children: [
-                  Expanded(
-                    child: AppTextField(
-                      controller: _dateController,
-                      title: "Date",
-                      hint: "Date",
-                      enabled: false,
-                    ),
-                  ),
-
-                  Expanded(
-                    child: AppTextField(
-                      controller: _timeController,
-                      title: "Time",
-                      hint: "Time",
-                      enabled: false,
-                    ),
-                  ),
-                ],
-              ),
+            AppTextField(
+              controller: _noteController,
+              title: "Notes",
+              hint: "Notes",
+              maxLines: null,
+              height: 200,
             ),
-
-            SizedBox(
-              height: 200.0,
-              child: AppTextField(
-                controller: _titleController,
-                title: "Task Title",
-                hint: "Task Title",
-                maxLines: null,
-              ),
-            ),
-
-            const Spacer(),
-            AppButton(label: "Save", onPressed: (){},)
           ],
         ),
       ),

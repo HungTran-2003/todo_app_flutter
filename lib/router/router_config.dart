@@ -41,7 +41,7 @@ class AppRouter {
         GoRoute(
           name: detail,
           path: detail,
-          builder: (context, state) => const DetailPage(),
+          builder: (context, state) => DetailPage(todoId: state.extra as int?,),
         )
       ],
     ),
