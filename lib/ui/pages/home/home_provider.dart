@@ -1,31 +1,104 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:todo_app/global_provider/app_provider.dart';
+import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/services/todo_service.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
 
 class HomeProvider extends ChangeNotifier {
   final HomeNavigator navigator;
+  List<TodoEntity> todos;
+  final _todoService = TodoService();
 
-  HomeProvider({required this.navigator});
+  DateTime currentTime = DateTime.now();
+  Timer? _timer;
 
-  Future<bool> deleteTodo() async {
-    final completer = Completer<bool>();
-    navigator.showSimpleDialog(
-      title: "Delete Todo",
-      content: "You want to delete this Todo?",
-      textCancel: "Cancel",
-      onConfirm: () {
-        navigator.showLoadingOverlay();
-        completer.complete(true);
-      },
-      onCancel: () {
-        completer.complete(false);
-      },
-    );
-    return completer.future;
+  HomeProvider({required this.navigator, required this.todos});
+
+  List<TodoEntity> get inCompleteTodos =>
+      todos.where((todo) => todo.isComplete == false).toList();
+  List<TodoEntity> get completedTodos =>
+      todos.where((todo) => todo.isComplete == true).toList();
+
+  void startMinuteTimer() {
+    final now = DateTime.now();
+    final nextMinute = DateTime(now.year, now.month, now.day + 1);
+    final initialDelay = nextMinute.difference(now);
+
+    Future.delayed(initialDelay, () {
+      currentTime = DateTime.now();
+      notifyListeners();
+      _timer = Timer.periodic(Duration(days: 1), (_) {
+        currentTime = DateTime.now();
+        notifyListeners();
+      });
+    });
   }
 
-  Future<void> openPageDetail({int? todoId}) async{
-    await navigator.openDetailPage(todoId: todoId);
+  Future<void> deleteTodo(int todoId, bool isShowDialog) async {
+    if (isShowDialog) {
+      navigator.showSimpleDialog(
+        title: "Delete Todo",
+        content: "You want to delete this Todo?",
+        textCancel: "Cancel",
+        onConfirm: () async {
+          navigator.showLoadingOverlay();
+          final result = await _deleteTodo(todoId);
+        },
+        onCancel: () {
+        },
+      );
+    } else {
+      navigator.showLoadingOverlay();
+      final result = await _deleteTodo(todoId);
+    }
+    navigator.hideLoadingOverlay();
+  }
+
+  Future<void> openPageDetail({TodoEntity? todo}) async{
+   final result = await navigator.openDetailPage(todo: todo);
+   if (result) {
+     todos = await _todoService.getTodos();
+     _sortTodosByDuaDateDesc();
+   }
+  }
+
+  Future<void> completedTodo(int index) async {
+    navigator.showLoadingOverlay();
+    try {
+      final todo = todos[index];
+      todo.isComplete = true;
+      final updatedTodo = await _todoService.updateTodo(todo);
+      if (updatedTodo == null) {
+        log("error");
+      } else {
+        todos[index] = updatedTodo;
+      }
+    } catch(e){
+      log(e.toString());
+    }
+    notifyListeners();
+    navigator.hideLoadingOverlay();
+  }
+
+  Future<bool> _deleteTodo(int id) async {
+    try {
+      final result = await _todoService.deleteTodo(id);
+      if (!result) return false;
+      todos.removeWhere((todo) => todo.id == id);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      log(e.toString());
+      notifyListeners();
+      return false;
+    }
+  }
+
+  void _sortTodosByDuaDateDesc() {
+    todos.sort((a, b) => a.duaDate.compareTo(b.duaDate));
+    notifyListeners();
   }
 }

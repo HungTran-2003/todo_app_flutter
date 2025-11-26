@@ -9,13 +9,17 @@ import 'package:todo_app/ui/pages/home/widgets/todo_item.dart';
 class TodoSections extends StatelessWidget {
   final List<TodoEntity> todos;
   final String? sectionTitle;
-  final HomeProvider provider;
+  final ValueChanged<int> onPressed;
+  final ValueChanged<int> clickCheckBox;
+  final Function(bool, int) delete;
 
   const TodoSections({
     super.key,
     required this.todos,
     this.sectionTitle,
-    required this.provider,
+    required this.onPressed,
+    required this.clickCheckBox,
+    required this.delete,
   });
 
   @override
@@ -23,7 +27,7 @@ class TodoSections extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (sectionTitle != null) ...[
+        if (sectionTitle != null && todos.isNotEmpty) ...[
           Container(
             margin: const EdgeInsets.symmetric(vertical: 24),
             child: Text(sectionTitle!, style: AppTextStyles.bMediumSemiBold),
@@ -33,15 +37,17 @@ class TodoSections extends StatelessWidget {
           final isFirst = index == 0;
           final isLast = index == todos.length - 1;
           return TodoItem(
-            checkboxPress: (){
-              log("checkbox: ${todos[index].id}");
+            checkboxPress: () {
+              clickCheckBox(index);
             },
             first: isFirst,
             last: isLast,
             todo: todos[index],
-            onPressed: (){
-              log("item: ${todos[index].id}");
-              provider.navigator.openDetailPage(todoId: todos[index].id);
+            onPressed: () {
+              onPressed(index);
+            },
+            delete: (value){
+              delete(value, index);
             },
           );
         }),

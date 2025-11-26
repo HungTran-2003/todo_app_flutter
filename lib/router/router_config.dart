@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_page.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_page.dart';
 import 'package:todo_app/ui/pages/detail/detail_page.dart';
@@ -36,12 +37,12 @@ class AppRouter {
         GoRoute(
           name: home,
           path: home,
-          builder: (context, state) => const HomePage(),
+          builder: (context, state) => HomePage(todos: state.extra as List<TodoEntity>,),
         ),
         GoRoute(
           name: detail,
           path: detail,
-          builder: (context, state) => DetailPage(todoId: state.extra as int?,),
+          builder: (context, state) => DetailPage(todo: state.extra as TodoEntity?,),
         )
       ],
     ),

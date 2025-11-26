@@ -2,18 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:todo_app/database/app_share_preferences.dart';
-import 'package:todo_app/global_provider/app_provider.dart';
-import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/services/auth_service.dart';
+import 'package:todo_app/services/todo_service.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_navigator.dart';
 
 class SplashProvider extends ChangeNotifier {
   final SplashNavigator navigator;
-  final TodoProvider todoProvider;
+  final _auth = AuthService();
+  final _todo = TodoService();
 
   bool isLoading = false;
   String message = "";
 
-  SplashProvider({required this.todoProvider, required this.navigator});
+  SplashProvider({required this.navigator});
 
   Future<void> checkFirstRun() async {
     final isFirstRun = await AppSharePreferences.isFirstRun();
@@ -34,12 +35,13 @@ class SplashProvider extends ChangeNotifier {
       try {
         message = "Fetching data";
         notifyListeners();
-        await Future.delayed(const Duration(seconds: 1));
+        final todos = await _todo.getTodos();
+        log(todos.length.toString());
         message = "Success";
-        todoProvider.setTodos(TodoEntity.mockData);
         await Future.delayed(const Duration(seconds: 1));
-        navigator.openHomePage();
+        navigator.openHomePage(todos);
       } catch (e) {
+        log(e.toString());
         message = e.toString();
       }
     } else {
@@ -50,8 +52,7 @@ class SplashProvider extends ChangeNotifier {
   }
 
   Future<bool> _checkLogin() async {
-    final isLogin = true;
-    await Future.delayed(const Duration(seconds: 1));
+    final isLogin = await _auth.signInWithDeviceId() != null;
     return isLogin;
   }
 }

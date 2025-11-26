@@ -1,9 +1,9 @@
 import 'package:flutter_udid/flutter_udid.dart';
 
-class DevicUntil {
-  DevicUntil._();
+class DeviceUntil {
+  DeviceUntil._();
 
-  Future<String> getUDID() async {
+  static Future<String> getUDID() async {
     return await FlutterUdid.udid;
   }
 }

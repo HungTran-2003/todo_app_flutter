@@ -14,14 +14,20 @@ import 'package:todo_app/ui/pages/home/widgets/todo_sections.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/utils/app_date_util.dart';
 
+
+
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final List<TodoEntity> todos;
+  const HomePage({super.key, required this.todos});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return HomeProvider(navigator: HomeNavigator(context: context));
+        return HomeProvider(
+          navigator: HomeNavigator(context: context),
+          todos: todos,
+        );
       },
       child: const HomeChildPage(),
     );
@@ -36,7 +42,6 @@ class HomeChildPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<HomeChildPage> {
-
   late HomeProvider _provider;
 
   @override
@@ -45,16 +50,17 @@ class _MyPageState extends State<HomeChildPage> {
     _provider = context.read<HomeProvider>();
   }
 
-  List<TodoEntity> _todos = [];
+  List<TodoEntity> _inCompleteTodos = [];
   List<TodoEntity> _completedTodos = [];
 
   @override
   Widget build(BuildContext context) {
-    final time = context.select<TodoProvider, DateTime>((p) => p.currentTime);
-    _todos = context.select<TodoProvider, List<TodoEntity>>((p) => p.todos);
-    _completedTodos = context.select<TodoProvider, List<TodoEntity>>(
+    final time = context.select<HomeProvider, DateTime>((p) => p.currentTime);
+    _inCompleteTodos = context.select<HomeProvider, List<TodoEntity>>((p) => p.inCompleteTodos);
+    _completedTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.completedTodos,
     );
+    log(_inCompleteTodos.length.toString());
 
     return LoaderOverlay(
       child: Scaffold(
@@ -95,7 +101,7 @@ class _MyPageState extends State<HomeChildPage> {
   }
 
   Widget _buildBodyPage() {
-    if (_todos.isEmpty && _completedTodos.isEmpty) {
+    if (_inCompleteTodos.isEmpty && _completedTodos.isEmpty) {
       return Center(
         child: Text(
           "Let's create a new task",
@@ -107,25 +113,35 @@ class _MyPageState extends State<HomeChildPage> {
       child: ListView(
         physics: const ClampingScrollPhysics(),
         children: [
-          TodoSections(
-            todos: _todos,
-            provider: _provider,
-          ),
+          _inCompleteTodos.isNotEmpty
+          ? TodoSections(
+            todos: _inCompleteTodos,
+            onPressed: (index){
+              _provider.openPageDetail(todo: _inCompleteTodos[index]);
+            },
+            clickCheckBox: (index){
+
+            },
+            delete: (value, index){
+              _provider.deleteTodo(index, value);
+            },
+          )
+          : const SizedBox(height: 80.0,),
           TodoSections(
             todos: _completedTodos,
             sectionTitle: "Completed",
-            provider: _provider,
+            onPressed: (index){
+
+            },
+            clickCheckBox: (index){
+
+            },
+            delete: (value, index){
+              _provider.deleteTodo(index, value);
+            },
           ),
         ],
       ),
     );
-  }
-
-  void clickItem() {
-    log("item");
-  }
-
-  void clickCheckBox() {
-    log("checkbox");
   }
 }

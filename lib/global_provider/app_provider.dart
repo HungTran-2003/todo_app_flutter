@@ -3,8 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/services/todo_service.dart';
 
 class TodoProvider extends ChangeNotifier {
+  final _todoService = TodoService();
   DateTime currentTime = DateTime.now();
   Timer? _timer;
 
@@ -47,7 +49,8 @@ class TodoProvider extends ChangeNotifier {
 
   Future<bool> deleteTodo(int id) async {
     try {
-      await Future.delayed(Duration(seconds: 2));
+      final result = await _todoService.deleteTodo(id);
+      if (!result) return false;
       _todos.removeWhere((todo) => todo.id == id);
       notifyListeners();
       return true;
@@ -60,8 +63,9 @@ class TodoProvider extends ChangeNotifier {
 
   Future<TodoEntity?> addTodo(TodoEntity todo) async {
     try{
-      await Future.delayed(Duration(seconds: 1));
-      _todos.add(todo);
+      final newTodo = await _todoService.createTodo(todo);
+      if (newTodo == null) return null;
+      _todos.add(newTodo);
       _sortTodosByDuaDateDesc();
       return todo;
     } catch(e){
@@ -73,20 +77,20 @@ class TodoProvider extends ChangeNotifier {
 
   Future<TodoEntity?> changeTodo(TodoEntity todo) async {
     try {
-      await Future.delayed(Duration(seconds: 1));
+      final updatedTodo = await _todoService.updateTodo(todo);
+      if (updatedTodo == null) return null;
       final index = _todos.indexWhere((element) => element.id == todo.id);
-      final updatedTodo = TodoEntity(
-        id: todo.id,
-        title: todo.title,
-        note: todo.note,
-        duaDate: todo.duaDate,
-        isComplete: todo.isComplete,
-        createAt: todo.createAt,
-        updateAt: todo.updateAt,
-        category: todo.category,
+      final newTodo = TodoEntity(
+        id: updatedTodo.id,
+        title: updatedTodo.title,
+        note: updatedTodo.note,
+        duaDate: updatedTodo.duaDate,
+        isComplete: updatedTodo.isComplete,
+        createAt: updatedTodo.createAt,
+        updateAt: updatedTodo.updateAt,
+        category: updatedTodo.category,
       );
-
-      _todos[index] = updatedTodo;
+      _todos[index] = newTodo;
       _sortTodosByDuaDateDesc();
       return todo;
     } catch(e){

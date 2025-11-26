@@ -11,12 +11,10 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<TodoProvider>();
     return ChangeNotifierProvider(
       create: (context) {
         return SplashProvider(
           navigator: SplashNavigator(context: context),
-          todoProvider: provider,
         );
       },
       child: const SplashChildPage(),

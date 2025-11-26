@@ -8,16 +8,16 @@ class AppNavigator {
 
   AppNavigator({required this.context});
 
-  void pop() {
-    GoRouter.of(context).pop();
+  void pop({Object? extra}) {
+    GoRouter.of(context).pop(extra);
   }
 
   Future<dynamic> pushName(String name, {Object? arguments}) {
     return GoRouter.of(context).pushNamed(name, extra: arguments);
   }
 
-  Future<dynamic> pushReplacementName(String name) {
-    return GoRouter.of(context).pushReplacementNamed(name);
+  Future<dynamic> pushReplacementName(String name, {Object? arguments}) {
+    return GoRouter.of(context).pushReplacementNamed(name, extra: arguments);
   }
 
   void showLoadingOverlay() {

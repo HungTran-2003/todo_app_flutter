@@ -2,7 +2,7 @@ enum TodoCategory { task, event, goal }
 
 extension TodoCategoryExtension on TodoCategory {
   static TodoCategory fromString(String value) {
-    return TodoCategory.values.firstWhere((e) => e.typeName == value);
+    return TodoCategory.values.firstWhere((e) => e.name == value);
   }
 
   String get typeName {

@@ -7,7 +7,7 @@ import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
-import 'package:todo_app/global_provider/app_provider.dart';
+import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
 import 'package:todo_app/ui/pages/detail/detail_provider.dart';
 import 'package:todo_app/ui/pages/detail/widgets/buttons/app_icon_button.dart';
@@ -18,28 +18,26 @@ import 'package:todo_app/utils/app_date_util.dart';
 import 'package:todo_app/utils/app_validartor.dart';
 
 class DetailPage extends StatelessWidget {
-  final int? todoId;
-  const DetailPage({super.key, this.todoId});
+  final TodoEntity? todo;
+  const DetailPage({super.key, this.todo});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        final todoProvider = context.read<TodoProvider>();
         return DetailProvider(
           navigator: DetailNavigator(context: context),
-          provider: todoProvider,
+          todo: todo,
         );
       },
-      child: DetailChildPage(todoId: todoId),
+      child: DetailChildPage(),
     );
   }
 }
 
 class DetailChildPage extends StatefulWidget {
-  final int? todoId;
 
-  const DetailChildPage({super.key, this.todoId});
+  const DetailChildPage({super.key});
 
   @override
   State<DetailChildPage> createState() => _DetailChildPageState();
@@ -61,8 +59,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
     _setup();
   }
 
-  void _setup() async {
-    await _localProvider.fetchInitialData(widget.todoId);
+  void _setup(){
     if (_localProvider.todo != null) {
       _titleController.text = _localProvider.todo!.title;
       _dateController.text = AppDateUtil.toDatePickerString(
@@ -72,6 +69,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
         _localProvider.todo!.duaDate,
       );
       _noteController.text = _localProvider.todo!.note ?? "";
+      _localProvider.setCategoryInit();
     }
   }
 
@@ -127,11 +125,13 @@ class _DetailChildPageState extends State<DetailChildPage> {
   Widget _buildAppBar() {
     return Row(
       children: [
-        AppIconButton(assetIcon: AppSvgs.closeX, onPressed: () {}),
+        AppIconButton(assetIcon: AppSvgs.closeX, onPressed: () {
+          _localProvider.navigator.pop();
+        }),
         Expanded(
           child: Center(
             child: Text(
-              widget.todoId == null ? 'Add New Task' : 'Detail Task',
+              _localProvider.todo == null ? 'Add New Task' : 'Detail Task',
               style: AppTextStyles.wMediumSemiBold,
             ),
           ),

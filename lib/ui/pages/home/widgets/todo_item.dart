@@ -17,6 +17,7 @@ class TodoItem extends StatefulWidget {
   final bool last;
   final VoidCallback? onPressed;
   final VoidCallback checkboxPress;
+  final ValueChanged<bool> delete;
   const TodoItem({
     super.key,
     this.onPressed,
@@ -24,63 +25,54 @@ class TodoItem extends StatefulWidget {
     required this.first,
     required this.last,
     required this.todo,
+    required this.delete,
   });
 
   @override
   State<StatefulWidget> createState() => _TodoItemState();
 }
 
-class _TodoItemState extends State<TodoItem>
-    with SingleTickerProviderStateMixin {
-  late final SlidableController _slidableController;
-
-  @override
-  void initState() {
-    super.initState();
-    _slidableController = SlidableController(this);
-  }
-
-  @override
-  void dispose() {
-    _slidableController.dispose();
-    super.dispose();
-  }
+class _TodoItemState extends State<TodoItem> {
 
   @override
   Widget build(BuildContext context) {
-    final todoProvider = context.read<TodoProvider>();
-    final homeProvider = context.read<HomeProvider>();
-
     return Slidable(
-      controller: _slidableController,
       key: ValueKey(widget.todo.id),
       closeOnScroll: false,
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
         extentRatio: 0.3,
         dismissible: DismissiblePane(
-          onDismissed: () {},
-          confirmDismiss: () async {
-            bool result = false;
-            final isDelete = await homeProvider.deleteTodo();
-            if (isDelete) {
-              result = await todoProvider.deleteTodo(widget.todo.id!);
-            }
-            if (result) {
-              homeProvider.navigator.hideLoadingOverlay();
-              return true;
-            }
-            _slidableController.close();
-            return false;
+          onDismissed: (){
+            widget.delete(false);
           },
+          confirmDismiss: () async {
+            return await showDialog<bool>(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Confirm'),
+                  content: const Text('Are you sure you want to delete this task?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false), // Hủy
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(true), // Đồng ý
+                      child: const Text('Yes'),
+                    ),
+                  ],
+                );
+              },
+            ) ?? false;
+          },
+          closeOnCancel: true,
         ),
         children: [
           SlidableAction(
             onPressed: (context) async {
-              final isDelete = await homeProvider.deleteTodo();
-              if (isDelete) {
-                todoProvider.deleteTodo(widget.todo.id!);
-              }
+              widget.delete(true);
             },
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
