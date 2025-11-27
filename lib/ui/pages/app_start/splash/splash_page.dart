@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
-import 'package:todo_app/global_provider/app_provider.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_navigator.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_provider.dart';

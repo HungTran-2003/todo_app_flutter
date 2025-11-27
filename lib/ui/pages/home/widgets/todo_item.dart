@@ -2,13 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
-import 'package:todo_app/global_provider/app_provider.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/models/enum/todo_category.dart';
-import 'package:todo_app/ui/pages/home/home_provider.dart';
 import 'package:todo_app/utils/app_date_util.dart';
 
 class TodoItem extends StatefulWidget {

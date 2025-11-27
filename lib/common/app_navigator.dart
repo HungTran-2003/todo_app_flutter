@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_text_style.dart';
 
 class AppNavigator {
@@ -63,6 +64,20 @@ class AppNavigator {
           ],
         );
       },
+    );
+  }
+
+  void showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        margin: EdgeInsets.all(AppDimens.marginSmall),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        content: Center(child: Text(message)),
+        backgroundColor: color,
+      ),
     );
   }
 }

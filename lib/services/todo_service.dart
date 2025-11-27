@@ -39,7 +39,7 @@ class TodoService{
     final response = await _client
         .from(_table)
         .update(todo.toJson())
-        .eq('id', todo.id)
+        .eq('id', todo.id!)
         .select()
         .single();
 

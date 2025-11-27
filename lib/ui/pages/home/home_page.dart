@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
-import 'package:todo_app/global_provider/app_provider.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
@@ -48,10 +45,15 @@ class _MyPageState extends State<HomeChildPage> {
   void initState() {
     super.initState();
     _provider = context.read<HomeProvider>();
+    _setup();
   }
 
   List<TodoEntity> _inCompleteTodos = [];
   List<TodoEntity> _completedTodos = [];
+
+  void _setup() {
+    _provider.startMinuteTimer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,6 @@ class _MyPageState extends State<HomeChildPage> {
     _completedTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.completedTodos,
     );
-    log(_inCompleteTodos.length.toString());
 
     return LoaderOverlay(
       child: Scaffold(
@@ -120,7 +121,7 @@ class _MyPageState extends State<HomeChildPage> {
               _provider.openPageDetail(todo: _inCompleteTodos[index]);
             },
             clickCheckBox: (index){
-
+              _provider.completedTodo(index);
             },
             delete: (value, index){
               _provider.deleteTodo(index, value);

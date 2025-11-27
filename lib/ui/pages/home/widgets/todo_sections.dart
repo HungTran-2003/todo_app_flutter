@@ -1,9 +1,7 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
-import 'package:todo_app/ui/pages/home/home_provider.dart';
 import 'package:todo_app/ui/pages/home/widgets/todo_item.dart';
 
 class TodoSections extends StatelessWidget {
@@ -47,7 +45,7 @@ class TodoSections extends StatelessWidget {
               onPressed(index);
             },
             delete: (value){
-              delete(value, index);
+              delete(value, todos[index].id!);
             },
           );
         }),

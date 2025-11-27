@@ -18,7 +18,7 @@ class AppDimens {
   static const double cbCornerRadius = 3.0;
 
   ///Appbar
-  static const double appBarHeight = 49.0;
+  static const double appBarHeight = 68.0;
 
   ///Padding
   static const double paddingNormal = 16.0;

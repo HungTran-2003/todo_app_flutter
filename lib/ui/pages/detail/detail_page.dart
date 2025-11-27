@@ -10,7 +10,8 @@ import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
 import 'package:todo_app/ui/pages/detail/detail_provider.dart';
-import 'package:todo_app/ui/pages/detail/widgets/buttons/app_icon_button.dart';
+import 'package:todo_app/ui/widgets/button/app_icon_button.dart';
+import 'package:todo_app/ui/widgets/app_bar/app_bar_widget.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/ui/widgets/picker/app_date_input.dart';
 import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
@@ -79,65 +80,45 @@ class _DetailChildPageState extends State<DetailChildPage> {
       (p) => p.categoryIndex,
     );
     return Scaffold(
-      body: LoaderOverlay(
-        child: Stack(
-          children: [
-            Image.asset(AppImages.header2),
-        
-            SafeArea(
-              child: Container(
-                margin: const EdgeInsets.only(
-                  left: AppDimens.marginNormal,
-                  right: AppDimens.marginNormal,
-                ),
-                child: Column(
-                  spacing: AppDimens.marginNormal,
-                  children: [
-                    _buildAppBar(),
-                    Expanded(child: _buildBodyPage(categoryIndex)),
-                    AppButton(
-                      label: "Save",
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          log("title: ${_titleController.text}");
-                          log("date: ${_dateController.text}");
-                          log("time: ${_timeController.text}");
-                          log("note: ${_noteController.text}");
-                          _localProvider.saveTodo(
-                            _titleController.text,
-                            _dateController.text,
-                            _timeController.text,
-                            _noteController.text,
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return Row(
-      children: [
-        AppIconButton(assetIcon: AppSvgs.closeX, onPressed: () {
+      appBar: AppBarWidget(
+        title: _localProvider.todo == null ? "Add New Task" : "Detail Task",
+        onPressed: () {
           _localProvider.navigator.pop();
-        }),
-        Expanded(
-          child: Center(
-            child: Text(
-              _localProvider.todo == null ? 'Add New Task' : 'Detail Task',
-              style: AppTextStyles.wMediumSemiBold,
+        },
+        imageBackground: AppImages.header2,
+      ),
+      body: LoaderOverlay(
+        child: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.only(
+              left: AppDimens.marginNormal,
+              right: AppDimens.marginNormal,
+              top: AppDimens.marginLarge,
             ),
+            child: _buildBodyPage(categoryIndex),
           ),
         ),
-        SizedBox(height: AppDimens.btNormal, width: AppDimens.btNormal),
-      ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(AppDimens.paddingNormal),
+        child: AppButton(
+          label: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              log("title: ${_titleController.text}");
+              log("date: ${_dateController.text}");
+              log("time: ${_timeController.text}");
+              log("note: ${_noteController.text}");
+              _localProvider.saveTodo(
+                _titleController.text,
+                _dateController.text,
+                _timeController.text,
+                _noteController.text,
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 

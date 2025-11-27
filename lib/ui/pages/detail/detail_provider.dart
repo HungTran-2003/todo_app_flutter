@@ -1,7 +1,6 @@
 import 'dart:developer';
 
-import 'package:flutter/widgets.dart';
-import 'package:todo_app/global_provider/app_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/models/enum/todo_category.dart';
 import 'package:todo_app/services/todo_service.dart';
@@ -74,9 +73,11 @@ class DetailProvider extends ChangeNotifier {
     try{
       final newTodo = await _todoService.createTodo(todo);
       if (newTodo == null) return null;
+      navigator.showSnackBar("Add Task Successful", Colors.green);
       return todo;
     } catch(e){
       log(e.toString());
+      navigator.showSnackBar("Add Task Task Error", Colors.red);
       return null;
     }
   }
@@ -85,9 +86,11 @@ class DetailProvider extends ChangeNotifier {
     try {
       final updatedTodo = await _todoService.updateTodo(todo);
       if (updatedTodo == null) return null;
+      navigator.showSnackBar("Change Task Successful", Colors.green);
       return todo;
     } catch(e){
       log(e.toString());
+      navigator.showSnackBar("Change Task Error", Colors.red);
       return null;
     }
   }

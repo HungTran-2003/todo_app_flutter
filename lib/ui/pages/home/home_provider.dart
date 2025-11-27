@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
-import 'package:todo_app/global_provider/app_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/services/todo_service.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
@@ -13,7 +12,6 @@ class HomeProvider extends ChangeNotifier {
   final _todoService = TodoService();
 
   DateTime currentTime = DateTime.now();
-  Timer? _timer;
 
   HomeProvider({required this.navigator, required this.todos});
 
@@ -30,10 +28,6 @@ class HomeProvider extends ChangeNotifier {
     Future.delayed(initialDelay, () {
       currentTime = DateTime.now();
       notifyListeners();
-      _timer = Timer.periodic(Duration(days: 1), (_) {
-        currentTime = DateTime.now();
-        notifyListeners();
-      });
     });
   }
 
@@ -45,16 +39,15 @@ class HomeProvider extends ChangeNotifier {
         textCancel: "Cancel",
         onConfirm: () async {
           navigator.showLoadingOverlay();
-          final result = await _deleteTodo(todoId);
-        },
-        onCancel: () {
+          await _deleteTodo(todoId);
+          navigator.hideLoadingOverlay();
         },
       );
     } else {
       navigator.showLoadingOverlay();
-      final result = await _deleteTodo(todoId);
+      await _deleteTodo(todoId);
+      navigator.hideLoadingOverlay();
     }
-    navigator.hideLoadingOverlay();
   }
 
   Future<void> openPageDetail({TodoEntity? todo}) async{
@@ -68,32 +61,37 @@ class HomeProvider extends ChangeNotifier {
   Future<void> completedTodo(int index) async {
     navigator.showLoadingOverlay();
     try {
-      final todo = todos[index];
+      final todo = inCompleteTodos[index];
       todo.isComplete = true;
       final updatedTodo = await _todoService.updateTodo(todo);
       if (updatedTodo == null) {
-        log("error");
+        navigator.showSnackBar("Completed Task Error", Colors.red);
       } else {
-        todos[index] = updatedTodo;
+        final index = todos.indexWhere((element) => element.id == updatedTodo.id);
+        if (index != -1) {
+          todos[index] = updatedTodo;
+          navigator.showSnackBar("Completed Task Successful", Colors.green);
+        }
       }
     } catch(e){
       log(e.toString());
+      navigator.showSnackBar("Completed Task Error", Colors.red);
     }
     notifyListeners();
     navigator.hideLoadingOverlay();
   }
 
-  Future<bool> _deleteTodo(int id) async {
+  Future<void> _deleteTodo(int id) async {
     try {
       final result = await _todoService.deleteTodo(id);
-      if (!result) return false;
+      if (!result) return;
       todos.removeWhere((todo) => todo.id == id);
       notifyListeners();
-      return true;
+      navigator.showSnackBar("Delete Task Successful", Colors.green);
     } catch (e) {
       log(e.toString());
       notifyListeners();
-      return false;
+      navigator.showSnackBar("Delete Task Error", Colors.red);
     }
   }
 
