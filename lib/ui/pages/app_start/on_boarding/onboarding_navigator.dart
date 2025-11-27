@@ -1,13 +1,14 @@
 import 'dart:developer';
 
 import 'package:todo_app/common/app_navigator.dart';
+import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/router/router_config.dart';
 
 class OnboardingNavigator extends AppNavigator {
   OnboardingNavigator({required super.context});
 
   Future<void> openHomePage() async {
-    pushReplacementName(AppRouter.home);
+    pushReplacementName(AppRouter.home, arguments: List<TodoEntity>.empty());
   }
 
   Future<void> openLoginPage() async {
