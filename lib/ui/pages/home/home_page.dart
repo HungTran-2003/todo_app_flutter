@@ -1,14 +1,17 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
+import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
 import 'package:todo_app/ui/pages/home/home_provider.dart';
 import 'package:todo_app/ui/pages/home/widgets/todo_sections.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
+import 'package:todo_app/ui/widgets/button/app_icon_button.dart';
 import 'package:todo_app/utils/app_date_util.dart';
 
 
@@ -74,10 +77,7 @@ class _MyPageState extends State<HomeChildPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      Text(
-                        AppDateUtil.toDateString(time),
-                        style: AppTextStyles.wMediumSemiBold,
-                      ),
+                      _buildAppBar(time),
                       const SizedBox(height: 23.0),
                       Text(
                         "My Todo List",
@@ -98,6 +98,28 @@ class _MyPageState extends State<HomeChildPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAppBar(DateTime time) {
+    return Row(
+      children: [
+        SizedBox(width: 38,),
+        Expanded(
+          child: Center(
+            child: Text(
+              AppDateUtil.toDateString(time),
+              style: AppTextStyles.wMediumSemiBold,
+            ),
+          ),
+        ),
+        AppIconButton(assetIcon: AppSvgs.iconSetting, onPressed: (){
+          _provider.navigator.openSettingPage(
+            completedTodos: _completedTodos.length,
+            inCompleteTodos: _inCompleteTodos.length,
+          );
+        })
+      ],
     );
   }
 

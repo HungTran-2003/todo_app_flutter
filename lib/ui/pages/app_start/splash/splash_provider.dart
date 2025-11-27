@@ -22,7 +22,7 @@ class SplashProvider extends ChangeNotifier {
     if (isFirstRun) {
       await navigator.openOnBoardingPage();
     } else {
-      await _fetchInitialData();
+      await _checkLogin();
     }
   }
 
@@ -30,7 +30,7 @@ class SplashProvider extends ChangeNotifier {
     isLoading = true;
     message = "Signing in";
     notifyListeners();
-    final isLogin = await _checkLogin();
+    final isLogin = await _login();
     if (isLogin) {
       try {
         message = "Fetching data";
@@ -51,7 +51,16 @@ class SplashProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> _checkLogin() async {
+  Future<void> _checkLogin() async {
+    final isLogin = await AppSharePreferences.isLogin();
+    if (isLogin) {
+      _fetchInitialData();
+    } else {
+      navigator.openSignIn();
+    }
+  }
+
+  Future<bool> _login() async {
     final isLogin = await _auth.signInWithDeviceId() != null;
     return isLogin;
   }

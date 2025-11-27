@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/router/router_config.dart';
 
 class AppNavigator {
   BuildContext context;
@@ -27,6 +28,10 @@ class AppNavigator {
 
   void hideLoadingOverlay() {
     context.loaderOverlay.hide();
+  }
+
+  void openSignIn() {
+    GoRouter.of(context).goNamed(AppRouter.login);
   }
 
   Future<void> showSimpleDialog({
