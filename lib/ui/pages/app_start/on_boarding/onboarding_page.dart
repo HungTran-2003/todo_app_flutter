@@ -18,13 +18,14 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return OnboardingProvider(navigator: OnboardingNavigator(context: context));
+        return OnboardingProvider(
+          navigator: OnboardingNavigator(context: context),
+        );
       },
       child: OnboardingChildPage(),
     );
   }
 }
-
 
 class OnboardingChildPage extends StatefulWidget {
   const OnboardingChildPage({super.key});
@@ -143,12 +144,12 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
               ),
             ],
           ),
-      
+
           Image.asset(AppImages.splashScreen),
-      
+
           Text("Welcome to Todo", style: AppTextStyles.bMaxLargeSemiBold),
           const SizedBox(height: 26.0),
-      
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Text(
@@ -157,9 +158,9 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
               textAlign: TextAlign.center,
             ),
           ),
-      
+
           const Spacer(),
-      
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
@@ -180,7 +181,7 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
                     provider.nextPage(1);
                   },
                 ),
-      
+
                 AppTextButton(
                   label: "Login as guest",
                   onPressed: () {

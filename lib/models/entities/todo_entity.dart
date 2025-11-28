@@ -29,7 +29,9 @@ class TodoEntity {
       duaDate: DateTime.parse(json['dua_date'] as String),
       isComplete: json['is_complete'] as bool? ?? false,
       createAt: DateTime.parse(json['create_at'] as String),
-      updateAt: json['update_at'] != null ? DateTime.parse(json['update_at']) : null,
+      updateAt: json['update_at'] != null
+          ? DateTime.parse(json['update_at'])
+          : null,
       category: TodoCategoryExtension.fromString(json['category']),
     );
   }
@@ -46,7 +48,6 @@ class TodoEntity {
       'category': category.name,
     };
   }
-
 
   String get assetsCategory {
     return "assets/vectors/${category.name}.svg";

@@ -7,4 +7,5 @@ class AppConfigs {
   static const datePickerFormat = 'dd/MM/yyyy';
 
   ///Supabase
-  static const supabaseUrl = 'https://iidpgetlhglevrfcywiy.supabase.co';}
+  static const supabaseUrl = 'https://iidpgetlhglevrfcywiy.supabase.co';
+}

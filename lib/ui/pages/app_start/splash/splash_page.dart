@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
@@ -12,9 +14,7 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return SplashProvider(
-          navigator: SplashNavigator(context: context),
-        );
+        return SplashProvider(navigator: SplashNavigator(context: context));
       },
       child: const SplashChildPage(),
     );
@@ -40,7 +40,8 @@ class _SplashChildPageState extends State<SplashChildPage> {
 
   void _setup() async {
     await Future.delayed(const Duration(seconds: 1));
-    await localProvider.checkFirstRun();
+    log("build");
+    await localProvider.login();
   }
 
   @override

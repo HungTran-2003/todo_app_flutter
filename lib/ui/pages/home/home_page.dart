@@ -3,15 +3,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
+import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
 import 'package:todo_app/ui/pages/home/home_provider.dart';
 import 'package:todo_app/ui/pages/home/widgets/todo_sections.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
+import 'package:todo_app/ui/widgets/button/app_icon_button.dart';
 import 'package:todo_app/utils/app_date_util.dart';
-
-
 
 class HomePage extends StatelessWidget {
   final List<TodoEntity> todos;
@@ -58,7 +58,9 @@ class _MyPageState extends State<HomeChildPage> {
   @override
   Widget build(BuildContext context) {
     final time = context.select<HomeProvider, DateTime>((p) => p.currentTime);
-    _inCompleteTodos = context.select<HomeProvider, List<TodoEntity>>((p) => p.inCompleteTodos);
+    _inCompleteTodos = context.select<HomeProvider, List<TodoEntity>>(
+      (p) => p.inCompleteTodos,
+    );
     _completedTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.completedTodos,
     );
@@ -74,10 +76,7 @@ class _MyPageState extends State<HomeChildPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      Text(
-                        AppDateUtil.toDateString(time),
-                        style: AppTextStyles.wMediumSemiBold,
-                      ),
+                      _buildAppBar(time),
                       const SizedBox(height: 23.0),
                       Text(
                         "My Todo List",
@@ -86,9 +85,12 @@ class _MyPageState extends State<HomeChildPage> {
                       const SizedBox(height: 32.0),
                       Expanded(child: _buildBodyPage()),
                       const SizedBox(height: 24.0),
-                      AppButton(label: "Add New Task", onPressed: () {
-                        _provider.openPageDetail();
-                      }),
+                      AppButton(
+                        label: "Add New Task",
+                        onPressed: () {
+                          _provider.openPageDetail();
+                        },
+                      ),
                       const SizedBox(height: 10.0),
                     ],
                   ),
@@ -98,6 +100,31 @@ class _MyPageState extends State<HomeChildPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAppBar(DateTime time) {
+    return Row(
+      children: [
+        SizedBox(width: 38),
+        Expanded(
+          child: Center(
+            child: Text(
+              AppDateUtil.toDateString(time),
+              style: AppTextStyles.wMediumSemiBold,
+            ),
+          ),
+        ),
+        AppIconButton(
+          assetIcon: AppSvgs.iconSetting,
+          onPressed: () {
+            _provider.navigator.openSettingPage(
+              completedTodos: _completedTodos.length,
+              inCompleteTodos: _inCompleteTodos.length,
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -115,29 +142,25 @@ class _MyPageState extends State<HomeChildPage> {
         physics: const ClampingScrollPhysics(),
         children: [
           _inCompleteTodos.isNotEmpty
-          ? TodoSections(
-            todos: _inCompleteTodos,
-            onPressed: (index){
-              _provider.openPageDetail(todo: _inCompleteTodos[index]);
-            },
-            clickCheckBox: (index){
-              _provider.completedTodo(index);
-            },
-            delete: (value, index){
-              _provider.deleteTodo(index, value);
-            },
-          )
-          : const SizedBox(height: 80.0,),
+              ? TodoSections(
+                  todos: _inCompleteTodos,
+                  onPressed: (index) {
+                    _provider.openPageDetail(todo: _inCompleteTodos[index]);
+                  },
+                  clickCheckBox: (index) {
+                    _provider.completedTodo(index);
+                  },
+                  delete: (value, index) {
+                    _provider.deleteTodo(index, value);
+                  },
+                )
+              : const SizedBox(height: 80.0),
           TodoSections(
             todos: _completedTodos,
             sectionTitle: "Completed",
-            onPressed: (index){
-
-            },
-            clickCheckBox: (index){
-
-            },
-            delete: (value, index){
+            onPressed: (index) {},
+            clickCheckBox: (index) {},
+            delete: (value, index) {
               _provider.deleteTodo(index, value);
             },
           ),

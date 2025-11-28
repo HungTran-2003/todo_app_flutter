@@ -52,8 +52,9 @@ class AppDateUtil {
   }
 
   static TimeOfDay formTimeString(String timeStr, {String? format}) {
-    final dt = DateFormat(format ?? AppConfigs.timeDisplayFormat).parse(timeStr);
+    final dt = DateFormat(
+      format ?? AppConfigs.timeDisplayFormat,
+    ).parse(timeStr);
     return TimeOfDay(hour: dt.hour, minute: dt.minute);
   }
-
 }

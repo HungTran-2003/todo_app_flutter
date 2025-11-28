@@ -34,9 +34,7 @@ class _AppTextFieldState extends State<AppTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        Text(
-          widget.title, style: AppTextStyles.bSmallSemiBold,
-        ),
+        Text(widget.title, style: AppTextStyles.bSmallSemiBold),
 
         SizedBox(
           height: widget.height,
@@ -51,7 +49,7 @@ class _AppTextFieldState extends State<AppTextField> {
               fillColor: Colors.white,
               hintText: widget.hint,
               hintStyle: AppTextStyles.bMedium.copyWith(
-                  color: AppColors.textBlack.withValues(alpha: 0.7)
+                color: AppColors.textBlack.withValues(alpha: 0.7),
               ),
               focusedBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -77,13 +75,13 @@ class _AppTextFieldState extends State<AppTextField> {
             ),
             validator: widget.validator,
           ),
-        )
+        ),
       ],
     );
   }
 
-  Widget? _buildIcon(){
-    if(widget.assetIcon != null){
+  Widget? _buildIcon() {
+    if (widget.assetIcon != null) {
       return SvgPicture.asset(
         widget.assetIcon!,
         width: 20,

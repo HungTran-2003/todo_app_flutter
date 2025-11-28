@@ -9,7 +9,6 @@ import 'package:todo_app/utils/app_date_util.dart';
 
 class DetailProvider extends ChangeNotifier {
   final DetailNavigator navigator;
-  final _todoService = TodoService();
 
   TodoEntity? todo;
 
@@ -45,7 +44,7 @@ class DetailProvider extends ChangeNotifier {
         title: title,
         duaDate: duaDate,
         createAt: DateTime.now(),
-        category: TodoCategory.values[categoryIndex-1],
+        category: TodoCategory.values[categoryIndex - 1],
       );
       todo = await _addTodo(todo!);
     } else {
@@ -53,9 +52,8 @@ class DetailProvider extends ChangeNotifier {
       todo!.duaDate = duaDate;
       todo!.note = note;
       todo!.updateAt = DateTime.now();
-      todo!.category = TodoCategory.values[categoryIndex-1];
+      todo!.category = TodoCategory.values[categoryIndex - 1];
       todo = await _changeTodo(todo!);
-
     }
     navigator.hideLoadingOverlay();
     if (todo == null) {
@@ -65,17 +63,17 @@ class DetailProvider extends ChangeNotifier {
     }
   }
 
-  void setCategoryInit()  {
+  void setCategoryInit() {
     categoryIndex = TodoCategory.values.indexOf(todo!.category) + 1;
   }
 
   Future<TodoEntity?> _addTodo(TodoEntity todo) async {
-    try{
-      final newTodo = await _todoService.createTodo(todo);
+    try {
+      final newTodo = await TodoService.instance.createTodo(todo);
       if (newTodo == null) return null;
       navigator.showSnackBar("Add Task Successful", Colors.green);
       return todo;
-    } catch(e){
+    } catch (e) {
       log(e.toString());
       navigator.showSnackBar("Add Task Task Error", Colors.red);
       return null;
@@ -84,15 +82,14 @@ class DetailProvider extends ChangeNotifier {
 
   Future<TodoEntity?> _changeTodo(TodoEntity todo) async {
     try {
-      final updatedTodo = await _todoService.updateTodo(todo);
+      final updatedTodo = await TodoService.instance.updateTodo(todo);
       if (updatedTodo == null) return null;
       navigator.showSnackBar("Change Task Successful", Colors.green);
       return todo;
-    } catch(e){
+    } catch (e) {
       log(e.toString());
       navigator.showSnackBar("Change Task Error", Colors.red);
       return null;
     }
   }
-
 }

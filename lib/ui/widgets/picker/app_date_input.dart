@@ -31,9 +31,7 @@ class AppDateInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        Text(
-          title, style: AppTextStyles.bSmallSemiBold,
-        ),
+        Text(title, style: AppTextStyles.bSmallSemiBold),
 
         TextFormField(
           controller: controller,
@@ -44,7 +42,7 @@ class AppDateInput extends StatelessWidget {
             fillColor: Colors.white,
             hintText: hintText,
             hintStyle: AppTextStyles.bMedium.copyWith(
-                color: AppColors.textBlack.withValues(alpha: 0.7)
+              color: AppColors.textBlack.withValues(alpha: 0.7),
             ),
             focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -81,17 +79,17 @@ class AppDateInput extends StatelessWidget {
             }
           },
           validator: validator,
-        )
+        ),
       ],
     );
   }
 
-  Future<void> _selectDate(BuildContext context) async{
+  Future<void> _selectDate(BuildContext context) async {
     final date = controller.text.isNotEmpty
         ? AppDateUtil.fromDateString(controller.text, format: dateFormat)
         : DateTime.now();
     final pickDate = await AppDatePicker.pickDate(context, initialDate: date);
-    if(pickDate != null){
+    if (pickDate != null) {
       controller.text = AppDateUtil.toDatePickerString(pickDate);
     }
   }
@@ -101,8 +99,11 @@ class AppDateInput extends StatelessWidget {
         ? AppDateUtil.formTimeString(controller.text, format: dateFormat)
         : TimeOfDay.now();
     final pickTime = await AppDatePicker.pickTime(context, initialTime: time);
-    if(pickTime != null){
-      controller.text = AppDateUtil.timeOfDayToString(pickTime, format: dateFormat);
+    if (pickTime != null) {
+      controller.text = AppDateUtil.timeOfDayToString(
+        pickTime,
+        format: dateFormat,
+      );
     }
   }
 }
