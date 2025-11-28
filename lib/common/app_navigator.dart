@@ -30,8 +30,11 @@ class AppNavigator {
     context.loaderOverlay.hide();
   }
 
-  void openSignIn() {
-    GoRouter.of(context).goNamed(AppRouter.login);
+  Future<void> openSignIn() {
+    while (GoRouter.of(context).canPop()) {
+      GoRouter.of(context).pop();
+    }
+    return GoRouter.of(context).pushReplacementNamed(AppRouter.login);
   }
 
   Future<void> showSimpleDialog({

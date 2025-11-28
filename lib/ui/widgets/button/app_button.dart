@@ -12,7 +12,6 @@ class AppButton extends StatelessWidget {
   final String? assetIcon;
   final Color? bgColor;
 
-
   const AppButton({
     super.key,
     required this.label,
@@ -20,7 +19,7 @@ class AppButton extends StatelessWidget {
     this.width,
     this.height,
     this.assetIcon,
-    this.bgColor
+    this.bgColor,
   });
 
   @override
@@ -38,12 +37,12 @@ class AppButton extends StatelessWidget {
           height ?? AppDimens.btHeightLarge,
         ),
       ),
-      child: _buildChildButton()
+      child: _buildChildButton(),
     );
   }
 
-  Widget _buildChildButton(){
-    if(assetIcon == null){
+  Widget _buildChildButton() {
+    if (assetIcon == null) {
       return Text(label, style: AppTextStyles.wMediumBold);
     }
     return SvgPicture.asset(

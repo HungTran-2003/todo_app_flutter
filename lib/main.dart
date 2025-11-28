@@ -13,7 +13,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSharePreferences.init();
   await dotenv.load(fileName: ".env");
-  await Supabase.initialize(url: AppConfigs.supabaseUrl, anonKey: dotenv.env['API_KEY'] ?? "");
+  await Supabase.initialize(
+    url: AppConfigs.supabaseUrl,
+    anonKey: dotenv.env['API_KEY'] ?? "",
+  );
   runApp(
     ChangeNotifierProvider(create: (_) => TodoProvider(), child: const MyApp()),
   );
@@ -25,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: MaterialApp.router(

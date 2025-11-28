@@ -25,16 +25,17 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       leadingWidth: 64,
       leading: Container(
-          margin: const EdgeInsets.only(left: AppDimens.marginNormal),
-          child: AppIconButton(assetIcon: AppSvgs.closeX, onPressed: onPressed)),
+        margin: const EdgeInsets.only(left: AppDimens.marginNormal),
+        child: AppIconButton(assetIcon: AppSvgs.closeX, onPressed: onPressed),
+      ),
       actions: actions,
       flexibleSpace: imageBackground != null
           ? Image.asset(
-        imageBackground!,
-        fit: BoxFit.cover,       // Dùng cover để lấp đầy mọi khoảng trống
-        width: double.infinity,  // Ép chiều ngang full
-        height: double.infinity,
-      )
+              imageBackground!,
+              fit: BoxFit.cover, // Dùng cover để lấp đầy mọi khoảng trống
+              width: double.infinity, // Ép chiều ngang full
+              height: double.infinity,
+            )
           : null,
     );
   }

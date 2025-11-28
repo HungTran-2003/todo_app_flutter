@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 
-class TodoService{
+class TodoService {
+  TodoService._();
+  static final TodoService _instance = TodoService._();
+  static TodoService get instance => _instance;
 
   final _client = Supabase.instance.client;
   final _table = 'Todo';
-
 
   Future<List<TodoEntity>> getTodos() async {
     final userId = _client.auth.currentUser?.id;
@@ -54,5 +56,4 @@ class TodoService{
       return false;
     }
   }
-
 }

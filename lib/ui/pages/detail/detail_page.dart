@@ -37,7 +37,6 @@ class DetailPage extends StatelessWidget {
 }
 
 class DetailChildPage extends StatefulWidget {
-
   const DetailChildPage({super.key});
 
   @override
@@ -60,7 +59,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
     _setup();
   }
 
-  void _setup(){
+  void _setup() {
     if (_localProvider.todo != null) {
       _titleController.text = _localProvider.todo!.title;
       _dateController.text = AppDateUtil.toDatePickerString(

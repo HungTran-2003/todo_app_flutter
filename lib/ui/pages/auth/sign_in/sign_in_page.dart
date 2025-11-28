@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_text_style.dart';
@@ -8,7 +9,9 @@ import 'package:todo_app/ui/pages/auth/sign_in/sign_in_navigator.dart';
 import 'package:todo_app/ui/pages/auth/sign_in/sign_in_provider.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/ui/widgets/decoration/app_shape_decoration.dart';
+import 'package:todo_app/ui/widgets/text_field/app_password_text_field.dart';
 import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
+import 'package:todo_app/utils/app_validartor.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -17,7 +20,7 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return SignupProvider(navigator: SignUpNavigator(context: context));
+        return SignInProvider(navigator: SignInNavigator(context: context));
       },
       child: SignInChildPage(),
     );
@@ -32,7 +35,7 @@ class SignInChildPage extends StatefulWidget {
 }
 
 class _SignInChildPageState extends State<SignInChildPage> {
-  late SignupProvider _provider;
+  late SignInProvider _provider;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -41,13 +44,14 @@ class _SignInChildPageState extends State<SignInChildPage> {
   @override
   void initState() {
     super.initState();
-    _provider = context.read<SignupProvider>();
+    _provider = context.read<SignInProvider>();
   }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    formKey.currentState?.dispose();
     super.dispose();
   }
 
@@ -57,9 +61,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: SizedBox(
-        height: screenHeight,
-        width: screenWidth,
+      body: LoaderOverlay(
         child: Stack(
           children: [
             ..._buildDeco(screenHeight, screenWidth),
@@ -77,9 +79,14 @@ class _SignInChildPageState extends State<SignInChildPage> {
                       Column(
                         spacing: 26,
                         children: [
-                          Text("Login here", style: AppTextStyles.bMaxLargeSemiBold),
+                          Text(
+                            "Login here",
+                            style: AppTextStyles.bMaxLargeSemiBold,
+                          ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 67.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 67.0,
+                            ),
                             child: Text(
                               "Welcome back you’ve been missed!",
                               style: AppTextStyles.bMediumMedium,
@@ -90,9 +97,23 @@ class _SignInChildPageState extends State<SignInChildPage> {
                       ),
                       const SizedBox(height: 40.0),
                       // Text Field
-                      AppTextField(controller: _emailController, title: "Email", hint: "Email"),
+                      AppTextField(
+                        controller: _emailController,
+                        title: "Email",
+                        hint: "Email",
+                        validator: (value) {
+                          return AppValidator.validateEmail(value);
+                        },
+                      ),
                       const SizedBox(height: 16.0),
-                      AppTextField(controller: _passwordController, title: "Password", hint: "Password"),
+                      AppPasswordTextField(
+                        controller: _passwordController,
+                        title: "Password",
+                        hint: "Password",
+                        validator: (value) {
+                          return AppValidator.validatePassword(value);
+                        },
+                      ),
                       const SizedBox(height: 8.0),
                       Align(
                         alignment: Alignment.centerRight,
@@ -114,9 +135,12 @@ class _SignInChildPageState extends State<SignInChildPage> {
                             Expanded(
                               child: AppButton(
                                 label: 'Sign in',
-                                onPressed: (){
+                                onPressed: () {
                                   if (formKey.currentState!.validate()) {
-                                    log("Sign in");
+                                    _provider.signIn(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
                                   }
                                 },
                               ),
@@ -127,6 +151,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                       const SizedBox(height: 30),
                       TextButton(
                         onPressed: () {
+                          formKey.currentState?.reset();
                           _provider.navigator.openSignUp();
                         },
                         child: Text(
@@ -135,10 +160,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Text(
-                        "Or continue with",
-                        style: AppTextStyles.bMedium,
-                      ),
+                      Text("Or continue with", style: AppTextStyles.bMedium),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -151,7 +173,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
     );
   }
 
-  List<Widget> _buildDeco(double screenHeight, double screenWidth){
+  List<Widget> _buildDeco(double screenHeight, double screenWidth) {
     return <Widget>[
       Positioned(
         top: -screenHeight * 0.4,
@@ -197,9 +219,4 @@ class _SignInChildPageState extends State<SignInChildPage> {
       ),
     ];
   }
-
-
 }
-
-
-

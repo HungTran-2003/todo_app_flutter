@@ -34,7 +34,10 @@ class ItemSettingWidget extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             const SizedBox(width: 10.0),
-            Text(title, style: AppTextStyles.bMediumMedium.copyWith(color: color)),
+            Text(
+              title,
+              style: AppTextStyles.bMediumMedium.copyWith(color: color),
+            ),
             const Spacer(),
             Icon(Icons.arrow_forward_ios_rounded, size: 24),
           ],

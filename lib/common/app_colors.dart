@@ -33,5 +33,4 @@ class AppColors {
 
   ///TextField
   static const Color tfBorder = Color(0xFFE0E0E0);
-
 }

@@ -1,14 +1,16 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_text_style.dart';
-import 'package:todo_app/ui/pages/auth/sign_in/sign_in_navigator.dart';
-import 'package:todo_app/ui/pages/auth/sign_in/sign_in_provider.dart';
+import 'package:todo_app/ui/pages/auth/sign_up/sign_up_navigator.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/ui/widgets/decoration/app_shape_decoration.dart';
+import 'package:todo_app/ui/widgets/text_field/app_password_text_field.dart';
 import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
+import 'package:todo_app/utils/app_validartor.dart';
+
+import 'sign_up_provider.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -17,7 +19,7 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return SignupProvider(navigator: SignUpNavigator(context: context));
+        return SignUpProvider(navigator: SignUpNavigator(context: context));
       },
       child: SignupChildPage(),
     );
@@ -32,7 +34,7 @@ class SignupChildPage extends StatefulWidget {
 }
 
 class _SignupChildPageState extends State<SignupChildPage> {
-  late SignupProvider _provider;
+  late SignUpProvider _provider;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -42,7 +44,7 @@ class _SignupChildPageState extends State<SignupChildPage> {
   @override
   void initState() {
     super.initState();
-    _provider = context.read<SignupProvider>();
+    _provider = context.read<SignUpProvider>();
   }
 
   @override
@@ -58,9 +60,7 @@ class _SignupChildPageState extends State<SignupChildPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: SizedBox(
-        height: screenHeight,
-        width: screenWidth,
+      body: LoaderOverlay(
         child: Stack(
           children: [
             ..._buildDeco(screenHeight, screenWidth),
@@ -78,9 +78,14 @@ class _SignupChildPageState extends State<SignupChildPage> {
                       Column(
                         spacing: 26,
                         children: [
-                          Text("Create New Account", style: AppTextStyles.bMaxLargeSemiBold),
+                          Text(
+                            "Create New Account",
+                            style: AppTextStyles.bMaxLargeSemiBold,
+                          ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                            ),
                             child: Text(
                               "Create an account so you can explore all the existing jobs",
                               style: AppTextStyles.bMediumMedium,
@@ -91,11 +96,35 @@ class _SignupChildPageState extends State<SignupChildPage> {
                       ),
                       const SizedBox(height: 40.0),
                       // Text Field
-                      AppTextField(controller: _emailController, title: "Email", hint: "Email"),
+                      AppTextField(
+                        controller: _emailController,
+                        title: "Email",
+                        hint: "Email",
+                        validator: (value) {
+                          return AppValidator.validateEmail(value);
+                        },
+                      ),
                       const SizedBox(height: 16.0),
-                      AppTextField(controller: _passwordController, title: "Password", hint: "Password"),
+                      AppPasswordTextField(
+                        controller: _passwordController,
+                        title: "Password",
+                        hint: "Password",
+                        validator: (value) {
+                          return AppValidator.validatePassword(value);
+                        },
+                      ),
                       const SizedBox(height: 16.0),
-                      AppTextField(controller: _confirmPasswordController, title: "Confirm password", hint: "Confirm password"),
+                      AppPasswordTextField(
+                        controller: _confirmPasswordController,
+                        title: "Confirm password",
+                        hint: "Confirm password",
+                        validator: (value) {
+                          if (value != _passwordController.text) {
+                            return "Password does not match";
+                          }
+                          return null;
+                        },
+                      ),
                       const SizedBox(height: 24.0),
                       SizedBox(
                         height: 60,
@@ -104,9 +133,12 @@ class _SignupChildPageState extends State<SignupChildPage> {
                             Expanded(
                               child: AppButton(
                                 label: 'Sign Up',
-                                onPressed: (){
+                                onPressed: () {
                                   if (formKey.currentState!.validate()) {
-                                    log("Sign Up");
+                                    _provider.signUp(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
                                   }
                                 },
                               ),
@@ -117,7 +149,7 @@ class _SignupChildPageState extends State<SignupChildPage> {
                       const SizedBox(height: 16),
                       TextButton(
                         onPressed: () {
-                          _provider.navigator.pop();
+                          _provider.navigator.openSignIn();
                         },
                         child: Text(
                           "Already have an account",
@@ -125,10 +157,7 @@ class _SignupChildPageState extends State<SignupChildPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Text(
-                        "Or continue with",
-                        style: AppTextStyles.bMedium,
-                      ),
+                      Text("Or continue with", style: AppTextStyles.bMedium),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -141,7 +170,7 @@ class _SignupChildPageState extends State<SignupChildPage> {
     );
   }
 
-  List<Widget> _buildDeco(double screenHeight, double screenWidth){
+  List<Widget> _buildDeco(double screenHeight, double screenWidth) {
     return <Widget>[
       Positioned(
         top: -screenHeight * 0.4,
@@ -187,9 +216,4 @@ class _SignupChildPageState extends State<SignupChildPage> {
       ),
     ];
   }
-
-
 }
-
-
-

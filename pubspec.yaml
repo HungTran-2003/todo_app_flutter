@@ -46,6 +46,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   supabase_flutter: ^2.0.0
   sign_in_with_apple: ^6.1.0
+  flutter_secure_storage: ^9.0.0
 
 
 dev_dependencies:
@@ -83,4 +84,3 @@ flutter:
         - asset: assets/fonts/Inter-Bold.ttf
           weight: 700
   uses-material-design: true
-

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:todo_app/database/app_share_preferences.dart';
+import 'package:todo_app/services/auth_service.dart';
 import 'package:todo_app/ui/pages/setting/setting_navigator.dart';
 
 class SettingProvider extends ChangeNotifier {
@@ -8,7 +8,7 @@ class SettingProvider extends ChangeNotifier {
   SettingProvider({required this.navigator});
 
   Future<void> logout() async {
-    await AppSharePreferences.setLogin(value: false);
+    await AuthService.instance.signOut();
     navigator.openSignIn();
   }
 }

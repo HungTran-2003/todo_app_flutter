@@ -171,7 +171,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
     );
   }
 
-  Widget _buildSettingAccount(){
+  Widget _buildSettingAccount() {
     return Column(
       spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,7 +249,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
           title: "Log out",
           color: Colors.red,
           onPressed: () {
-            log("Log out");
+            _provider.logout();
           },
         ),
       ],

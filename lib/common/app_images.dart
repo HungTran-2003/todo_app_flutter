@@ -10,5 +10,4 @@ class AppImages {
   static const header2 = "assets/images/header_2.png";
 
   static const defaultProfile = "assets/images/default_profile.png";
-
 }

@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_text_style.dart';
 
-class AppTextField extends StatefulWidget {
+class AppPasswordTextField extends StatefulWidget {
   final TextEditingController controller;
   final String title;
   final String hint;
-  final String? assetIcon;
-  final int? maxLines;
   final double? height;
   final String? Function(String?)? validator;
 
-  const AppTextField({
+  const AppPasswordTextField({
     super.key,
     required this.controller,
     required this.title,
     required this.hint,
-    this.assetIcon,
-    this.maxLines = 1,
     this.validator,
     this.height,
   });
 
   @override
-  State<AppTextField> createState() => _AppTextFieldState();
+  State<AppPasswordTextField> createState() => _AppPasswordTextFieldState();
 }
 
-class _AppTextFieldState extends State<AppTextField> {
+class _AppPasswordTextFieldState extends State<AppPasswordTextField> {
+  bool _isObscured = true;
+  void _toggleObscured() {
+    setState(() {
+      _isObscured = !_isObscured;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,15 +37,13 @@ class _AppTextFieldState extends State<AppTextField> {
       spacing: 8,
       children: [
         Text(widget.title, style: AppTextStyles.bSmallSemiBold),
-
         SizedBox(
           height: widget.height,
           child: TextFormField(
             controller: widget.controller,
-            maxLines: widget.maxLines,
-            expands: widget.maxLines == null ? true : false,
             style: AppTextStyles.bMedium,
             textAlignVertical: TextAlignVertical.top,
+            obscureText: _isObscured,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -71,24 +71,17 @@ class _AppTextFieldState extends State<AppTextField> {
                 borderRadius: BorderRadius.all(Radius.circular(6)),
                 borderSide: BorderSide(color: AppColors.error, width: 1.0),
               ),
-              suffixIcon: _buildIcon(),
+              suffixIcon: IconButton(
+                onPressed: _toggleObscured,
+                icon: Icon(
+                  _isObscured ? Icons.visibility_off : Icons.visibility,
+                ),
+              ),
             ),
             validator: widget.validator,
           ),
         ),
       ],
     );
-  }
-
-  Widget? _buildIcon() {
-    if (widget.assetIcon != null) {
-      return SvgPicture.asset(
-        widget.assetIcon!,
-        width: 20,
-        height: 20,
-        fit: BoxFit.scaleDown,
-      );
-    }
-    return null;
   }
 }

@@ -27,8 +27,6 @@ class AppRouter {
   static const String detail = "detail";
   static const String setting = "setting";
 
-
-
   static final _routes = <RouteBase>[
     GoRoute(
       path: splash,
@@ -52,20 +50,21 @@ class AppRouter {
         GoRoute(
           name: home,
           path: home,
-          builder: (context, state) => HomePage(todos: state.extra as List<TodoEntity>,),
+          builder: (context, state) =>
+              HomePage(todos: state.extra as List<TodoEntity>),
         ),
         GoRoute(
           name: detail,
           path: detail,
-          builder: (context, state) => DetailPage(todo: state.extra as TodoEntity?,),
+          builder: (context, state) =>
+              DetailPage(todo: state.extra as TodoEntity?),
         ),
         GoRoute(
           name: setting,
           path: setting,
-          builder: (context, state) => SettingPage(
-            arguments: state.extra as SettingViewArguments,
-          ),
-        )
+          builder: (context, state) =>
+              SettingPage(arguments: state.extra as SettingViewArguments),
+        ),
       ],
     ),
   ];

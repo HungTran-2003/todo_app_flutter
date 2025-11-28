@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,7 +29,6 @@ class TodoItem extends StatefulWidget {
 }
 
 class _TodoItemState extends State<TodoItem> {
-
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -40,29 +38,34 @@ class _TodoItemState extends State<TodoItem> {
         motion: const DrawerMotion(),
         extentRatio: 0.3,
         dismissible: DismissiblePane(
-          onDismissed: (){
+          onDismissed: () {
             widget.delete(false);
           },
           confirmDismiss: () async {
             return await showDialog<bool>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Confirm'),
-                  content: const Text('Are you sure you want to delete this task?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(false), // Hủy
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(true), // Đồng ý
-                      child: const Text('Yes'),
-                    ),
-                  ],
-                );
-              },
-            ) ?? false;
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Confirm'),
+                      content: const Text(
+                        'Are you sure you want to delete this task?',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () =>
+                              Navigator.of(context).pop(false), // Hủy
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () =>
+                              Navigator.of(context).pop(true), // Đồng ý
+                          child: const Text('Yes'),
+                        ),
+                      ],
+                    );
+                  },
+                ) ??
+                false;
           },
           closeOnCancel: true,
         ),
