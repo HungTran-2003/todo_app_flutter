@@ -3,18 +3,21 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/models/enum/todo_category.dart';
-import 'package:todo_app/services/todo_service.dart';
+import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
 import 'package:todo_app/utils/app_date_util.dart';
 
 class DetailProvider extends ChangeNotifier {
   final DetailNavigator navigator;
+  final TodoRepository todoRepository;
+  DetailProvider({
+    required this.navigator,
+    this.todo,
+    required this.todoRepository,
+  });
 
   TodoEntity? todo;
-
   int categoryIndex = 1;
-
-  DetailProvider({required this.navigator, this.todo});
 
   void changeCategory(int index) {
     categoryIndex = index;
@@ -69,7 +72,7 @@ class DetailProvider extends ChangeNotifier {
 
   Future<TodoEntity?> _addTodo(TodoEntity todo) async {
     try {
-      final newTodo = await TodoService.instance.createTodo(todo);
+      final newTodo = await todoRepository.createTodo(todo);
       if (newTodo == null) return null;
       navigator.showSnackBar("Add Task Successful", Colors.green);
       return todo;
@@ -82,7 +85,7 @@ class DetailProvider extends ChangeNotifier {
 
   Future<TodoEntity?> _changeTodo(TodoEntity todo) async {
     try {
-      final updatedTodo = await TodoService.instance.updateTodo(todo);
+      final updatedTodo = await todoRepository.updateTodo(todo);
       if (updatedTodo == null) return null;
       navigator.showSnackBar("Change Task Successful", Colors.green);
       return todo;

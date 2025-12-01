@@ -5,6 +5,7 @@ import 'package:todo_app/router/router_config.dart';
 class SignUpNavigator extends AppNavigator {
   SignUpNavigator({required super.context});
 
+  @override
   Future<void> openSignIn() async {
     if (Navigator.canPop(context)) {
       pop();
