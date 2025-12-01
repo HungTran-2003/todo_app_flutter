@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/repositories/auth_repository.dart';
+import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_navigator.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_provider.dart';
 
@@ -14,7 +16,11 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return SplashProvider(navigator: SplashNavigator(context: context));
+        return SplashProvider(
+          navigator: SplashNavigator(context: context),
+          authRepository: context.read<AuthRepository>(),
+          todoRepository: context.read<TodoRepository>(),
+        );
       },
       child: const SplashChildPage(),
     );

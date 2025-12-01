@@ -2,14 +2,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/database/app_share_preferences.dart';
+import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/router/router_config.dart';
-import 'package:todo_app/services/auth_service.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_navigator.dart';
 import 'package:todo_app/utils/device_util_info.dart';
 import 'package:todo_app/utils/utils.dart';
 
 class OnboardingProvider extends ChangeNotifier {
   final OnboardingNavigator navigator;
+  final AuthRepository authRepository;
 
   final List<String> pages = [
     AppRouter.login,
@@ -17,7 +18,7 @@ class OnboardingProvider extends ChangeNotifier {
     AppRouter.home,
   ];
 
-  OnboardingProvider({required this.navigator});
+  OnboardingProvider({required this.navigator, required this.authRepository});
 
   void nextPage(int index) async {
     await _setIsFirstRun();
@@ -50,7 +51,7 @@ class OnboardingProvider extends ChangeNotifier {
     navigator.showLoadingOverlay();
     try {
       final udid = await DeviceUntil.getUDID();
-      final user = await AuthService.instance.signUp(
+      final user = await authRepository.signUp(
         AppUtils.generateDeviceEmail(udid),
         udid,
         udid,

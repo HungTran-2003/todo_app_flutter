@@ -3,16 +3,16 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
-import 'package:todo_app/services/todo_service.dart';
+import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
 
 class HomeProvider extends ChangeNotifier {
   final HomeNavigator navigator;
   List<TodoEntity> todos;
+  final TodoRepository todoRepository;
+  HomeProvider({required this.navigator, required this.todos, required this.todoRepository});
 
   DateTime currentTime = DateTime.now();
-
-  HomeProvider({required this.navigator, required this.todos});
 
   List<TodoEntity> get inCompleteTodos =>
       todos.where((todo) => todo.isComplete == false).toList();
@@ -52,7 +52,7 @@ class HomeProvider extends ChangeNotifier {
   Future<void> openPageDetail({TodoEntity? todo}) async {
     final result = await navigator.openDetailPage(todo: todo);
     if (result) {
-      todos = await TodoService.instance.getTodos();
+      todos = await todoRepository.getTodos();
       _sortTodosByDuaDateDesc();
     }
   }
@@ -62,7 +62,7 @@ class HomeProvider extends ChangeNotifier {
     try {
       final todo = inCompleteTodos[index];
       todo.isComplete = true;
-      final updatedTodo = await TodoService.instance.updateTodo(todo);
+      final updatedTodo = await todoRepository.updateTodo(todo);
       if (updatedTodo == null) {
         navigator.showSnackBar("Completed Task Error", Colors.red);
       } else {
@@ -84,7 +84,7 @@ class HomeProvider extends ChangeNotifier {
 
   Future<void> _deleteTodo(int id) async {
     try {
-      final result = await TodoService.instance.deleteTodo(id);
+      final result = await todoRepository.deleteTodo(id);
       if (!result) return;
       todos.removeWhere((todo) => todo.id == id);
       notifyListeners();

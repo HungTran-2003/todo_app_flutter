@@ -7,6 +7,7 @@ import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/ui/pages/setting/setting_navigator.dart';
 import 'package:todo_app/ui/pages/setting/setting_provider.dart';
 import 'package:todo_app/ui/pages/setting/widgets/item_setting.dart';
@@ -30,7 +31,10 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return SettingProvider(navigator: SettingNavigator(context: context));
+        return SettingProvider(
+          navigator: SettingNavigator(context: context),
+          authRepository: context.read<AuthRepository>(),
+        );
       },
       child: SettingChildPage(
         completedTodos: arguments.completedTodos,

@@ -8,6 +8,7 @@ import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
 import 'package:todo_app/ui/pages/detail/detail_provider.dart';
 import 'package:todo_app/ui/widgets/button/app_icon_button.dart';
@@ -29,6 +30,7 @@ class DetailPage extends StatelessWidget {
         return DetailProvider(
           navigator: DetailNavigator(context: context),
           todo: todo,
+          todoRepository: context.read<TodoRepository>(),
         );
       },
       child: DetailChildPage(),
@@ -82,7 +84,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
       appBar: AppBarWidget(
         title: _localProvider.todo == null ? "Add New Task" : "Detail Task",
         onPressed: () {
-          _localProvider.navigator.pop();
+          _localProvider.navigator.pop(extra: false);
         },
         imageBackground: AppImages.header2,
       ),

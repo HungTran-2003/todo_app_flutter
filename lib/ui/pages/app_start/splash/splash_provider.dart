@@ -5,19 +5,21 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/database/app_secure_storage.dart';
 import 'package:todo_app/database/app_share_preferences.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
-import 'package:todo_app/services/auth_service.dart';
-import 'package:todo_app/services/todo_service.dart';
+import 'package:todo_app/repositories/auth_repository.dart';
+import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_navigator.dart';
 import 'package:todo_app/utils/device_util_info.dart';
 import 'package:todo_app/utils/utils.dart';
 
 class SplashProvider extends ChangeNotifier {
   final SplashNavigator navigator;
+  final AuthRepository authRepository;
+  final TodoRepository todoRepository;
 
   bool isLoading = true;
   String message = "Signing in";
 
-  SplashProvider({required this.navigator});
+  SplashProvider({required this.navigator, required this.authRepository, required this.todoRepository});
 
   Future<void> login() async {
     try {
@@ -25,7 +27,7 @@ class SplashProvider extends ChangeNotifier {
       User? user;
 
       if (refreshToken != null) {
-        user = await AuthService.instance.signInWithToken(refreshToken);
+        user = await authRepository.signInWithToken(refreshToken);
         if (user == null) {
           navigator.showSnackBar("Login session has expired", Colors.orange);
           navigator.openSignIn();
@@ -39,7 +41,7 @@ class SplashProvider extends ChangeNotifier {
           return;
         } else {
           final udid = await DeviceUntil.getUDID();
-          user = await AuthService.instance.signInWithEmail(
+          user = await authRepository.signInWithEmail(
             AppUtils.generateDeviceEmail(udid),
             udid,
           );
@@ -67,7 +69,7 @@ class SplashProvider extends ChangeNotifier {
   }
 
   Future<List<TodoEntity>> _fetchInitialData() async {
-    final todos = await TodoService.instance.getTodos();
+    final todos = await todoRepository.getTodos();
     return todos;
   }
 }

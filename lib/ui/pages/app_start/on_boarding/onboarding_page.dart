@@ -5,6 +5,7 @@ import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_navigator.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_provider.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/widgets/page_indicator/page_indicator.dart';
@@ -20,6 +21,7 @@ class OnboardingPage extends StatelessWidget {
       create: (context) {
         return OnboardingProvider(
           navigator: OnboardingNavigator(context: context),
+          authRepository: context.read<AuthRepository>(),
         );
       },
       child: OnboardingChildPage(),

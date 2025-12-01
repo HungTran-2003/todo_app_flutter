@@ -3,6 +3,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/ui/pages/auth/sign_up/sign_up_navigator.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/ui/widgets/decoration/app_shape_decoration.dart';
@@ -19,7 +20,10 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        return SignUpProvider(navigator: SignUpNavigator(context: context));
+        return SignUpProvider(
+          navigator: SignUpNavigator(context: context),
+          authRepository: context.read<AuthRepository>(),
+        );
       },
       child: SignupChildPage(),
     );

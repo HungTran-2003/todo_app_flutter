@@ -6,6 +6,7 @@ import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
 import 'package:todo_app/ui/pages/home/home_provider.dart';
 import 'package:todo_app/ui/pages/home/widgets/todo_sections.dart';
@@ -24,6 +25,7 @@ class HomePage extends StatelessWidget {
         return HomeProvider(
           navigator: HomeNavigator(context: context),
           todos: todos,
+          todoRepository: context.read<TodoRepository>(),
         );
       },
       child: const HomeChildPage(),
@@ -83,21 +85,24 @@ class _MyPageState extends State<HomeChildPage> {
                         style: AppTextStyles.wMaxLargeSemiBold,
                       ),
                       const SizedBox(height: 32.0),
-                      Expanded(child: _buildBodyPage()),
+                      Expanded(child: _buildListItemsWidgets()),
                       const SizedBox(height: 24.0),
-                      AppButton(
-                        label: "Add New Task",
-                        onPressed: () {
-                          _provider.openPageDetail();
-                        },
-                      ),
-                      const SizedBox(height: 10.0),
+
                     ],
                   ),
                 ),
               ),
             ),
           ],
+        ),
+        bottomNavigationBar: Container(
+          margin: const EdgeInsets.all(16.0),
+          child: AppButton(
+            label: "Add New Task",
+            onPressed: () {
+              _provider.openPageDetail();
+            },
+          ),
         ),
       ),
     );
@@ -128,7 +133,7 @@ class _MyPageState extends State<HomeChildPage> {
     );
   }
 
-  Widget _buildBodyPage() {
+  Widget _buildListItemsWidgets() {
     if (_inCompleteTodos.isEmpty && _completedTodos.isEmpty) {
       return Center(
         child: Text(
