@@ -23,7 +23,7 @@ class AppSharePreferences {
   }
 
   static Future<void> setFirstLogin({bool value = true}) async {
-    setFirstRun();
+    setFirstRun(value: false);
     _prefs.setBool(_isFirstLoginKey, value);
   }
 }

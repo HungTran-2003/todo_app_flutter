@@ -5,6 +5,7 @@ import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_navigator.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_provider.dart';
@@ -45,14 +46,14 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
 
   final assetsImages = AppImages.onBoardImages;
   final titles = [
-    "Manage your tasks",
-    "Create daily routine",
-    "Organize your tasks",
+    S.current.title_onboard_1,
+    S.current.title_onboard_2,
+    S.current.title_onboard_3,
   ];
   final descriptions = [
-    "You can easily manage all of your daily tasks in Todo for free",
-    "In Todo you can create your personalized routine to stay productive",
-    "You can organize your daily tasks by adding your tasks into separate categories",
+    S.current.description_onboard_1,
+    S.current.description_onboard_2,
+    S.current.description_onboard_3,
   ];
 
   @override
@@ -83,7 +84,7 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
         Row(
           children: [
             AppTextButton(
-              label: "SKIP",
+              label: S.of(context).button_skip,
               onPressed: () => setState(() {
                 isAppStart = true;
               }),
@@ -149,13 +150,13 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
 
           Image.asset(AppImages.splashScreen),
 
-          Text("Welcome to Todo", style: AppTextStyles.bMaxLargeSemiBold),
+          Text(S.of(context).title_app_start, style: AppTextStyles.bMaxLargeSemiBold),
           const SizedBox(height: 26.0),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Text(
-              "Login, create a new account, or skip signing in and continue enjoying the app.",
+              S.of(context).description_app_start,
               style: AppTextStyles.bMediumMedium,
               textAlign: TextAlign.center,
             ),
@@ -168,7 +169,7 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
             child: Column(
               children: [
                 AppButton(
-                  label: "Login",
+                  label: S.of(context).button_login,
                   height: AppDimens.btNormal,
                   onPressed: () {
                     provider.nextPage(0);
@@ -176,7 +177,7 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
                 ),
                 SizedBox(height: 10),
                 AppTextButton(
-                  label: "Create Account ",
+                  label: S.of(context).text_button_create_account,
                   borderColor: AppColors.primary,
                   width: double.infinity,
                   onPressed: () {
@@ -185,7 +186,7 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
                 ),
 
                 AppTextButton(
-                  label: "Login as guest",
+                  label: S.of(context).text_button_login_as_guest,
                   onPressed: () {
                     provider.nextPage(2);
                   },
@@ -240,7 +241,7 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
       return Padding(
         padding: horizontalPaddingFirstLast,
         child: AppButton(
-          label: "NEXT",
+          label: S.of(context).button_next,
           height: AppDimens.btNormal,
           onPressed: goNext,
         ),
@@ -251,7 +252,7 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
       return Padding(
         padding: horizontalPaddingFirstLast,
         child: AppButton(
-          label: "GET STARTED",
+          label: S.of(context).button_get_started,
           height: AppDimens.btNormal,
           onPressed: () => setState(() {
             isAppStart = true;
@@ -264,10 +265,10 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
       padding: horizontalPaddingMiddle,
       child: Row(
         children: [
-          AppTextButton(label: "BACK", onPressed: goPrevious),
+          AppTextButton(label: S.of(context).button_back, onPressed: goPrevious),
           const Spacer(),
           AppButton(
-            label: "NEXT",
+            label: S.of(context).button_next,
             width: 90,
             height: AppDimens.btNormal,
             onPressed: goNext,

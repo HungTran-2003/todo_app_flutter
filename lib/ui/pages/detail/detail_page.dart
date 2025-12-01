@@ -7,6 +7,7 @@ import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
@@ -17,7 +18,7 @@ import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/ui/widgets/picker/app_date_input.dart';
 import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
 import 'package:todo_app/utils/app_date_util.dart';
-import 'package:todo_app/utils/app_validartor.dart';
+import 'package:todo_app/utils/app_validator.dart';
 
 class DetailPage extends StatelessWidget {
   final TodoEntity? todo;
@@ -82,7 +83,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
     );
     return Scaffold(
       appBar: AppBarWidget(
-        title: _localProvider.todo == null ? "Add New Task" : "Detail Task",
+        title: _localProvider.todo == null ? S.of(context).detail_title_add_task : S.of(context).detail_title_detail,
         onPressed: () {
           _localProvider.navigator.pop(extra: false);
         },
@@ -103,7 +104,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppDimens.paddingNormal),
         child: AppButton(
-          label: "Save",
+          label: S.of(context).detail_button_save,
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               log("title: ${_titleController.text}");
@@ -133,8 +134,8 @@ class _DetailChildPageState extends State<DetailChildPage> {
           children: [
             AppTextField(
               controller: _titleController,
-              title: "Task Title",
-              hint: "Task Title",
+              title: S.of(context).detail_task_title,
+              hint: S.of(context).detail_task_title_hint,
               validator: (value) {
                 return AppValidator.validateEmpty(value);
               },
@@ -142,7 +143,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
 
             Row(
               children: [
-                Text("Category", style: AppTextStyles.bSmallSemiBold),
+                Text(S.of(context).detail_category, style: AppTextStyles.bSmallSemiBold),
                 const SizedBox(width: 24.0),
                 AppIconButton(
                   assetIcon: AppSvgs.note,
@@ -175,8 +176,8 @@ class _DetailChildPageState extends State<DetailChildPage> {
                 Expanded(
                   child: AppDateInput(
                     controller: _dateController,
-                    hintText: "Date",
-                    title: "Date",
+                    hintText: S.of(context).detail_date,
+                    title: S.of(context).detail_date_hint,
                     assetIcon: AppSvgs.iconCalendar,
                     validator: (value) {
                       String? errorText;
@@ -193,8 +194,8 @@ class _DetailChildPageState extends State<DetailChildPage> {
                 Expanded(
                   child: AppDateInput(
                     controller: _timeController,
-                    hintText: "Time",
-                    title: "Time",
+                    hintText: S.of(context).detail_time,
+                    title: S.of(context).detail_time_hint,
                     assetIcon: AppSvgs.iconClock,
                     isTime: true,
                     validator: (value) {
@@ -213,8 +214,8 @@ class _DetailChildPageState extends State<DetailChildPage> {
 
             AppTextField(
               controller: _noteController,
-              title: "Notes",
-              hint: "Notes",
+              title: S.of(context).detail_notes,
+              hint: S.of(context).detail_notes_hint,
               maxLines: null,
               height: 200,
             ),

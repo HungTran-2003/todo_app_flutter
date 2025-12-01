@@ -6,8 +6,10 @@ import 'package:todo_app/networking/api_utli.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/router/router_config.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'common/app_themes.dart';
+import 'generated/l10n.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -55,6 +57,13 @@ class _MyAppState extends State<MyApp> {
         title: 'Flutter Demo',
         theme: AppThemes().theme,
         routerConfig: AppRouter.router,
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
       ),
     );
   }

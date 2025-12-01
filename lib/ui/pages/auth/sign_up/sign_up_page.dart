@@ -3,13 +3,14 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/ui/pages/auth/sign_up/sign_up_navigator.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/ui/widgets/decoration/app_shape_decoration.dart';
 import 'package:todo_app/ui/widgets/text_field/app_password_text_field.dart';
 import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
-import 'package:todo_app/utils/app_validartor.dart';
+import 'package:todo_app/utils/app_validator.dart';
 
 import 'sign_up_provider.dart';
 
@@ -83,7 +84,7 @@ class _SignupChildPageState extends State<SignupChildPage> {
                         spacing: 26,
                         children: [
                           Text(
-                            "Create New Account",
+                            S.of(context).sign_up_title,
                             style: AppTextStyles.bMaxLargeSemiBold,
                           ),
                           Padding(
@@ -91,7 +92,7 @@ class _SignupChildPageState extends State<SignupChildPage> {
                               horizontal: 24.0,
                             ),
                             child: Text(
-                              "Create an account so you can explore all the existing jobs",
+                              S.of(context).sign_up_description,
                               style: AppTextStyles.bMediumMedium,
                               textAlign: TextAlign.center,
                             ),
@@ -102,8 +103,8 @@ class _SignupChildPageState extends State<SignupChildPage> {
                       // Text Field
                       AppTextField(
                         controller: _emailController,
-                        title: "Email",
-                        hint: "Email",
+                        title: S.of(context).sign_up_email,
+                        hint: S.of(context).sign_up_email_hint,
                         validator: (value) {
                           return AppValidator.validateEmail(value);
                         },
@@ -111,8 +112,8 @@ class _SignupChildPageState extends State<SignupChildPage> {
                       const SizedBox(height: 16.0),
                       AppPasswordTextField(
                         controller: _passwordController,
-                        title: "Password",
-                        hint: "Password",
+                        title: S.of(context).sign_up_password,
+                        hint: S.of(context).sign_up_password_hint,
                         validator: (value) {
                           return AppValidator.validatePassword(value);
                         },
@@ -120,11 +121,11 @@ class _SignupChildPageState extends State<SignupChildPage> {
                       const SizedBox(height: 16.0),
                       AppPasswordTextField(
                         controller: _confirmPasswordController,
-                        title: "Confirm password",
-                        hint: "Confirm password",
+                        title: S.of(context).sign_up_confirm_password,
+                        hint: S.of(context).sign_up_confirm_password_hint,
                         validator: (value) {
                           if (value != _passwordController.text) {
-                            return "Password does not match";
+                            return S.of(context).validator_message_confirm_password;
                           }
                           return null;
                         },
@@ -136,7 +137,7 @@ class _SignupChildPageState extends State<SignupChildPage> {
                           children: [
                             Expanded(
                               child: AppButton(
-                                label: 'Sign Up',
+                                label: S.of(context).sign_up,
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
                                     _provider.signUp(
@@ -156,12 +157,12 @@ class _SignupChildPageState extends State<SignupChildPage> {
                           _provider.navigator.openSignIn();
                         },
                         child: Text(
-                          "Already have an account",
+                          S.of(context).sign_up_already_have_account,
                           style: AppTextStyles.bMediumMedium,
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Text("Or continue with", style: AppTextStyles.bMedium),
+                      Text(S.of(context).sign_up_or_continue_with, style: AppTextStyles.bMedium),
                       const SizedBox(height: 20),
                     ],
                   ),

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
@@ -81,7 +82,7 @@ class _MyPageState extends State<HomeChildPage> {
                       _buildAppBar(time),
                       const SizedBox(height: 23.0),
                       Text(
-                        "My Todo List",
+                        S.of(context).home_title,
                         style: AppTextStyles.wMaxLargeSemiBold,
                       ),
                       const SizedBox(height: 32.0),
@@ -98,7 +99,7 @@ class _MyPageState extends State<HomeChildPage> {
         bottomNavigationBar: Container(
           margin: const EdgeInsets.all(16.0),
           child: AppButton(
-            label: "Add New Task",
+            label: S.of(context).home_button_add_new_task,
             onPressed: () {
               _provider.openPageDetail();
             },
@@ -137,7 +138,7 @@ class _MyPageState extends State<HomeChildPage> {
     if (_inCompleteTodos.isEmpty && _completedTodos.isEmpty) {
       return Center(
         child: Text(
-          "Let's create a new task",
+          S.of(context).home_empty_list_todo,
           style: AppTextStyles.bMediumSemiBold,
         ),
       );
@@ -162,7 +163,7 @@ class _MyPageState extends State<HomeChildPage> {
               : const SizedBox(height: 80.0),
           TodoSections(
             todos: _completedTodos,
-            sectionTitle: "Completed",
+            sectionTitle: S.of(context).home_completed,
             onPressed: (index) {},
             clickCheckBox: (index) {},
             delete: (value, index) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/database/app_secure_storage.dart';
 import 'package:todo_app/database/app_share_preferences.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
@@ -17,7 +18,7 @@ class SplashProvider extends ChangeNotifier {
   final TodoRepository todoRepository;
 
   bool isLoading = true;
-  String message = "Signing in";
+  String message = S.current.splash_message_signing_in;
 
   SplashProvider({required this.navigator, required this.authRepository, required this.todoRepository});
 
@@ -29,7 +30,7 @@ class SplashProvider extends ChangeNotifier {
       if (refreshToken != null) {
         user = await authRepository.signInWithToken(refreshToken);
         if (user == null) {
-          navigator.showSnackBar("Login session has expired", Colors.orange);
+          navigator.showSnackBar(S.current.error_message_session_expired, Colors.orange);
           navigator.openSignIn();
           return;
         }
@@ -46,7 +47,7 @@ class SplashProvider extends ChangeNotifier {
             udid,
           );
           if (user != null) {
-            await AppSharePreferences.setFirstRun();
+            await AppSharePreferences.setFirstRun(value: false);
           } else {
             navigator.openOnBoardingPage();
             return;
@@ -54,16 +55,16 @@ class SplashProvider extends ChangeNotifier {
         }
       }
 
-      message = "Fetching data";
+      message = S.current.splash_message_fetching_data;
       notifyListeners();
       final todos = await _fetchInitialData();
 
-      message = "Done";
+      message = S.current.splash_message_done;
       notifyListeners();
       navigator.openHomePage(todos);
     } catch (e) {
       log('An error occurred during login process: $e');
-      navigator.showSnackBar("Unable to connect to the server.", Colors.red);
+      navigator.showSnackBar(S.current.error_message_network, Colors.red);
       navigator.openSignIn();
     }
   }

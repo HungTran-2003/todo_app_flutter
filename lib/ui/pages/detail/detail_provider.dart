@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/models/enum/todo_category.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
@@ -74,11 +75,11 @@ class DetailProvider extends ChangeNotifier {
     try {
       final newTodo = await todoRepository.createTodo(todo);
       if (newTodo == null) return null;
-      navigator.showSnackBar("Add Task Successful", Colors.green);
+      navigator.showSnackBar(S.current.detail_message_add_task_successful, Colors.green);
       return todo;
     } catch (e) {
       log(e.toString());
-      navigator.showSnackBar("Add Task Task Error", Colors.red);
+      navigator.showSnackBar(S.current.detail_message_add_task_error, Colors.red);
       return null;
     }
   }
@@ -87,11 +88,11 @@ class DetailProvider extends ChangeNotifier {
     try {
       final updatedTodo = await todoRepository.updateTodo(todo);
       if (updatedTodo == null) return null;
-      navigator.showSnackBar("Change Task Successful", Colors.green);
+      navigator.showSnackBar(S.current.detail_message_change_task_successful, Colors.green);
       return todo;
     } catch (e) {
       log(e.toString());
-      navigator.showSnackBar("Change Task Error", Colors.red);
+      navigator.showSnackBar(S.current.detail_message_change_task_error, Colors.red);
       return null;
     }
   }

@@ -5,6 +5,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/auth/sign_in/sign_in_navigator.dart';
@@ -13,7 +14,7 @@ import 'package:todo_app/ui/widgets/button/app_button.dart';
 import 'package:todo_app/ui/widgets/decoration/app_shape_decoration.dart';
 import 'package:todo_app/ui/widgets/text_field/app_password_text_field.dart';
 import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
-import 'package:todo_app/utils/app_validartor.dart';
+import 'package:todo_app/utils/app_validator.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -86,7 +87,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                         spacing: 26,
                         children: [
                           Text(
-                            "Login here",
+                            S.of(context).sign_in_title,
                             style: AppTextStyles.bMaxLargeSemiBold,
                           ),
                           Padding(
@@ -94,7 +95,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                               horizontal: 67.0,
                             ),
                             child: Text(
-                              "Welcome back you’ve been missed!",
+                              S.of(context).sign_in_description,
                               style: AppTextStyles.bMediumMedium,
                               textAlign: TextAlign.center,
                             ),
@@ -105,8 +106,8 @@ class _SignInChildPageState extends State<SignInChildPage> {
                       // Text Field
                       AppTextField(
                         controller: _emailController,
-                        title: "Email",
-                        hint: "Email",
+                        title: S.of(context).sign_in_email,
+                        hint: S.of(context).sign_in_email_hint,
                         validator: (value) {
                           return AppValidator.validateEmail(value);
                         },
@@ -114,8 +115,8 @@ class _SignInChildPageState extends State<SignInChildPage> {
                       const SizedBox(height: 16.0),
                       AppPasswordTextField(
                         controller: _passwordController,
-                        title: "Password",
-                        hint: "Password",
+                        title: S.of(context).sign_in_password,
+                        hint: S.of(context).sign_in_password_hint,
                         validator: (value) {
                           return AppValidator.validatePassword(value);
                         },
@@ -128,7 +129,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                             log("Forgot Password");
                           },
                           child: Text(
-                            "Forgot your password?",
+                            S.of(context).sign_in_forgot_password,
                             style: AppTextStyles.bMedium,
                           ),
                         ),
@@ -140,7 +141,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                           children: [
                             Expanded(
                               child: AppButton(
-                                label: 'Sign in',
+                                label: S.of(context).sign_in,
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
                                     _provider.signIn(
@@ -161,12 +162,12 @@ class _SignInChildPageState extends State<SignInChildPage> {
                           _provider.navigator.openSignUp();
                         },
                         child: Text(
-                          "Create new account",
+                          S.of(context).sign_in_create_account,
                           style: AppTextStyles.bMediumMedium,
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Text("Or continue with", style: AppTextStyles.bMedium),
+                      Text(S.of(context).sign_in_or_continue_with, style: AppTextStyles.bMedium),
                       const SizedBox(height: 20),
                     ],
                   ),

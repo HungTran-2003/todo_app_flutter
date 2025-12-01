@@ -23,6 +23,7 @@ class AppSecureStorage {
 
   Future<String?> getRefreshToken() async {
     final isFirstRun = await AppSharePreferences.isFirstRun();
+    log("isFirstRun: $isFirstRun");
     if (isFirstRun) {
       await deleteRefreshToken();
       return null;

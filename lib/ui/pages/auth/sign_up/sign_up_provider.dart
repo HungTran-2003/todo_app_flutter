@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/ui/pages/auth/sign_up/sign_up_navigator.dart';
 import 'package:todo_app/utils/device_util_info.dart';
 
@@ -17,13 +18,13 @@ class SignUpProvider extends ChangeNotifier {
       final udid = await DeviceUntil.getUDID();
       final user = await authRepository.signUp(email, password, udid);
       if (user == null) {
-        navigator.showSnackBar("Sign up failed", Colors.red);
+        navigator.showSnackBar(S.current.sign_up_message_failed, Colors.red);
         return;
       }
-      navigator.showSnackBar("Sign up successful", Colors.green);
+      navigator.showSnackBar(S.current.sign_up_message_success, Colors.green);
       navigator.pop();
     } catch (e) {
-      navigator.showSnackBar("System Error", Colors.red);
+      navigator.showSnackBar(S.current.error_message_system, Colors.red);
     }
   }
 }

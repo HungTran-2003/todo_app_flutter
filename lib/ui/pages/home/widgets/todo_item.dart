@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/models/enum/todo_category.dart';
 import 'package:todo_app/utils/app_date_util.dart';
@@ -46,20 +47,20 @@ class _TodoItemState extends State<TodoItem> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: const Text('Confirm'),
-                      content: const Text(
-                        'Are you sure you want to delete this task?',
+                      title: Text(S.current.dialog_title_confirm),
+                      content: Text(
+                        S.current.dialog_description_delete,
                       ),
                       actions: [
                         TextButton(
                           onPressed: () =>
-                              Navigator.of(context).pop(false), // Hủy
-                          child: const Text('Cancel'),
+                              Navigator.of(context).pop(false),
+                          child: Text(S.current.dialog_cancel),
                         ),
                         TextButton(
                           onPressed: () =>
-                              Navigator.of(context).pop(true), // Đồng ý
-                          child: const Text('Yes'),
+                              Navigator.of(context).pop(true),
+                          child: Text(S.current.dialog_confirm),
                         ),
                       ],
                     );
@@ -77,7 +78,7 @@ class _TodoItemState extends State<TodoItem> {
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
             icon: Icons.delete,
-            label: 'Delete',
+            label: S.current.dialog_title_delete,
           ),
         ],
       ),

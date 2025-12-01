@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
@@ -33,9 +34,9 @@ class HomeProvider extends ChangeNotifier {
   Future<void> deleteTodo(int todoId, bool isShowDialog) async {
     if (isShowDialog) {
       navigator.showSimpleDialog(
-        title: "Delete Todo",
-        content: "You want to delete this Todo?",
-        textCancel: "Cancel",
+        title: S.current.dialog_title_delete,
+        content: S.current.dialog_description_delete,
+        textCancel: S.current.dialog_cancel,
         onConfirm: () async {
           navigator.showLoadingOverlay();
           await _deleteTodo(todoId);
@@ -64,19 +65,19 @@ class HomeProvider extends ChangeNotifier {
       todo.isComplete = true;
       final updatedTodo = await todoRepository.updateTodo(todo);
       if (updatedTodo == null) {
-        navigator.showSnackBar("Completed Task Error", Colors.red);
+        navigator.showSnackBar(S.current.error_message_complete_task, Colors.red);
       } else {
         final index = todos.indexWhere(
           (element) => element.id == updatedTodo.id,
         );
         if (index != -1) {
           todos[index] = updatedTodo;
-          navigator.showSnackBar("Completed Task Successful", Colors.green);
+          navigator.showSnackBar(S.current.home_message_complete_task, Colors.green);
         }
       }
     } catch (e) {
       log(e.toString());
-      navigator.showSnackBar("Completed Task Error", Colors.red);
+      navigator.showSnackBar(S.current.error_message_complete_task, Colors.red);
     }
     notifyListeners();
     navigator.hideLoadingOverlay();
@@ -88,11 +89,11 @@ class HomeProvider extends ChangeNotifier {
       if (!result) return;
       todos.removeWhere((todo) => todo.id == id);
       notifyListeners();
-      navigator.showSnackBar("Delete Task Successful", Colors.green);
+      navigator.showSnackBar(S.current.home_message_delete_task, Colors.green);
     } catch (e) {
       log(e.toString());
       notifyListeners();
-      navigator.showSnackBar("Delete Task Error", Colors.red);
+      navigator.showSnackBar(S.current.error_message_delete_task, Colors.red);
     }
   }
 

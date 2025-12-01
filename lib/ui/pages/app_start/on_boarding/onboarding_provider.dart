@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/database/app_share_preferences.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/router/router_config.dart';
 import 'package:todo_app/ui/pages/app_start/on_boarding/onboarding_navigator.dart';
@@ -57,10 +58,10 @@ class OnboardingProvider extends ChangeNotifier {
         udid,
       );
       if (user == null) {
-        navigator.showSnackBar("Unable to connect to the server.", Colors.red);
+        navigator.showSnackBar(S.current.error_message_network, Colors.red);
         return;
       }
-      navigator.showSnackBar("Login successful", Colors.green);
+      navigator.showSnackBar(S.current.sign_up_message_success, Colors.green);
       await navigator.openHomePage();
     } catch (e) {
       log(e.toString());

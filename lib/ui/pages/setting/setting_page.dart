@@ -7,6 +7,7 @@ import 'package:todo_app/common/app_dimens.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/ui/pages/setting/setting_navigator.dart';
 import 'package:todo_app/ui/pages/setting/setting_provider.dart';
@@ -70,7 +71,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: "Setting",
+        title: S.of(context).setting_title,
         imageBackground: AppImages.header2,
         onPressed: () {
           _provider.navigator.pop();
@@ -108,14 +109,14 @@ class _SettingChildPageState extends State<SettingChildPage> {
   Widget _buildProfile() {
     return Column(
       children: [
-        Text("Profile", style: AppTextStyles.bMaxLargeSemiBold),
+        Text(S.of(context).setting_title_profile, style: AppTextStyles.bMaxLargeSemiBold),
         const SizedBox(height: 24),
         CircleAvatar(
           radius: 50,
           backgroundImage: const AssetImage(AppImages.defaultProfile),
         ),
         const SizedBox(height: 10),
-        Text("No Name", style: AppTextStyles.bMediumSemiBold),
+        Text(S.of(context).setting_user_name_default, style: AppTextStyles.bMediumSemiBold),
         const SizedBox(height: 24.0),
         Row(
           spacing: 20,
@@ -129,7 +130,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
                 ),
                 child: Center(
                   child: Text(
-                    "${widget.inCompleteTodos} Task left",
+                    S.of(context).setting_count_task_left(widget.inCompleteTodos),
                     style: AppTextStyles.wMediumMedium,
                   ),
                 ),
@@ -145,7 +146,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
                 ),
                 child: Center(
                   child: Text(
-                    "${widget.completedTodos} Task done",
+                    S.of(context).setting_count_task_done(widget.completedTodos),
                     style: AppTextStyles.wMediumMedium,
                   ),
                 ),
@@ -162,11 +163,11 @@ class _SettingChildPageState extends State<SettingChildPage> {
       spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Settings", style: AppTextStyles.bMedium),
+        Text(S.of(context).setting_menu_settings, style: AppTextStyles.bMedium),
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconSetting,
-          title: "App Settings",
+          title: S.of(context).setting_menu_settings_1,
           onPressed: () {
             log("Setting");
           },
@@ -180,11 +181,11 @@ class _SettingChildPageState extends State<SettingChildPage> {
       spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Account", style: AppTextStyles.bMedium),
+        Text(S.of(context).setting_menu_account, style: AppTextStyles.bMedium),
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconUser,
-          title: "Change account name",
+          title: S.of(context).setting_menu_account_1,
           onPressed: () {
             log("Change account name");
           },
@@ -192,7 +193,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconKey,
-          title: "Change account password",
+          title: S.of(context).setting_menu_account_2,
           onPressed: () {
             log("Change account password");
           },
@@ -200,7 +201,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconCamera,
-          title: "Change account Image",
+          title: S.of(context).setting_menu_account_3,
           onPressed: () {
             log("Change account Image");
           },
@@ -214,11 +215,11 @@ class _SettingChildPageState extends State<SettingChildPage> {
       spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Todo", style: AppTextStyles.bMedium),
+        Text(S.of(context).setting_menu_other, style: AppTextStyles.bMedium),
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconMenu,
-          title: "About US",
+          title: S.of(context).setting_menu_other_1,
           onPressed: () {
             log("About US");
           },
@@ -226,7 +227,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconCircle,
-          title: "FAQ",
+          title: S.of(context).setting_menu_other_2,
           onPressed: () {
             log("FAQ");
           },
@@ -234,7 +235,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconFlash,
-          title: "Help & Feedback",
+          title: S.of(context).setting_menu_other_3,
           onPressed: () {
             log("Help & Feedback");
           },
@@ -242,7 +243,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconLike,
-          title: "Support US",
+          title: S.of(context).setting_menu_other_4,
           onPressed: () {
             log("Support US");
           },
@@ -250,7 +251,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconLogout,
-          title: "Log out",
+          title: S.of(context).setting_menu_logout,
           color: Colors.red,
           onPressed: () {
             _provider.logout();
