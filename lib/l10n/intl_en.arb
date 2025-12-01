@@ -56,7 +56,6 @@
 
   "validator_message_confirm_password": "Password does not match",
 
-
   "dialog_title_confirm": "Confirm",
   "dialog_title_delete": "Delete",
   "dialog_description_delete": "Are you sure you want to delete this task?",
@@ -85,8 +84,8 @@
   "setting_user_name_default": "No Name",
   "setting_count_task_left": "{count} Task left",
   "setting_count_task_done": "{count} Task done",
-  "setting_menu_settings": "Settings",
-  "setting_menu_settings_1": "App Settings",
+  "setting_menu_settings": "App Settings",
+  "setting_menu_settings_1": "Change Language",
   "setting_menu_account": "Account",
   "setting_menu_account_1": "Change account name",
   "setting_menu_account_2": "Change account password",

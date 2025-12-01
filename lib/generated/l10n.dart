@@ -714,20 +714,20 @@ class S {
     );
   }
 
-  /// `Settings`
+  /// `App Settings`
   String get setting_menu_settings {
     return Intl.message(
-      'Settings',
+      'App Settings',
       name: 'setting_menu_settings',
       desc: '',
       args: [],
     );
   }
 
-  /// `App Settings`
+  /// `Change Language`
   String get setting_menu_settings_1 {
     return Intl.message(
-      'App Settings',
+      'Change Language',
       name: 'setting_menu_settings_1',
       desc: '',
       args: [],

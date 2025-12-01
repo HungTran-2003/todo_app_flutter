@@ -135,9 +135,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Help & Feedback",
     ),
     "setting_menu_other_4": MessageLookupByLibrary.simpleMessage("Support US"),
-    "setting_menu_settings": MessageLookupByLibrary.simpleMessage("Settings"),
-    "setting_menu_settings_1": MessageLookupByLibrary.simpleMessage(
+    "setting_menu_settings": MessageLookupByLibrary.simpleMessage(
       "App Settings",
+    ),
+    "setting_menu_settings_1": MessageLookupByLibrary.simpleMessage(
+      "Change Language",
     ),
     "setting_title": MessageLookupByLibrary.simpleMessage("Setting"),
     "setting_title_profile": MessageLookupByLibrary.simpleMessage("Profile"),

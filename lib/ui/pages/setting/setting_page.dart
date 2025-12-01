@@ -8,6 +8,8 @@ import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
+import 'package:todo_app/global_provider/app_provider.dart';
+import 'package:todo_app/models/enum/language.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/ui/pages/setting/setting_navigator.dart';
 import 'package:todo_app/ui/pages/setting/setting_provider.dart';
@@ -60,15 +62,19 @@ class SettingChildPage extends StatefulWidget {
 
 class _SettingChildPageState extends State<SettingChildPage> {
   late SettingProvider _provider;
+  late TodoProvider _todoProvider;
+
 
   @override
   void initState() {
     super.initState();
     _provider = context.read<SettingProvider>();
+    _todoProvider = context.read<TodoProvider>();
   }
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.select<TodoProvider, Locale>((p) => p.locale);
     return Scaffold(
       appBar: AppBarWidget(
         title: S.of(context).setting_title,
@@ -84,19 +90,19 @@ class _SettingChildPageState extends State<SettingChildPage> {
           right: AppDimens.paddingNormal,
           bottom: AppDimens.paddingNormal,
         ),
-        child: _buildBodyPage(),
+        child: _buildBodyPage(locale),
       ),
     );
   }
 
-  Widget _buildBodyPage() {
+  Widget _buildBodyPage(Locale locale) {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: Column(
         children: [
           _buildProfile(),
           const SizedBox(height: 32.0),
-          _buildSettingApp(),
+          _buildSettingApp(locale),
           const SizedBox(height: 16.0),
           _buildSettingAccount(),
           const SizedBox(height: 16.0),
@@ -158,7 +164,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
     );
   }
 
-  Widget _buildSettingApp() {
+  Widget _buildSettingApp(Locale locale) {
     return Column(
       spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,10 +172,10 @@ class _SettingChildPageState extends State<SettingChildPage> {
         Text(S.of(context).setting_menu_settings, style: AppTextStyles.bMedium),
 
         ItemSettingWidget(
-          assetIcon: AppSvgs.iconSetting,
+          assetIcon: locale == Language.english.local? AppSvgs.iconFlagEnglish : AppSvgs.iconFlagVietNam,
           title: S.of(context).setting_menu_settings_1,
           onPressed: () {
-            log("Setting");
+            _todoProvider.changeLocale();
           },
         ),
       ],

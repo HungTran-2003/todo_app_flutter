@@ -14,4 +14,6 @@ class AppSvgs {
   static const iconMenu = "assets/vectors/icon_menu.svg";
   static const iconUser = "assets/vectors/icon_user.svg";
   static const iconCircle = "assets/vectors/icon_circle.svg";
+  static const iconFlagVietNam = "assets/vectors/icon_flag_vietnam.svg";
+  static const iconFlagEnglish = "assets/vectors/icon_flag_english.svg";
 }

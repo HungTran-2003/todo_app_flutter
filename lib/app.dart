@@ -44,11 +44,14 @@ class _MyAppState extends State<MyApp> {
         )
       ],
 
-      child: _buildMaterialApp(),
+      child: Builder(
+        builder: (context) {
+          return _buildMaterialApp(locale: context.watch<TodoProvider>().locale);
+        }
+      ),
     );
   }
-
-  Widget _buildMaterialApp() {
+  Widget _buildMaterialApp({required Locale locale}) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -63,6 +66,7 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        locale: locale,
         supportedLocales: S.delegate.supportedLocales,
       ),
     );
