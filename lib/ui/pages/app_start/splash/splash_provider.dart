@@ -17,12 +17,16 @@ class SplashProvider extends ChangeNotifier {
   final AuthRepository authRepository;
   final TodoRepository todoRepository;
 
-  bool isLoading = true;
-  String message = S.current.splash_message_signing_in;
+  bool isLoading = false;
+  String message = "";
 
   SplashProvider({required this.navigator, required this.authRepository, required this.todoRepository});
 
   Future<void> login() async {
+    isLoading = true;
+    message = S.current.splash_message_signing_in;
+    log(message);
+    notifyListeners();
     try {
       final refreshToken = await AppSecureStorage.instance.getRefreshToken();
       User? user;

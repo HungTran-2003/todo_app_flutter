@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 
 enum Language {
-  english,
-  vietnamese,
+  english(code: "en"),
+  vietnamese(code: "vi");
+
+  final String code;
+
+  const Language({required this.code});
+
+  static Language? languageFromCode(String code) {
+    if (code == Language.english.code) {
+      return Language.english;
+    } else if (code == Language.vietnamese.code) {
+      return Language.vietnamese;
+    } else {
+      return null;
+    }
+  }
+
 }
 
 extension LanguageExt on Language {
@@ -21,16 +36,6 @@ extension LanguageExt on Language {
         return 'en';
       case Language.vietnamese:
         return 'vi';
-    }
-  }
-
-  static Language? languageFromCode(String code) {
-    if (code == Language.english.code) {
-      return Language.english;
-    } else if (code == Language.vietnamese.code) {
-      return Language.vietnamese;
-    } else {
-      return null;
     }
   }
 }

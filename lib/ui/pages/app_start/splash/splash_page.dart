@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
 import 'package:todo_app/common/app_text_style.dart';
+import 'package:todo_app/global_provider/app_provider.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_navigator.dart';
@@ -35,19 +36,23 @@ class SplashChildPage extends StatefulWidget {
 }
 
 class _SplashChildPageState extends State<SplashChildPage> {
-  late SplashProvider localProvider;
+  late SplashProvider _localProvider;
+  late TodoProvider _todoProvider;
 
   @override
   void initState() {
     super.initState();
-    localProvider = context.read<SplashProvider>();
+    _localProvider = context.read<SplashProvider>();
+    _todoProvider = context.read<TodoProvider>();
     _setup();
   }
 
   void _setup() async {
     await Future.delayed(const Duration(seconds: 1));
+    await _todoProvider.getInitSettings();
     log("build");
-    await localProvider.login();
+    WidgetsBinding.instance.addPostFrameCallback((_) async { await _localProvider.login(); });
+
   }
 
   @override
@@ -75,6 +80,9 @@ class _SplashChildPageState extends State<SplashChildPage> {
                 ),
                 Consumer<SplashProvider>(
                   builder: (context, provider, child) {
+                    if (!provider.isLoading) {
+                      return const SizedBox.shrink();
+                    }
                     return Text(
                       provider.message,
                       style: AppTextStyles.bMediumMedium,

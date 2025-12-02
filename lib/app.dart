@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/global_provider/app_provider.dart';
@@ -44,11 +46,12 @@ class _MyAppState extends State<MyApp> {
         )
       ],
 
-      child: Builder(
-        builder: (context) {
-          return _buildMaterialApp(locale: context.watch<TodoProvider>().locale);
-        }
-      ),
+      child: Consumer<TodoProvider>(
+        builder: (context, provider, child) {
+          log("rebuild app");
+          return _buildMaterialApp(locale: provider.locale);
+        },
+      )
     );
   }
   Widget _buildMaterialApp({required Locale locale}) {
