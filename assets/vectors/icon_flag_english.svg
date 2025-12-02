@@ -1,47 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1235 650">
-    <defs>
-        <path id="s" fill="#FFFFFF" d="M0,-30.5508 L8.0634,-5.8578 L34.0269,-5.8578 L13.0184,9.4045 L21.0818,34.0975 L0,18.8359 L-21.0818,34.0975 L-13.0184,9.4045 L-34.0269,-5.8578 L-8.0634,-5.8578 Z"/>
-
-        <g id="r6">
-            <use xlink:href="#s" x="0"/>
-            <use xlink:href="#s" x="82"/>
-            <use xlink:href="#s" x="164"/>
-            <use xlink:href="#s" x="246"/>
-            <use xlink:href="#s" x="328"/>
-            <use xlink:href="#s" x="410"/>
-        </g>
-        <g id="r5">
-            <use xlink:href="#s" x="41"/>
-            <use xlink:href="#s" x="123"/>
-            <use xlink:href="#s" x="205"/>
-            <use xlink:href="#s" x="287"/>
-            <use xlink:href="#s" x="369"/>
-        </g>
-    </defs>
-
-    <rect fill="#FFFFFF" width="1235" height="650"/>
-
-    <g fill="#B22234">
-        <rect width="1235" height="50" y="0"/>
-        <rect width="1235" height="50" y="100"/>
-        <rect width="1235" height="50" y="200"/>
-        <rect width="1235" height="50" y="300"/>
-        <rect width="1235" height="50" y="400"/>
-        <rect width="1235" height="50" y="500"/>
-        <rect width="1235" height="50" y="600"/>
-    </g>
-
-    <rect fill="#3C3B6E" width="494" height="350"/>
-
-    <g transform="translate(41,35)">
-        <use xlink:href="#r6" y="0"/>
-        <use xlink:href="#r5" y="35"/>
-        <use xlink:href="#r6" y="70"/>
-        <use xlink:href="#r5" y="105"/>
-        <use xlink:href="#r6" y="140"/>
-        <use xlink:href="#r5" y="175"/>
-        <use xlink:href="#r6" y="210"/>
-        <use xlink:href="#r5" y="245"/>
-        <use xlink:href="#r6" y="280"/>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+    <title>English Language Code Icon (EN) - Corrected N</title>
+    <rect x="2" y="2" width="20" height="20" rx="4" ry="4" fill="none" stroke="#000000" stroke-width="2"/>
+    <path d="M7,8 v8 h5 v-1.5 h-3.5 v-1.75 h3 v-1.5 h-3 v-1.75 h3.5 v-1.5 H7z M13,16 v-8 h1.5 L17,14 v-6 h1.5 v8 h-1.5 L14.5,10 v6 h-1.5 z" fill="#000000"/>
 </svg>
