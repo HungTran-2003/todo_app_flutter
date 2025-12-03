@@ -12,7 +12,7 @@ class TodoProvider extends ChangeNotifier {
   Future<void> getInitSettings() async {
     log('init');
     final language= await AppSharePreferences.getCurrentLanguage();
-    if (language != null) {
+    if (language != null && language != _currentLanguage) {
       _currentLanguage = language;
       notifyListeners();
     }

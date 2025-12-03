@@ -6,6 +6,7 @@ import 'package:todo_app/global_provider/app_provider.dart';
 import 'package:todo_app/networking/api_client.dart';
 import 'package:todo_app/networking/api_utli.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
+import 'package:todo_app/repositories/notification_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/router/router_config.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -41,16 +42,21 @@ class _MyAppState extends State<MyApp> {
           create: (context) => TodoRepositoryImpl(_apiClient),
         ),
 
+        Provider<NotificationRepository>(
+          create: (context) => NotificationRepositoryImpl(),
+        ),
+
         ChangeNotifierProvider<TodoProvider>(
           create: (context) => TodoProvider(),
         )
       ],
 
-      child: Consumer<TodoProvider>(
-        builder: (context, provider, child) {
-          log("rebuild app");
-          return _buildMaterialApp(locale: provider.locale);
-        },
+      child: Selector<TodoProvider, Locale>(
+          builder: (context, locale, child) {
+            log('Locale instance: ${locale.toString()} | hashCode: ${identityHashCode(locale)}');
+            return _buildMaterialApp(locale: locale);
+          },
+          selector: (context, provider) => provider.locale,
       )
     );
   }

@@ -7,6 +7,7 @@ import 'package:todo_app/database/app_share_preferences.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
+import 'package:todo_app/repositories/notification_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/app_start/splash/splash_navigator.dart';
 import 'package:todo_app/utils/device_util_info.dart';
@@ -16,11 +17,12 @@ class SplashProvider extends ChangeNotifier {
   final SplashNavigator navigator;
   final AuthRepository authRepository;
   final TodoRepository todoRepository;
+  final NotificationRepository notificationRepository;
 
   bool isLoading = false;
   String message = "";
 
-  SplashProvider({required this.navigator, required this.authRepository, required this.todoRepository});
+  SplashProvider({required this.navigator, required this.authRepository, required this.todoRepository, required this.notificationRepository});
 
   Future<void> login() async {
     isLoading = true;

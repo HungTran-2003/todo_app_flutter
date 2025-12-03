@@ -18,7 +18,12 @@ class AppSecureStorage {
   static const _refreshTokenKey = "refresh_token";
 
   Future<void> saveRefreshToken(String refreshToken) async {
-    await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    log("save refresh token: $refreshToken");
+    await _storage.write(
+      key: _refreshTokenKey,
+      value: refreshToken,
+      aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    );
   }
 
   Future<String?> getRefreshToken() async {
@@ -28,11 +33,11 @@ class AppSecureStorage {
       await deleteRefreshToken();
       return null;
     }
-    return await _storage.read(key: _refreshTokenKey);
+    return await _storage.read(key: _refreshTokenKey, aOptions: AndroidOptions(encryptedSharedPreferences: true));
   }
 
   Future<void> deleteRefreshToken() async {
     log("delete refresh token");
-    await _storage.delete(key: _refreshTokenKey);
+    await _storage.delete(key: _refreshTokenKey, aOptions: AndroidOptions(encryptedSharedPreferences: true));
   }
 }

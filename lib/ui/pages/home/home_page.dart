@@ -7,6 +7,7 @@ import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/repositories/notification_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
 import 'package:todo_app/ui/pages/home/home_provider.dart';
@@ -27,6 +28,7 @@ class HomePage extends StatelessWidget {
           navigator: HomeNavigator(context: context),
           todos: todos,
           todoRepository: context.read<TodoRepository>(),
+          notificationRepository: context.read<NotificationRepository>(),
         );
       },
       child: const HomeChildPage(),

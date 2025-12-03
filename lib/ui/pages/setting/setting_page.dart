@@ -11,6 +11,7 @@ import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/global_provider/app_provider.dart';
 import 'package:todo_app/models/enum/language.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
+import 'package:todo_app/repositories/notification_repository.dart';
 import 'package:todo_app/ui/pages/setting/setting_navigator.dart';
 import 'package:todo_app/ui/pages/setting/setting_provider.dart';
 import 'package:todo_app/ui/pages/setting/widgets/item_setting.dart';
@@ -37,6 +38,7 @@ class SettingPage extends StatelessWidget {
         return SettingProvider(
           navigator: SettingNavigator(context: context),
           authRepository: context.read<AuthRepository>(),
+          notificationRepository: context.read<NotificationRepository>(),
         );
       },
       child: SettingChildPage(
@@ -192,8 +194,8 @@ class _SettingChildPageState extends State<SettingChildPage> {
         ItemSettingWidget(
           assetIcon: AppSvgs.iconUser,
           title: S.of(context).setting_menu_account_1,
-          onPressed: () {
-            log("Change account name");
+          onPressed: () async {
+            await _provider.showSimpleNotification();
           },
         ),
 

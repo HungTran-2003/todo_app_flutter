@@ -11,8 +11,16 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.22") // hoặc version bạn dùng
+        coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
+        // các dependencies khác...
     }
 
     kotlinOptions {

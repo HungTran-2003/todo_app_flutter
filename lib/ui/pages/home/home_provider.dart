@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/repositories/notification_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/home/home_navigator.dart';
 
@@ -11,7 +12,9 @@ class HomeProvider extends ChangeNotifier {
   final HomeNavigator navigator;
   List<TodoEntity> todos;
   final TodoRepository todoRepository;
-  HomeProvider({required this.navigator, required this.todos, required this.todoRepository});
+  final NotificationRepository notificationRepository;
+
+  HomeProvider({required this.navigator, required this.todos, required this.todoRepository, required this.notificationRepository});
 
   DateTime currentTime = DateTime.now();
 
@@ -72,6 +75,7 @@ class HomeProvider extends ChangeNotifier {
         );
         if (index != -1) {
           todos[index] = updatedTodo;
+          await notificationRepository.cancelNotification(updatedTodo.id!);
           navigator.showSnackBar(S.current.home_message_complete_task, Colors.green);
         }
       }
@@ -88,6 +92,7 @@ class HomeProvider extends ChangeNotifier {
       final result = await todoRepository.deleteTodo(id);
       if (!result) return;
       todos.removeWhere((todo) => todo.id == id);
+      await notificationRepository.cancelNotification(id);
       notifyListeners();
       navigator.showSnackBar(S.current.home_message_delete_task, Colors.green);
     } catch (e) {

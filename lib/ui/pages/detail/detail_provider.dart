@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/models/enum/todo_category.dart';
+import 'package:todo_app/repositories/notification_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
 import 'package:todo_app/utils/app_date_util.dart';
@@ -11,10 +12,13 @@ import 'package:todo_app/utils/app_date_util.dart';
 class DetailProvider extends ChangeNotifier {
   final DetailNavigator navigator;
   final TodoRepository todoRepository;
+  final NotificationRepository notificationRepository;
+
   DetailProvider({
     required this.navigator,
     this.todo,
     required this.todoRepository,
+    required this.notificationRepository,
   });
 
   TodoEntity? todo;
@@ -75,6 +79,7 @@ class DetailProvider extends ChangeNotifier {
     try {
       final newTodo = await todoRepository.createTodo(todo);
       if (newTodo == null) return null;
+      await notificationRepository.scheduleNotification(id: newTodo.id!, title: newTodo.title, body: "test", scheduledDate: newTodo.duaDate);
       navigator.showSnackBar(S.current.detail_message_add_task_successful, Colors.green);
       return todo;
     } catch (e) {
@@ -89,6 +94,8 @@ class DetailProvider extends ChangeNotifier {
       final updatedTodo = await todoRepository.updateTodo(todo);
       if (updatedTodo == null) return null;
       navigator.showSnackBar(S.current.detail_message_change_task_successful, Colors.green);
+      await notificationRepository.cancelNotification(todo.id!);
+      await notificationRepository.scheduleNotification(id: updatedTodo.id!, title: updatedTodo.title, body: "test", scheduledDate: updatedTodo.duaDate);
       return todo;
     } catch (e) {
       log(e.toString());

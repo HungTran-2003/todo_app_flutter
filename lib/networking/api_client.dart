@@ -54,13 +54,12 @@ class ApiClient{
   }
 
   Future<TodoEntity?> createTodo(TodoEntity todo) async {
-    log(todo.toJson().toString());
     final response = await _supabaseClient
         .from(_table)
         .insert(todo.toJson())
         .select()
         .single();
-
+    log(response.toString());
     return TodoEntity.fromJson(response);
   }
 
