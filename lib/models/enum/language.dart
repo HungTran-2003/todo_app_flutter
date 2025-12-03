@@ -17,7 +17,6 @@ enum Language {
       return null;
     }
   }
-
 }
 
 extension LanguageExt on Language {

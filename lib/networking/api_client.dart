@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
 
-class ApiClient{
+class ApiClient {
   final SupabaseClient _supabaseClient;
   final _table = 'Todo';
 

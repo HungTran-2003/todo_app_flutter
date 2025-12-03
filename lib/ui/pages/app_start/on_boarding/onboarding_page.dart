@@ -150,7 +150,10 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
 
           Image.asset(AppImages.splashScreen),
 
-          Text(S.of(context).title_app_start, style: AppTextStyles.bMaxLargeSemiBold),
+          Text(
+            S.of(context).title_app_start,
+            style: AppTextStyles.bMaxLargeSemiBold,
+          ),
           const SizedBox(height: 26.0),
 
           Padding(
@@ -265,7 +268,10 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
       padding: horizontalPaddingMiddle,
       child: Row(
         children: [
-          AppTextButton(label: S.of(context).button_back, onPressed: goPrevious),
+          AppTextButton(
+            label: S.of(context).button_back,
+            onPressed: goPrevious,
+          ),
           const Spacer(),
           AppButton(
             label: S.of(context).button_next,

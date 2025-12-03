@@ -9,7 +9,8 @@ import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
-import 'package:todo_app/repositories/notification_repository.dart' show NotificationRepository;
+import 'package:todo_app/repositories/notification_repository.dart'
+    show NotificationRepository;
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
 import 'package:todo_app/ui/pages/detail/detail_provider.dart';
@@ -85,7 +86,9 @@ class _DetailChildPageState extends State<DetailChildPage> {
     );
     return Scaffold(
       appBar: AppBarWidget(
-        title: _localProvider.todo == null ? S.of(context).detail_title_add_task : S.of(context).detail_title_detail,
+        title: _localProvider.todo == null
+            ? S.of(context).detail_title_add_task
+            : S.of(context).detail_title_detail,
         onPressed: () {
           _localProvider.navigator.pop(extra: false);
         },
@@ -145,7 +148,10 @@ class _DetailChildPageState extends State<DetailChildPage> {
 
             Row(
               children: [
-                Text(S.of(context).detail_category, style: AppTextStyles.bSmallSemiBold),
+                Text(
+                  S.of(context).detail_category,
+                  style: AppTextStyles.bSmallSemiBold,
+                ),
                 const SizedBox(width: 24.0),
                 AppIconButton(
                   assetIcon: AppSvgs.note,

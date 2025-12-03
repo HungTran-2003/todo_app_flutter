@@ -9,7 +9,6 @@ class SignUpProvider extends ChangeNotifier {
   final SignUpNavigator navigator;
   final AuthRepository authRepository;
 
-
   SignUpProvider({required this.navigator, required this.authRepository});
 
   Future<void> signUp(String email, String password) async {

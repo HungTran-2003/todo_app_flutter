@@ -33,11 +33,17 @@ class AppSecureStorage {
       await deleteRefreshToken();
       return null;
     }
-    return await _storage.read(key: _refreshTokenKey, aOptions: AndroidOptions(encryptedSharedPreferences: true));
+    return await _storage.read(
+      key: _refreshTokenKey,
+      aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    );
   }
 
   Future<void> deleteRefreshToken() async {
     log("delete refresh token");
-    await _storage.delete(key: _refreshTokenKey, aOptions: AndroidOptions(encryptedSharedPreferences: true));
+    await _storage.delete(
+      key: _refreshTokenKey,
+      aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    );
   }
 }

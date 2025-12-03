@@ -22,19 +22,18 @@ class TodoRepositoryImpl extends TodoRepository {
   }
 
   @override
-  Future<bool> deleteTodo(int id) async{
+  Future<bool> deleteTodo(int id) async {
     await _apiClient.deleteTodo(id);
     return true;
   }
 
   @override
-  Future<List<TodoEntity>> getTodos() async{
+  Future<List<TodoEntity>> getTodos() async {
     return await _apiClient.getTodos();
   }
 
   @override
-  Future<TodoEntity?> updateTodo(TodoEntity todo) async{
+  Future<TodoEntity?> updateTodo(TodoEntity todo) async {
     return await _apiClient.updateTodo(todo);
   }
-
 }

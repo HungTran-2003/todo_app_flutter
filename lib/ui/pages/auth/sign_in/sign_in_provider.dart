@@ -9,7 +9,11 @@ class SignInProvider extends ChangeNotifier {
   final AuthRepository authRepository;
   final TodoRepository todoRepository;
 
-  SignInProvider({required this.navigator, required this.authRepository, required this.todoRepository});
+  SignInProvider({
+    required this.navigator,
+    required this.authRepository,
+    required this.todoRepository,
+  });
 
   Future<void> signIn(String email, String password) async {
     navigator.showLoadingOverlay();

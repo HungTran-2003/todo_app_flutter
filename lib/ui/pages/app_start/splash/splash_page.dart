@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_images.dart';
@@ -36,7 +35,8 @@ class SplashChildPage extends StatefulWidget {
   State<StatefulWidget> createState() => _SplashChildPageState();
 }
 
-class _SplashChildPageState extends State<SplashChildPage> with SingleTickerProviderStateMixin{
+class _SplashChildPageState extends State<SplashChildPage>
+    with SingleTickerProviderStateMixin {
   late SplashProvider _localProvider;
   late TodoProvider _todoProvider;
 
@@ -52,7 +52,7 @@ class _SplashChildPageState extends State<SplashChildPage> with SingleTickerProv
     _startAnimation();
   }
 
-  void _startAnimation() async{
+  void _startAnimation() async {
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -60,12 +60,7 @@ class _SplashChildPageState extends State<SplashChildPage> with SingleTickerProv
     _offsetAnimation = Tween<Offset>(
       begin: const Offset(0.0, 1.5),
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.bounceOut,
-      ),
-    );
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.bounceOut));
     _controller.forward().then((_) async {
       await _localProvider.login();
     });

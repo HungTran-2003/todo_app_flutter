@@ -8,7 +8,11 @@ class SettingProvider extends ChangeNotifier {
   final AuthRepository authRepository;
   final NotificationRepository notificationRepository;
 
-  SettingProvider({required this.navigator, required this.authRepository, required this.notificationRepository});
+  SettingProvider({
+    required this.navigator,
+    required this.authRepository,
+    required this.notificationRepository,
+  });
 
   Future<void> logout() async {
     await authRepository.signOut();
@@ -17,6 +21,10 @@ class SettingProvider extends ChangeNotifier {
   }
 
   Future<void> showSimpleNotification() async {
-    await notificationRepository.showNotification(id: 1, title: "test", body: "tesst");
+    await notificationRepository.showNotification(
+      id: 1,
+      title: "test",
+      body: "tesst",
+    );
   }
 }

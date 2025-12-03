@@ -18,7 +18,7 @@ class AppRouter {
     initialLocation: splash,
     routes: _routes,
     navigatorKey: navigationKey,
-    debugLogDiagnostics: true
+    debugLogDiagnostics: true,
   );
 
   static const String splash = "/";

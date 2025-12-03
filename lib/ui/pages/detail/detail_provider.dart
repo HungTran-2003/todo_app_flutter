@@ -79,12 +79,23 @@ class DetailProvider extends ChangeNotifier {
     try {
       final newTodo = await todoRepository.createTodo(todo);
       if (newTodo == null) return null;
-      await notificationRepository.scheduleNotification(id: newTodo.id!, title: newTodo.title, body: "test", scheduledDate: newTodo.duaDate);
-      navigator.showSnackBar(S.current.detail_message_add_task_successful, Colors.green);
+      await notificationRepository.scheduleNotification(
+        id: newTodo.id!,
+        title: newTodo.title,
+        body: "test",
+        scheduledDate: newTodo.duaDate,
+      );
+      navigator.showSnackBar(
+        S.current.detail_message_add_task_successful,
+        Colors.green,
+      );
       return todo;
     } catch (e) {
       log(e.toString());
-      navigator.showSnackBar(S.current.detail_message_add_task_error, Colors.red);
+      navigator.showSnackBar(
+        S.current.detail_message_add_task_error,
+        Colors.red,
+      );
       return null;
     }
   }
@@ -93,13 +104,24 @@ class DetailProvider extends ChangeNotifier {
     try {
       final updatedTodo = await todoRepository.updateTodo(todo);
       if (updatedTodo == null) return null;
-      navigator.showSnackBar(S.current.detail_message_change_task_successful, Colors.green);
+      navigator.showSnackBar(
+        S.current.detail_message_change_task_successful,
+        Colors.green,
+      );
       await notificationRepository.cancelNotification(todo.id!);
-      await notificationRepository.scheduleNotification(id: updatedTodo.id!, title: updatedTodo.title, body: "test", scheduledDate: updatedTodo.duaDate);
+      await notificationRepository.scheduleNotification(
+        id: updatedTodo.id!,
+        title: updatedTodo.title,
+        body: "test",
+        scheduledDate: updatedTodo.duaDate,
+      );
       return todo;
     } catch (e) {
       log(e.toString());
-      navigator.showSnackBar(S.current.detail_message_change_task_error, Colors.red);
+      navigator.showSnackBar(
+        S.current.detail_message_change_task_error,
+        Colors.red,
+      );
       return null;
     }
   }

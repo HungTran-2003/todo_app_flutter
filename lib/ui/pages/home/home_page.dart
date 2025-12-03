@@ -170,9 +170,15 @@ class _MyPageState extends State<HomeChildPage> {
           TodoSections(
             todos: _overdueTodos,
             sectionTitle: "Overdue",
-            onPressed: (index) {},
-            clickCheckBox: (index) {},
-            delete: (value, index) {},
+            onPressed: (index) {
+              _provider.openPageDetail(todo: _inCompleteTodos[index]);
+            },
+            clickCheckBox: (index) {
+              _provider.completedTodo(index);
+            },
+            delete: (value, index) {
+              _provider.deleteTodo(index, value);
+            },
           ),
 
           TodoSections(

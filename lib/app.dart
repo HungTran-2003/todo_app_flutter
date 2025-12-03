@@ -48,18 +48,21 @@ class _MyAppState extends State<MyApp> {
 
         ChangeNotifierProvider<TodoProvider>(
           create: (context) => TodoProvider(),
-        )
+        ),
       ],
 
       child: Selector<TodoProvider, Locale>(
-          builder: (context, locale, child) {
-            log('Locale instance: ${locale.toString()} | hashCode: ${identityHashCode(locale)}');
-            return _buildMaterialApp(locale: locale);
-          },
-          selector: (context, provider) => provider.locale,
-      )
+        builder: (context, locale, child) {
+          log(
+            'Locale instance: ${locale.toString()} | hashCode: ${identityHashCode(locale)}',
+          );
+          return _buildMaterialApp(locale: locale);
+        },
+        selector: (context, provider) => provider.locale,
+      ),
     );
   }
+
   Widget _buildMaterialApp({required Locale locale}) {
     return GestureDetector(
       onTap: () {

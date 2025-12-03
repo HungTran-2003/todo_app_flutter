@@ -14,21 +14,40 @@ class HomeProvider extends ChangeNotifier {
   final TodoRepository todoRepository;
   final NotificationRepository notificationRepository;
 
-  HomeProvider({required this.navigator, required this.todos, required this.todoRepository, required this.notificationRepository});
+  HomeProvider({
+    required this.navigator,
+    required this.todos,
+    required this.todoRepository,
+    required this.notificationRepository,
+  });
 
   DateTime currentTime = DateTime.now();
 
-  List<TodoEntity> get inCompleteTodos =>
-      todos.where((todo) => todo.isComplete == false && todo.duaDate.isAfter(DateTime.now())).toList();
+  List<TodoEntity> get inCompleteTodos => todos
+      .where(
+        (todo) =>
+            todo.isComplete == false && todo.duaDate.isAfter(DateTime.now()),
+      )
+      .toList();
   List<TodoEntity> get completedTodos =>
       todos.where((todo) => todo.isComplete == true).toList();
-  List<TodoEntity> get overdueTodos =>
-      todos.where((todo) => todo.isComplete == false && todo.duaDate.isBefore(DateTime.now())).toList();
+  List<TodoEntity> get overdueTodos => todos
+      .where(
+        (todo) =>
+            todo.isComplete == false && todo.duaDate.isBefore(DateTime.now()),
+      )
+      .toList();
 
   void startMinuteTimer() {
     Future.doWhile(() async {
       final now = DateTime.now();
-      final next = DateTime(now.year, now.month, now.day, now.hour, now.minute + 1);
+      final next = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        now.hour,
+        now.minute + 1,
+      );
 
       await Future.delayed(next.difference(now));
       notifyListeners();
@@ -70,7 +89,10 @@ class HomeProvider extends ChangeNotifier {
       todo.isComplete = true;
       final updatedTodo = await todoRepository.updateTodo(todo);
       if (updatedTodo == null) {
-        navigator.showSnackBar(S.current.error_message_complete_task, Colors.red);
+        navigator.showSnackBar(
+          S.current.error_message_complete_task,
+          Colors.red,
+        );
       } else {
         final index = todos.indexWhere(
           (element) => element.id == updatedTodo.id,
@@ -78,7 +100,10 @@ class HomeProvider extends ChangeNotifier {
         if (index != -1) {
           todos[index] = updatedTodo;
           await notificationRepository.cancelNotification(updatedTodo.id!);
-          navigator.showSnackBar(S.current.home_message_complete_task, Colors.green);
+          navigator.showSnackBar(
+            S.current.home_message_complete_task,
+            Colors.green,
+          );
         }
       }
     } catch (e) {

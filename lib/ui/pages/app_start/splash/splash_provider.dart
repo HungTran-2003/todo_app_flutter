@@ -22,7 +22,12 @@ class SplashProvider extends ChangeNotifier {
   bool isLoading = false;
   String message = "";
 
-  SplashProvider({required this.navigator, required this.authRepository, required this.todoRepository, required this.notificationRepository});
+  SplashProvider({
+    required this.navigator,
+    required this.authRepository,
+    required this.todoRepository,
+    required this.notificationRepository,
+  });
 
   Future<void> login() async {
     isLoading = true;
@@ -36,7 +41,10 @@ class SplashProvider extends ChangeNotifier {
       if (refreshToken != null) {
         user = await authRepository.signInWithToken(refreshToken);
         if (user == null) {
-          navigator.showSnackBar(S.current.error_message_session_expired, Colors.orange);
+          navigator.showSnackBar(
+            S.current.error_message_session_expired,
+            Colors.orange,
+          );
           navigator.openSignIn();
           return;
         }

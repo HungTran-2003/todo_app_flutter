@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_dimens.dart';
@@ -66,7 +67,6 @@ class _SettingChildPageState extends State<SettingChildPage> {
   late SettingProvider _provider;
   late TodoProvider _todoProvider;
 
-
   @override
   void initState() {
     super.initState();
@@ -101,15 +101,19 @@ class _SettingChildPageState extends State<SettingChildPage> {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: Column(
-        children: [
-          _buildProfile(),
-          const SizedBox(height: 32.0),
-          _buildSettingApp(locale),
-          const SizedBox(height: 16.0),
-          _buildSettingAccount(),
-          const SizedBox(height: 16.0),
-          _buildSettingOther(),
-        ],
+        children:
+            [
+                  _buildProfile(),
+                  const SizedBox(height: 32.0),
+                  _buildSettingApp(locale),
+                  const SizedBox(height: 16.0),
+                  _buildSettingAccount(),
+                  const SizedBox(height: 16.0),
+                  _buildSettingOther(),
+                ]
+                .animate(interval: 50.ms)
+                .fade(duration: 250.ms)
+                .slideX(begin: 0.5, end: 0),
       ),
     );
   }
@@ -117,14 +121,15 @@ class _SettingChildPageState extends State<SettingChildPage> {
   Widget _buildProfile() {
     return Column(
       children: [
-        Text(S.of(context).setting_title_profile, style: AppTextStyles.bMaxLargeSemiBold),
-        const SizedBox(height: 24),
         CircleAvatar(
           radius: 50,
           backgroundImage: const AssetImage(AppImages.defaultProfile),
         ),
         const SizedBox(height: 10),
-        Text(S.of(context).setting_user_name_default, style: AppTextStyles.bMediumSemiBold),
+        Text(
+          S.of(context).setting_user_name_default,
+          style: AppTextStyles.bMediumSemiBold,
+        ),
         const SizedBox(height: 24.0),
         Row(
           spacing: 20,
@@ -138,7 +143,9 @@ class _SettingChildPageState extends State<SettingChildPage> {
                 ),
                 child: Center(
                   child: Text(
-                    S.of(context).setting_count_task_left(widget.inCompleteTodos),
+                    S
+                        .of(context)
+                        .setting_count_task_left(widget.inCompleteTodos),
                     style: AppTextStyles.wMediumMedium,
                   ),
                 ),
@@ -154,7 +161,9 @@ class _SettingChildPageState extends State<SettingChildPage> {
                 ),
                 child: Center(
                   child: Text(
-                    S.of(context).setting_count_task_done(widget.completedTodos),
+                    S
+                        .of(context)
+                        .setting_count_task_done(widget.completedTodos),
                     style: AppTextStyles.wMediumMedium,
                   ),
                 ),
@@ -174,7 +183,9 @@ class _SettingChildPageState extends State<SettingChildPage> {
         Text(S.of(context).setting_menu_settings, style: AppTextStyles.bMedium),
 
         ItemSettingWidget(
-          assetIcon: locale == Language.english.local? AppSvgs.iconFlagEnglish : AppSvgs.iconFlagVietNam,
+          assetIcon: locale == Language.english.local
+              ? AppSvgs.iconFlagEnglish
+              : AppSvgs.iconFlagVietNam,
           title: S.of(context).setting_menu_settings_1,
           onPressed: () {
             _todoProvider.changeLocale();

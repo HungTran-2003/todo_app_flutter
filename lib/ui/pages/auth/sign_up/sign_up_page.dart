@@ -125,7 +125,9 @@ class _SignupChildPageState extends State<SignupChildPage> {
                         hint: S.of(context).sign_up_confirm_password_hint,
                         validator: (value) {
                           if (value != _passwordController.text) {
-                            return S.of(context).validator_message_confirm_password;
+                            return S
+                                .of(context)
+                                .validator_message_confirm_password;
                           }
                           return null;
                         },
@@ -162,7 +164,10 @@ class _SignupChildPageState extends State<SignupChildPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Text(S.of(context).sign_up_or_continue_with, style: AppTextStyles.bMedium),
+                      Text(
+                        S.of(context).sign_up_or_continue_with,
+                        style: AppTextStyles.bMedium,
+                      ),
                       const SizedBox(height: 20),
                     ],
                   ),

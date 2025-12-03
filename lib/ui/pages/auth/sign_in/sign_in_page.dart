@@ -167,7 +167,10 @@ class _SignInChildPageState extends State<SignInChildPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Text(S.of(context).sign_in_or_continue_with, style: AppTextStyles.bMedium),
+                      Text(
+                        S.of(context).sign_in_or_continue_with,
+                        style: AppTextStyles.bMedium,
+                      ),
                       const SizedBox(height: 20),
                     ],
                   ),

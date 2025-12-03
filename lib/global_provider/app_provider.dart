@@ -11,7 +11,7 @@ class TodoProvider extends ChangeNotifier {
 
   Future<void> getInitSettings() async {
     log('init');
-    final language= await AppSharePreferences.getCurrentLanguage();
+    final language = await AppSharePreferences.getCurrentLanguage();
     if (language != null && language != _currentLanguage) {
       _currentLanguage = language;
       notifyListeners();
@@ -20,10 +20,10 @@ class TodoProvider extends ChangeNotifier {
 
   Future<void> changeLocale() async {
     log("changeLanguage");
-    if(_currentLanguage == Language.english){
+    if (_currentLanguage == Language.english) {
       _currentLanguage = Language.vietnamese;
       await AppSharePreferences.setCurrentLanguage(Language.vietnamese);
-    } else{
+    } else {
       _currentLanguage = Language.english;
       await AppSharePreferences.setCurrentLanguage(Language.english);
     }
