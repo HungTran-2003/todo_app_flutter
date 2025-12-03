@@ -37,9 +37,12 @@ class SplashChildPage extends StatefulWidget {
   State<StatefulWidget> createState() => _SplashChildPageState();
 }
 
-class _SplashChildPageState extends State<SplashChildPage> {
+class _SplashChildPageState extends State<SplashChildPage> with SingleTickerProviderStateMixin{
   late SplashProvider _localProvider;
   late TodoProvider _todoProvider;
+
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
 
   @override
   void initState() {
@@ -47,49 +50,75 @@ class _SplashChildPageState extends State<SplashChildPage> {
     _localProvider = context.read<SplashProvider>();
     _todoProvider = context.read<TodoProvider>();
     _setup();
+    _startAnimation();
+  }
+
+  void _startAnimation() async{
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 1.5),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.bounceOut,
+      ),
+    );
+    _controller.forward().then((_) async {
+      await _localProvider.login();
+    });
   }
 
   void _setup() async {
-
-    log("build");
-    WidgetsBinding.instance.addPostFrameCallback((_) async {  await Future.delayed(const Duration(seconds: 1));
     await _localProvider.notificationRepository.init();
-    await _todoProvider.getInitSettings();await _localProvider.login(); });
+    await _todoProvider.getInitSettings();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // Nhớ dispose để tránh rò rỉ bộ nhớ
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          spacing: 12,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(AppImages.splashScreen),
-            SizedBox(
-              height: 40,
-              child: Consumer<SplashProvider>(
+        child: SlideTransition(
+          position: _offsetAnimation,
+          child: Column(
+            spacing: 8,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(AppImages.splashScreen),
+              SizedBox(
+                height: 40,
+                child: Consumer<SplashProvider>(
+                  builder: (context, provider, child) {
+                    if (provider.isLoading) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                ),
+              ),
+              Consumer<SplashProvider>(
                 builder: (context, provider, child) {
-                  if (provider.isLoading) {
-                    return const CircularProgressIndicator();
-                  } else {
+                  if (!provider.isLoading) {
                     return const SizedBox.shrink();
                   }
+                  return Text(
+                    provider.message,
+                    style: AppTextStyles.bMediumMedium,
+                  );
                 },
               ),
-            ),
-            Consumer<SplashProvider>(
-              builder: (context, provider, child) {
-                if (!provider.isLoading) {
-                  return const SizedBox.shrink();
-                }
-                return Text(
-                  provider.message,
-                  style: AppTextStyles.bMediumMedium,
-                );
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
