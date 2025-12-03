@@ -48,18 +48,14 @@ class _TodoItemState extends State<TodoItem> {
                   builder: (context) {
                     return AlertDialog(
                       title: Text(S.current.dialog_title_confirm),
-                      content: Text(
-                        S.current.dialog_description_delete,
-                      ),
+                      content: Text(S.current.dialog_description_delete),
                       actions: [
                         TextButton(
-                          onPressed: () =>
-                              Navigator.of(context).pop(false),
+                          onPressed: () => Navigator.of(context).pop(false),
                           child: Text(S.current.dialog_cancel),
                         ),
                         TextButton(
-                          onPressed: () =>
-                              Navigator.of(context).pop(true),
+                          onPressed: () => Navigator.of(context).pop(true),
                           child: Text(S.current.dialog_confirm),
                         ),
                       ],
@@ -148,12 +144,21 @@ class _TodoItemState extends State<TodoItem> {
                   decoration: widget.todo.isComplete
                       ? TextDecoration.lineThrough
                       : TextDecoration.none,
+                  color:
+                      !widget.todo.isComplete &&
+                          widget.todo.duaDate.isBefore(DateTime.now())
+                      ? Colors.red
+                      : null,
                 ),
               ),
               Text(
                 AppDateUtil.toDateTodayString(widget.todo.duaDate),
                 style: AppTextStyles.bSmallMedium.copyWith(
-                  color: AppColors.textBlack.withValues(alpha: 0.7),
+                  color:
+                      !widget.todo.isComplete &&
+                          widget.todo.duaDate.isBefore(DateTime.now())
+                      ? Colors.red.withValues(alpha: 0.7)
+                      : AppColors.textBlack.withValues(alpha: 0.7),
                   decoration: widget.todo.isComplete
                       ? TextDecoration.lineThrough
                       : TextDecoration.none,

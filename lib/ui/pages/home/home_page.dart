@@ -55,6 +55,7 @@ class _MyPageState extends State<HomeChildPage> {
 
   List<TodoEntity> _inCompleteTodos = [];
   List<TodoEntity> _completedTodos = [];
+  List<TodoEntity> _overdueTodos = [];
 
   void _setup() {
     _provider.startMinuteTimer();
@@ -68,6 +69,9 @@ class _MyPageState extends State<HomeChildPage> {
     );
     _completedTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.completedTodos,
+    );
+    _overdueTodos = context.select<HomeProvider, List<TodoEntity>>(
+      (p) => p.overdueTodos,
     );
 
     return LoaderOverlay(
@@ -90,7 +94,6 @@ class _MyPageState extends State<HomeChildPage> {
                       const SizedBox(height: 32.0),
                       Expanded(child: _buildListItemsWidgets()),
                       const SizedBox(height: 24.0),
-
                     ],
                   ),
                 ),
@@ -163,6 +166,15 @@ class _MyPageState extends State<HomeChildPage> {
                   },
                 )
               : const SizedBox(height: 80.0),
+
+          TodoSections(
+            todos: _overdueTodos,
+            sectionTitle: "Overdue",
+            onPressed: (index) {},
+            clickCheckBox: (index) {},
+            delete: (value, index) {},
+          ),
+
           TodoSections(
             todos: _completedTodos,
             sectionTitle: S.of(context).home_completed,

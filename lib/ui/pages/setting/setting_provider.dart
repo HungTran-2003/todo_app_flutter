@@ -12,7 +12,8 @@ class SettingProvider extends ChangeNotifier {
 
   Future<void> logout() async {
     await authRepository.signOut();
-    navigator.openSignIn();
+    await notificationRepository.cancelAll();
+    await navigator.openSignIn();
   }
 
   Future<void> showSimpleNotification() async {

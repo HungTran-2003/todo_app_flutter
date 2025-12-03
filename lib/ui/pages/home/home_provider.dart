@@ -19,18 +19,20 @@ class HomeProvider extends ChangeNotifier {
   DateTime currentTime = DateTime.now();
 
   List<TodoEntity> get inCompleteTodos =>
-      todos.where((todo) => todo.isComplete == false).toList();
+      todos.where((todo) => todo.isComplete == false && todo.duaDate.isAfter(DateTime.now())).toList();
   List<TodoEntity> get completedTodos =>
       todos.where((todo) => todo.isComplete == true).toList();
+  List<TodoEntity> get overdueTodos =>
+      todos.where((todo) => todo.isComplete == false && todo.duaDate.isBefore(DateTime.now())).toList();
 
   void startMinuteTimer() {
-    final now = DateTime.now();
-    final nextMinute = DateTime(now.year, now.month, now.day + 1);
-    final initialDelay = nextMinute.difference(now);
+    Future.doWhile(() async {
+      final now = DateTime.now();
+      final next = DateTime(now.year, now.month, now.day, now.hour, now.minute + 1);
 
-    Future.delayed(initialDelay, () {
-      currentTime = DateTime.now();
+      await Future.delayed(next.difference(now));
       notifyListeners();
+      return true;
     });
   }
 
