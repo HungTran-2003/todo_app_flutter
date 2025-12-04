@@ -8,7 +8,7 @@ abstract class UserRepository {
   Future<UserInfoEntity> updateUserInfo(UserInfoEntity userInfo);
 
 
-  Future<String> uploadAvatar(Uint8List file, String fileName);
+  Future<String> uploadAvatar(Uint8List file);
 
 }
 
@@ -18,8 +18,8 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl(this._apiClient);
 
   @override
-  Future<String> uploadAvatar(Uint8List file, String fileName) async {
-    final path = await _apiClient.uploadAvatar(file, fileName);
+  Future<String> uploadAvatar(Uint8List file) async {
+    final path = await _apiClient.uploadAvatar(file);
     if (path.isEmpty) {
       throw Exception("Upload avatar failed");
     }

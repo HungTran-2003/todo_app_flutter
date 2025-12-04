@@ -104,11 +104,11 @@ class ApiClient {
     return UserInfoEntity.fromJson(response);
   }
 
-  Future<String> uploadAvatar(Uint8List file, String fileName) async {
+  Future<String> uploadAvatar(Uint8List file) async {
     final response = await _supabaseClient.storage
         .from(_bucket)
         .uploadBinary(
-          fileName,
+          _supabaseClient.auth.currentUser!.id,
           file,
           fileOptions: const FileOptions(upsert: true),
         );

@@ -1,8 +1,5 @@
 import 'dart:developer';
-import 'dart:ffi';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo_app/models/entities/user_info_entity.dart';
@@ -55,8 +52,9 @@ class SettingProvider extends ChangeNotifier {
     final fileBytes = await pickedFile.readAsBytes();
     try {
       navigator.showLoadingOverlay();
-      final path = await userRepository.uploadAvatar(fileBytes, DateTime.now().millisecondsSinceEpoch.toString());
-      userInfo!.avatarPath = path;
+      final path = await userRepository.uploadAvatar(fileBytes);
+
+      userInfo!.avatarPath = "$path?refresh=${DateTime.now().millisecondsSinceEpoch}";
       final updatedUserInfo = await userRepository.updateUserInfo(userInfo!);
       userInfo = updatedUserInfo;
       notifyListeners();

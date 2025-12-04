@@ -11,7 +11,6 @@ import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/global_provider/app_provider.dart';
-import 'package:todo_app/models/entities/user_info_entity.dart';
 import 'package:todo_app/models/enum/language.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/repositories/notification_repository.dart';
