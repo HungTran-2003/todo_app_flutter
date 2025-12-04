@@ -18,12 +18,14 @@ class SignUpProvider extends ChangeNotifier {
       final user = await authRepository.signUp(email, password, udid);
       if (user == null) {
         navigator.showSnackBar(S.current.sign_up_message_failed, Colors.red);
+        navigator.hideLoadingOverlay();
         return;
       }
       navigator.showSnackBar(S.current.sign_up_message_success, Colors.green);
       navigator.pop();
     } catch (e) {
       navigator.showSnackBar(S.current.error_message_system, Colors.red);
+      navigator.hideLoadingOverlay();
     }
   }
 }
