@@ -1,11 +1,15 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
+import 'package:todo_app/models/entities/user_info_entity.dart';
 
 class ApiClient {
   final SupabaseClient _supabaseClient;
-  final _table = 'Todo';
+  final _tableTodo = 'Todo';
+  final _tableUserInfo = 'Profile';
+  final _bucket = 'Avatar';
 
   ApiClient(this._supabaseClient);
 
@@ -45,7 +49,7 @@ class ApiClient {
       throw Exception('User not authenticated');
     }
     final data = await _supabaseClient
-        .from(_table)
+        .from(_tableTodo)
         .select()
         .eq('user_id', userId)
         .order('dua_date', ascending: false);
@@ -55,7 +59,7 @@ class ApiClient {
 
   Future<TodoEntity?> createTodo(TodoEntity todo) async {
     final response = await _supabaseClient
-        .from(_table)
+        .from(_tableTodo)
         .insert(todo.toJson())
         .select()
         .single();
@@ -65,7 +69,7 @@ class ApiClient {
 
   Future<TodoEntity?> updateTodo(TodoEntity todo) async {
     final response = await _supabaseClient
-        .from(_table)
+        .from(_tableTodo)
         .update(todo.toJson())
         .eq('id', todo.id!)
         .select()
@@ -74,6 +78,40 @@ class ApiClient {
   }
 
   Future<void> deleteTodo(int id) async {
-    await _supabaseClient.from(_table).delete().eq('id', id);
+    await _supabaseClient.from(_tableTodo).delete().eq('id', id);
+  }
+
+  Future<UserInfoEntity> getUserInfo() async {
+    final userId = _supabaseClient.auth.currentUser?.id;
+    if (userId == null) {
+      throw Exception('User not authenticated');
+    }
+    final response = await _supabaseClient
+        .from(_tableUserInfo)
+        .select()
+        .eq('user_id', userId)
+        .single();
+    return UserInfoEntity.fromJson(response);
+  }
+
+  Future<UserInfoEntity> updateUserInfo(UserInfoEntity userInfo) async {
+    final response = await _supabaseClient
+        .from(_tableUserInfo)
+        .update(userInfo.toJson())
+        .eq('user_id', userInfo.userId!)
+        .select()
+        .single();
+    return UserInfoEntity.fromJson(response);
+  }
+
+  Future<String> uploadAvatar(Uint8List file, String fileName) async {
+    final response = await _supabaseClient.storage
+        .from(_bucket)
+        .uploadBinary(
+          fileName,
+          file,
+          fileOptions: const FileOptions(upsert: true),
+        );
+    return response;
   }
 }

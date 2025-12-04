@@ -8,4 +8,5 @@ class AppConfigs {
 
   ///Supabase
   static const supabaseUrl = 'https://iidpgetlhglevrfcywiy.supabase.co';
+  static final avatarBaseUrl = "$supabaseUrl/storage/v1/object/public/";
 }

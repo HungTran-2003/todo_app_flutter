@@ -8,6 +8,7 @@ import 'package:todo_app/networking/api_utli.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/repositories/notification_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
+import 'package:todo_app/repositories/user_repository.dart';
 import 'package:todo_app/router/router_config.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -44,6 +45,10 @@ class _MyAppState extends State<MyApp> {
 
         Provider<NotificationRepository>(
           create: (context) => NotificationRepositoryImpl(),
+        ),
+
+        Provider<UserRepository>(
+          create: (context) => UserRepositoryImpl(_apiClient),
         ),
 
         ChangeNotifierProvider<TodoProvider>(

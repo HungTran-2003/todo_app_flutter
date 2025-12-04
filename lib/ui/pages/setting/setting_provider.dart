@@ -1,18 +1,37 @@
+import 'dart:developer';
+import 'dart:ffi';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:todo_app/models/entities/user_info_entity.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/repositories/notification_repository.dart';
+import 'package:todo_app/repositories/user_repository.dart';
 import 'package:todo_app/ui/pages/setting/setting_navigator.dart';
 
 class SettingProvider extends ChangeNotifier {
   final SettingNavigator navigator;
   final AuthRepository authRepository;
+  final UserRepository userRepository;
   final NotificationRepository notificationRepository;
 
   SettingProvider({
     required this.navigator,
     required this.authRepository,
     required this.notificationRepository,
+    required this.userRepository,
   });
+
+  UserInfoEntity? userInfo;
+
+  Future<void> fetchUserInfo() async {
+    userInfo = await userRepository.getUserInfo();
+    log(userInfo!.toJson().toString());
+    notifyListeners();
+  }
+
 
   Future<void> logout() async {
     await authRepository.signOut();
@@ -26,5 +45,26 @@ class SettingProvider extends ChangeNotifier {
       title: "test",
       body: "tesst",
     );
+  }
+
+  Future<void> changeImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile == null) return;
+    final fileBytes = await pickedFile.readAsBytes();
+    try {
+      navigator.showLoadingOverlay();
+      final path = await userRepository.uploadAvatar(fileBytes, DateTime.now().millisecondsSinceEpoch.toString());
+      userInfo!.avatarPath = path;
+      final updatedUserInfo = await userRepository.updateUserInfo(userInfo!);
+      userInfo = updatedUserInfo;
+      notifyListeners();
+      navigator.showSnackBar("Upload Image Success", Colors.green);
+    } catch (e) {
+      log(e.toString());
+      navigator.showSnackBar("Error Upload Image", Colors.red);
+    }
+    navigator.hideLoadingOverlay();
   }
 }

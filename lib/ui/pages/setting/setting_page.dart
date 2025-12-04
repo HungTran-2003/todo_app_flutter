@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/common/app_colors.dart';
 import 'package:todo_app/common/app_dimens.dart';
@@ -10,11 +11,14 @@ import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/global_provider/app_provider.dart';
+import 'package:todo_app/models/entities/user_info_entity.dart';
 import 'package:todo_app/models/enum/language.dart';
 import 'package:todo_app/repositories/auth_repository.dart';
 import 'package:todo_app/repositories/notification_repository.dart';
+import 'package:todo_app/repositories/user_repository.dart';
 import 'package:todo_app/ui/pages/setting/setting_navigator.dart';
 import 'package:todo_app/ui/pages/setting/setting_provider.dart';
+import 'package:todo_app/ui/pages/setting/widgets/avatar_image_cache.dart';
 import 'package:todo_app/ui/pages/setting/widgets/item_setting.dart';
 import 'package:todo_app/ui/widgets/app_bar/app_bar_widget.dart';
 
@@ -40,6 +44,7 @@ class SettingPage extends StatelessWidget {
           navigator: SettingNavigator(context: context),
           authRepository: context.read<AuthRepository>(),
           notificationRepository: context.read<NotificationRepository>(),
+          userRepository: context.read<UserRepository>(),
         );
       },
       child: SettingChildPage(
@@ -72,6 +77,11 @@ class _SettingChildPageState extends State<SettingChildPage> {
     super.initState();
     _provider = context.read<SettingProvider>();
     _todoProvider = context.read<TodoProvider>();
+    _setup();
+  }
+
+  void _setup() async{
+    await _provider.fetchUserInfo();
   }
 
   @override
@@ -92,7 +102,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
           right: AppDimens.paddingNormal,
           bottom: AppDimens.paddingNormal,
         ),
-        child: _buildBodyPage(locale),
+        child: LoaderOverlay(child: _buildBodyPage(locale)),
       ),
     );
   }
@@ -121,14 +131,23 @@ class _SettingChildPageState extends State<SettingChildPage> {
   Widget _buildProfile() {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundImage: const AssetImage(AppImages.defaultProfile),
+        Selector<SettingProvider, String>(
+          builder: (context, avatarUrl, child) {
+            return AvatarImageCache(
+              url: avatarUrl,
+            );
+          },
+          selector: (context, provider) => provider.userInfo?.avatarUrl ?? "",
         ),
         const SizedBox(height: 10),
-        Text(
-          S.of(context).setting_user_name_default,
-          style: AppTextStyles.bMediumSemiBold,
+        Selector<SettingProvider, String>(
+          builder: (context, userName, child) {
+            return Text(
+              userName.isEmpty ? S.of(context).setting_user_name_default : userName,
+              style: AppTextStyles.bMediumSemiBold,
+            );
+          },
+          selector: (context, provider) => provider.userInfo?.userName ?? "",
         ),
         const SizedBox(height: 24.0),
         Row(
@@ -221,8 +240,9 @@ class _SettingChildPageState extends State<SettingChildPage> {
         ItemSettingWidget(
           assetIcon: AppSvgs.iconCamera,
           title: S.of(context).setting_menu_account_3,
-          onPressed: () {
+          onPressed: () async {
             log("Change account Image");
+            await _provider.changeImage();
           },
         ),
       ],
