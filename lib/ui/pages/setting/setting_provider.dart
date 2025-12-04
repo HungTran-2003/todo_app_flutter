@@ -44,9 +44,14 @@ class SettingProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> changeImage() async {
+  Future<void> changeImage(int choose) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    XFile? pickedFile;
+    if (choose == 1) {
+      pickedFile = await picker.pickImage(source: ImageSource.camera);
+    } else {
+      pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    }
 
     if (pickedFile == null) return;
     final fileBytes = await pickedFile.readAsBytes();
@@ -65,4 +70,5 @@ class SettingProvider extends ChangeNotifier {
     }
     navigator.hideLoadingOverlay();
   }
+
 }

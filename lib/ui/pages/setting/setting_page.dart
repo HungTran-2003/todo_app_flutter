@@ -239,9 +239,36 @@ class _SettingChildPageState extends State<SettingChildPage> {
         ItemSettingWidget(
           assetIcon: AppSvgs.iconCamera,
           title: S.of(context).setting_menu_account_3,
-          onPressed: () async {
-            log("Change account Image");
-            await _provider.changeImage();
+          onPressed: () {
+            showModalBottomSheet(context: context, builder: (_){
+              return SizedBox(
+                height: 200,
+                child: Column(
+                  spacing: 8,
+                  children: [
+                    Text("Chon ", style: AppTextStyles.bMediumMedium,),
+
+                    ListTile(
+                      leading: const Icon(Icons.photo_camera_outlined),
+                      title: const Text("Chụp ảnh"),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        await _provider.changeImage(1);
+                      },
+                    ),
+
+                    ListTile(
+                      leading: const Icon(Icons.photo_library_outlined),
+                      title: const Text("Chọn từ thư viện"),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        await _provider.changeImage(2);
+                      },
+                    ),
+                  ],
+                )
+              );
+            });
           },
         ),
       ],
