@@ -155,14 +155,14 @@ class _MyPageState extends State<HomeChildPage> {
           _inCompleteTodos.isNotEmpty
               ? TodoSections(
                   todos: _inCompleteTodos,
-                  onPressed: (index) {
-                    _provider.openPageDetail(todo: _inCompleteTodos[index]);
+                  onPressed: (todoId) {
+                    _provider.openPageDetail(todoId: todoId);
                   },
-                  clickCheckBox: (index) {
-                    _provider.completedTodo(index);
+                  clickCheckBox: (todoId) {
+                    _provider.completedTodo(todoId);
                   },
-                  delete: (value, index) {
-                    _provider.deleteTodo(index, value);
+                  delete: (value, todoId) {
+                    _provider.deleteTodo(todoId, value);
                   },
                 )
               : const SizedBox(height: 80.0),
@@ -170,24 +170,24 @@ class _MyPageState extends State<HomeChildPage> {
           TodoSections(
             todos: _overdueTodos,
             sectionTitle: "Overdue",
-            onPressed: (index) {
-              _provider.openPageDetail(todo: _inCompleteTodos[index]);
+            onPressed: (todoId) {
+              _provider.openPageDetail(todoId: todoId);
             },
-            clickCheckBox: (index) {
-              _provider.completedTodo(index);
+            clickCheckBox: (todoId) {
+              _provider.completedTodo(todoId);
             },
-            delete: (value, index) {
-              _provider.deleteTodo(index, value);
+            delete: (value, todoId) {
+              _provider.deleteTodo(todoId, value);
             },
           ),
 
           TodoSections(
             todos: _completedTodos,
             sectionTitle: S.of(context).home_completed,
-            onPressed: (index) {},
-            clickCheckBox: (index) {},
-            delete: (value, index) {
-              _provider.deleteTodo(index, value);
+            onPressed: (todoId) {},
+            clickCheckBox: (todoId) {},
+            delete: (value, todoId) {
+              _provider.deleteTodo(todoId, value);
             },
           ),
         ],

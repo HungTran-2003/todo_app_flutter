@@ -35,13 +35,14 @@ class TodoSections extends StatelessWidget {
           final isLast = index == todos.length - 1;
           return TodoItem(
             checkboxPress: () {
-              clickCheckBox(index);
+              if (todos[index].id == null) return;
+              clickCheckBox(todos[index].id!);
             },
             first: isFirst,
             last: isLast,
             todo: todos[index],
             onPressed: () {
-              onPressed(index);
+              onPressed(todos[index].id!);
             },
             delete: (value) {
               delete(value, todos[index].id!);

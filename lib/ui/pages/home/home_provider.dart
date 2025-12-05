@@ -74,7 +74,8 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> openPageDetail({TodoEntity? todo}) async {
+  Future<void> openPageDetail({int? todoId}) async {
+    final todo = todos.where((todo) => todo.id == todoId).singleOrNull;
     final result = await navigator.openDetailPage(todo: todo);
     if (result) {
       todos = await todoRepository.getTodos();
@@ -82,10 +83,11 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> completedTodo(int index) async {
+  Future<void> completedTodo(int todoId) async {
     navigator.showLoadingOverlay();
     try {
-      final todo = inCompleteTodos[index];
+
+      final todo = inCompleteTodos.where((todo) => todo.id == todoId).single;
       todo.isComplete = true;
       final updatedTodo = await todoRepository.updateTodo(todo);
       if (updatedTodo == null) {
