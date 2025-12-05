@@ -33,7 +33,7 @@ class TodoSections extends StatelessWidget {
         ...List.generate(todos.length, (index) {
           final isFirst = index == 0;
           final isLast = index == todos.length - 1;
-          if (todos[index].id == null) SizedBox.shrink();
+          if (todos[index].id == null) return SizedBox.shrink();
           return TodoItem(
             checkboxPress: () {
               clickCheckBox(todos[index].id!);

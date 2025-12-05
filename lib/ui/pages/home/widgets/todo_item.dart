@@ -8,13 +8,14 @@ import 'package:todo_app/models/entities/todo_entity.dart';
 import 'package:todo_app/models/enum/todo_category.dart';
 import 'package:todo_app/utils/app_date_util.dart';
 
-class TodoItem extends StatefulWidget {
+class TodoItem extends StatelessWidget {
   final TodoEntity todo;
   final bool first;
   final bool last;
   final VoidCallback? onPressed;
   final VoidCallback checkboxPress;
   final ValueChanged<bool> delete;
+
   const TodoItem({
     super.key,
     this.onPressed,
@@ -26,42 +27,44 @@ class TodoItem extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _TodoItemState();
-}
-
-class _TodoItemState extends State<TodoItem> {
-  @override
   Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.only(
+      topLeft: Radius.circular(first ? 16 : 0),
+      topRight: Radius.circular(first ? 16 : 0),
+      bottomLeft: Radius.circular(last ? 16 : 0),
+      bottomRight: Radius.circular(last ? 16 : 0),
+    );
+
     return Slidable(
-      key: ValueKey(widget.todo.id),
+      key: ValueKey(todo.id),
       closeOnScroll: false,
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
         extentRatio: 0.3,
         dismissible: DismissiblePane(
           onDismissed: () {
-            widget.delete(false);
+            delete(false);
           },
           confirmDismiss: () async {
             return await showDialog<bool>(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text(S.current.dialog_title_confirm),
-                      content: Text(S.current.dialog_description_delete),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: Text(S.current.dialog_cancel),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(true),
-                          child: Text(S.current.dialog_confirm),
-                        ),
-                      ],
-                    );
-                  },
-                ) ??
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(S.current.dialog_title_confirm),
+                  content: Text(S.current.dialog_description_delete),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: Text(S.current.dialog_cancel),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: Text(S.current.dialog_confirm),
+                    ),
+                  ],
+                );
+              },
+            ) ??
                 false;
           },
           closeOnCancel: true,
@@ -69,7 +72,7 @@ class _TodoItemState extends State<TodoItem> {
         children: [
           SlidableAction(
             onPressed: (context) async {
-              widget.delete(true);
+              delete(true);
             },
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
@@ -83,24 +86,14 @@ class _TodoItemState extends State<TodoItem> {
         margin: const EdgeInsets.only(bottom: 1.0),
         child: Material(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(widget.first ? 16 : 0),
-            topRight: Radius.circular(widget.first ? 16 : 0),
-            bottomLeft: Radius.circular(widget.last ? 16 : 0),
-            bottomRight: Radius.circular(widget.last ? 16 : 0),
-          ),
+          borderRadius: borderRadius,
           child: InkWell(
-            onTap: widget.onPressed,
-            overlayColor: WidgetStatePropertyAll((Colors.black.withAlpha(20))),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(widget.first ? 16 : 0),
-              topRight: Radius.circular(widget.first ? 16 : 0),
-              bottomLeft: Radius.circular(widget.last ? 16 : 0),
-              bottomRight: Radius.circular(widget.last ? 16 : 0),
-            ),
+            onTap: onPressed,
+            overlayColor: const WidgetStatePropertyAll((Colors.black12)),
+            borderRadius: borderRadius,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: _buildItemTodo(),
+              child: _buildItemTodo(context),
             ),
           ),
         ),
@@ -108,22 +101,24 @@ class _TodoItemState extends State<TodoItem> {
     );
   }
 
-  Widget _buildItemTodo() {
+  Widget _buildItemTodo(BuildContext context) {
+    final bool isOverdue = !todo.isComplete && todo.duaDate.isBefore(DateTime.now());
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Opacity(
-          opacity: widget.todo.isComplete ? 0.5 : 1,
+          opacity: todo.isComplete ? 0.5 : 1,
           child: Container(
             height: 48,
             width: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: getColor(widget.todo.category.typeName),
+              color: _getColor(todo.category),
             ),
             child: Center(
               child: SvgPicture.asset(
-                widget.todo.assetsCategory,
+                todo.assetsCategory,
                 width: 24,
                 height: 24,
               ),
@@ -131,62 +126,60 @@ class _TodoItemState extends State<TodoItem> {
           ),
         ),
         const SizedBox(width: 12),
-        Opacity(
-          opacity: widget.todo.isComplete ? 0.5 : 1,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 2,
-            children: [
-              Text(
-                widget.todo.title,
-                style: AppTextStyles.bMediumSemiBold.copyWith(
-                  decoration: widget.todo.isComplete
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
-                  color:
-                      !widget.todo.isComplete &&
-                          widget.todo.duaDate.isBefore(DateTime.now())
-                      ? Colors.red
-                      : null,
+        Expanded(
+          child: Opacity(
+            opacity: todo.isComplete ? 0.5 : 1,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  todo.title,
+                  style: AppTextStyles.bMediumSemiBold.copyWith(
+                    decoration: todo.isComplete
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                    color: isOverdue ? Colors.red : null,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              Text(
-                AppDateUtil.toDateTodayString(widget.todo.duaDate),
-                style: AppTextStyles.bSmallMedium.copyWith(
-                  color:
-                      !widget.todo.isComplete &&
-                          widget.todo.duaDate.isBefore(DateTime.now())
-                      ? Colors.red.withValues(alpha: 0.7)
-                      : AppColors.textBlack.withValues(alpha: 0.7),
-                  decoration: widget.todo.isComplete
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
+                const SizedBox(height: 2),
+                Text(
+                  AppDateUtil.toDateTodayString(todo.duaDate),
+                  style: AppTextStyles.bSmallMedium.copyWith(
+                    color: isOverdue
+                        ? Colors.red.withOpacity(0.7)
+                        : AppColors.textBlack.withOpacity(0.7),
+                    decoration: todo.isComplete
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        const Spacer(),
         Checkbox(
-          value: widget.todo.isComplete,
+          value: todo.isComplete,
           onChanged: (value) {
-            widget.checkboxPress();
+            checkboxPress();
           },
         ),
       ],
     );
   }
 
-  Color getColor(String value) {
-    switch (value) {
-      case "Task":
+  // Đề xuất 3: Cải thiện hàm getColor
+  Color _getColor(TodoCategory category) {
+    switch (category) {
+      case TodoCategory.task:
         return AppColors.iconTask;
-      case "Event":
+      case TodoCategory.event:
         return AppColors.iconEvent;
-      case "Goal":
+      case TodoCategory.goal:
         return AppColors.iconGoal;
+    // Không cần default vì enum đã bao phủ hết các trường hợp
     }
-    return Colors.red;
   }
 }
