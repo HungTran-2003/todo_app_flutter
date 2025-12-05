@@ -108,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "home_message_delete_task": MessageLookupByLibrary.simpleMessage(
       "Delete Task Successful",
     ),
+    "home_overdue": MessageLookupByLibrary.simpleMessage("Overdue"),
     "home_title": MessageLookupByLibrary.simpleMessage("My Todo List"),
     "login_message_failed": MessageLookupByLibrary.simpleMessage(
       "Login failed",

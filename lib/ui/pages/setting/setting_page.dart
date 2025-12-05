@@ -85,7 +85,6 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.select<TodoProvider, Locale>((p) => p.locale);
     return Scaffold(
       appBar: AppBarWidget(
         title: S.of(context).setting_title,
@@ -101,12 +100,12 @@ class _SettingChildPageState extends State<SettingChildPage> {
           right: AppDimens.paddingNormal,
           bottom: AppDimens.paddingNormal,
         ),
-        child: LoaderOverlay(child: _buildBodyPage(locale)),
+        child: LoaderOverlay(child: _buildBodyPage()),
       ),
     );
   }
 
-  Widget _buildBodyPage(Locale locale) {
+  Widget _buildBodyPage() {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: Column(
@@ -114,7 +113,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
             [
                   _buildProfile(),
                   const SizedBox(height: 32.0),
-                  _buildSettingApp(locale),
+                  _buildSettingApp(),
                   const SizedBox(height: 16.0),
                   _buildSettingAccount(),
                   const SizedBox(height: 16.0),
@@ -193,22 +192,27 @@ class _SettingChildPageState extends State<SettingChildPage> {
     );
   }
 
-  Widget _buildSettingApp(Locale locale) {
+  Widget _buildSettingApp() {
     return Column(
       spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(S.of(context).setting_menu_settings, style: AppTextStyles.bMedium),
 
-        ItemSettingWidget(
-          assetIcon: locale == Language.english.local
-              ? AppSvgs.iconFlagEnglish
-              : AppSvgs.iconFlagVietNam,
-          title: S.of(context).setting_menu_settings_1,
-          onPressed: () {
-            _todoProvider.changeLocale();
+        Selector<TodoProvider, Locale> (
+          selector: (context, provider) => provider.locale,
+          builder: (context, locale, child){
+            return ItemSettingWidget(
+              assetIcon: locale == Language.english.local
+                  ? AppSvgs.iconFlagEnglish
+                  : AppSvgs.iconFlagVietNam,
+              title: S.of(context).setting_menu_settings_1,
+              onPressed: () {
+                _todoProvider.changeLocale();
+              },
+            );
           },
-        ),
+        )
       ],
     );
   }

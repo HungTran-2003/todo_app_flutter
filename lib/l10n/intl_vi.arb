@@ -50,6 +50,7 @@
   "home_button_add_new_task": "Thêm công việc",
   "home_empty_list_todo": "Hãy tạo công việc mới",
   "home_completed": "Đã xong",
+  "home_overdue": "Quá hạn",
   "home_message_complete_task": "Hoàn thành thành công",
   "home_message_delete_task": "Xoá thành công",
 

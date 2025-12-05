@@ -59,17 +59,6 @@ class _MyPageState extends State<HomeChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final time = context.select<HomeProvider, DateTime>((p) => p.currentTime);
-    final inCompleteTodos = context.select<HomeProvider, List<TodoEntity>>(
-      (p) => p.inCompleteTodos,
-    );
-    final completedTodos = context.select<HomeProvider, List<TodoEntity>>(
-      (p) => p.completedTodos,
-    );
-    final overdueTodos = context.select<HomeProvider, List<TodoEntity>>(
-      (p) => p.overdueTodos,
-    );
-
     return LoaderOverlay(
       child: Scaffold(
         body: Stack(
@@ -81,7 +70,7 @@ class _MyPageState extends State<HomeChildPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      _buildAppBar(time),
+                      _buildAppBar(),
                       const SizedBox(height: 23.0),
                       Text(
                         S.of(context).home_title,
@@ -89,11 +78,7 @@ class _MyPageState extends State<HomeChildPage> {
                       ),
                       const SizedBox(height: 32.0),
                       Expanded(
-                        child: _buildListItemsWidgets(
-                          inCompleteTodos,
-                          completedTodos,
-                          overdueTodos,
-                        ),
+                        child: _buildListItemsWidgets(),
                       ),
                       const SizedBox(height: 24.0),
                     ],
@@ -116,15 +101,20 @@ class _MyPageState extends State<HomeChildPage> {
     );
   }
 
-  Widget _buildAppBar(DateTime time) {
+  Widget _buildAppBar() {
     return Row(
       children: [
         SizedBox(width: 38),
         Expanded(
           child: Center(
-            child: Text(
-              AppDateUtil.toDateString(time),
-              style: AppTextStyles.wMediumSemiBold,
+            child: Selector<HomeProvider, DateTime>(
+              selector: (context, provider) => provider.currentTime,
+              builder: (context, currentTime, child) {
+                return Text(
+                  AppDateUtil.toDateString(currentTime),
+                  style: AppTextStyles.wMediumSemiBold,
+                );
+              },
             ),
           ),
         ),
@@ -138,63 +128,78 @@ class _MyPageState extends State<HomeChildPage> {
     );
   }
 
-  Widget _buildListItemsWidgets(
-    List<TodoEntity> inCompleteTodos,
-    List<TodoEntity> completedTodos,
-    List<TodoEntity> overdueTodos,
-  ) {
-    if (inCompleteTodos.isEmpty && completedTodos.isEmpty) {
-      return Center(
-        child: Text(
-          S.of(context).home_empty_list_todo,
-          style: AppTextStyles.bMediumSemiBold,
-        ),
-      );
-    }
-    return SlidableAutoCloseBehavior(
-      child: ListView(
-        physics: const ClampingScrollPhysics(),
-        children: [
-          inCompleteTodos.isNotEmpty
-              ? TodoSections(
-                  todos: inCompleteTodos,
-                  onPressed: (todoId) {
-                    _provider.openPageDetail(todoId: todoId);
-                  },
-                  clickCheckBox: (todoId) {
-                    _provider.completedTodo(todoId);
-                  },
-                  delete: (value, todoId) {
-                    _provider.deleteTodo(todoId, value);
-                  },
-                )
-              : const SizedBox(height: 80.0),
-
-          TodoSections(
-            todos: overdueTodos,
-            sectionTitle: "Overdue",
-            onPressed: (todoId) {
-              _provider.openPageDetail(todoId: todoId);
-            },
-            clickCheckBox: (todoId) {
-              _provider.completedTodo(todoId);
-            },
-            delete: (value, todoId) {
-              _provider.deleteTodo(todoId, value);
-            },
+  Widget _buildListItemsWidgets() {
+    return Selector<HomeProvider, bool>(
+      selector: (context, provider) => provider.todosIsEmpty,
+      builder: (context, value, child){
+        if(value){
+          return Center(
+            child: Text(
+              S.of(context).home_empty_list_todo,
+              style: AppTextStyles.bMediumSemiBold,
+            ),
+          );
+        }
+        return SlidableAutoCloseBehavior(
+          child: ListView(
+            physics: const ClampingScrollPhysics(),
+            children: [
+              Selector<HomeProvider, List<TodoEntity>>(
+                selector: (context, provider) => provider.inCompleteTodos,
+                builder: (context, inCompleteTodos, child) {
+                  if (inCompleteTodos.isEmpty) {
+                    return const SizedBox(height: 80.0);
+                  }
+                  return TodoSections(
+                    todos: inCompleteTodos,
+                    onPressed: (todoId) {
+                      _provider.openPageDetail(todoId: todoId);
+                    },
+                    clickCheckBox: (todoId) {
+                      _provider.completedTodo(todoId);
+                    },
+                    delete: (value, todoId) {
+                      _provider.deleteTodo(todoId, value);
+                    },
+                  );
+                }
+              ),
+              Selector<HomeProvider, List<TodoEntity>>(
+                  selector: (context, provider) => provider.overdueTodos,
+                  builder: (context, inCompleteTodos, child) {
+                    return TodoSections(
+                      todos: inCompleteTodos,
+                      sectionTitle: S.of(context).home_overdue,
+                      onPressed: (todoId) {
+                        _provider.openPageDetail(todoId: todoId);
+                      },
+                      clickCheckBox: (todoId) {
+                        _provider.completedTodo(todoId);
+                      },
+                      delete: (value, todoId) {
+                        _provider.deleteTodo(todoId, value);
+                      },
+                    );
+                  }
+              ),
+              Selector<HomeProvider, List<TodoEntity>>(
+                  selector: (context, provider) => provider.completedTodos,
+                  builder: (context, inCompleteTodos, child) {
+                    return TodoSections(
+                      todos: inCompleteTodos,
+                      sectionTitle: S.of(context).home_completed,
+                      onPressed: (todoId) {},
+                      clickCheckBox: (todoId) {},
+                      delete: (value, todoId) {
+                        _provider.deleteTodo(todoId, value);
+                      },
+                    );
+                  }
+              )
+            ],
           ),
-
-          TodoSections(
-            todos: completedTodos,
-            sectionTitle: S.of(context).home_completed,
-            onPressed: (todoId) {},
-            clickCheckBox: (todoId) {},
-            delete: (value, todoId) {
-              _provider.deleteTodo(todoId, value);
-            },
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
 }

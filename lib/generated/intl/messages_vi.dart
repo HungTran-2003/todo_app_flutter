@@ -108,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "home_message_delete_task": MessageLookupByLibrary.simpleMessage(
       "Xoá thành công",
     ),
+    "home_overdue": MessageLookupByLibrary.simpleMessage("Quá hạn"),
     "home_title": MessageLookupByLibrary.simpleMessage("Danh sách Todo"),
     "login_message_failed": MessageLookupByLibrary.simpleMessage(
       "Đăng nhập thất bại",

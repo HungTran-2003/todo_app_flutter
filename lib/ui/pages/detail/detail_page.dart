@@ -81,9 +81,6 @@ class _DetailChildPageState extends State<DetailChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryIndex = context.select<DetailProvider, int>(
-      (p) => p.categoryIndex,
-    );
     return Scaffold(
       appBar: AppBarWidget(
         title: _localProvider.todo == null
@@ -102,7 +99,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
               right: AppDimens.marginNormal,
               top: AppDimens.marginLarge,
             ),
-            child: _buildBodyPage(categoryIndex),
+            child: _buildBodyPage(),
           ),
         ),
       ),
@@ -129,7 +126,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
     );
   }
 
-  Widget _buildBodyPage(int categoryIndex) {
+  Widget _buildBodyPage() {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: Form(
@@ -147,35 +144,13 @@ class _DetailChildPageState extends State<DetailChildPage> {
             ),
 
             Row(
+              spacing: 24.0,
               children: [
                 Text(
                   S.of(context).detail_category,
                   style: AppTextStyles.bSmallSemiBold,
                 ),
-                const SizedBox(width: 24.0),
-                AppIconButton(
-                  assetIcon: AppSvgs.note,
-                  onPressed: () {
-                    _localProvider.changeCategory(1);
-                  },
-                  colorBorder: categoryIndex == 1 ? Colors.black : Colors.white,
-                ),
-                const SizedBox(width: 16.0),
-                AppIconButton(
-                  assetIcon: AppSvgs.calendar,
-                  onPressed: () {
-                    _localProvider.changeCategory(2);
-                  },
-                  colorBorder: categoryIndex == 2 ? Colors.black : Colors.white,
-                ),
-                const SizedBox(width: 16.0),
-                AppIconButton(
-                  assetIcon: AppSvgs.goal,
-                  onPressed: () {
-                    _localProvider.changeCategory(3);
-                  },
-                  colorBorder: categoryIndex == 3 ? Colors.black : Colors.white,
-                ),
+                _buildCategory(),
               ],
             ),
             Row(
@@ -230,6 +205,40 @@ class _DetailChildPageState extends State<DetailChildPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCategory() {
+    return Selector<DetailProvider, int>(
+      selector: (context, provider) => provider.categoryIndex,
+      builder: (context, categoryIndex, child) {
+        return Row(
+          spacing: 16,
+          children: [
+            AppIconButton(
+              assetIcon: AppSvgs.note,
+              onPressed: () {
+                _localProvider.changeCategory(1);
+              },
+              colorBorder: categoryIndex == 1 ? Colors.black : Colors.white,
+            ),
+            AppIconButton(
+              assetIcon: AppSvgs.calendar,
+              onPressed: () {
+                _localProvider.changeCategory(2);
+              },
+              colorBorder: categoryIndex == 2 ? Colors.black : Colors.white,
+            ),
+            AppIconButton(
+              assetIcon: AppSvgs.goal,
+              onPressed: () {
+                _localProvider.changeCategory(3);
+              },
+              colorBorder: categoryIndex == 3 ? Colors.black : Colors.white,
+            ),
+          ],
+        );
+      },
     );
   }
 }

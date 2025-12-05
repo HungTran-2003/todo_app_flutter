@@ -149,8 +149,8 @@ class TodoItem extends StatelessWidget {
                   AppDateUtil.toDateTodayString(todo.duaDate),
                   style: AppTextStyles.bSmallMedium.copyWith(
                     color: isOverdue
-                        ? Colors.red.withOpacity(0.7)
-                        : AppColors.textBlack.withOpacity(0.7),
+                        ? Colors.red.withValues(alpha: 0.7)
+                        : AppColors.textBlack.withValues(alpha: 0.7),
                     decoration: todo.isComplete
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,

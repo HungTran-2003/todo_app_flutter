@@ -10,52 +10,51 @@ import 'package:todo_app/ui/pages/home/home_navigator.dart';
 
 class HomeProvider extends ChangeNotifier {
   final HomeNavigator navigator;
-  List<TodoEntity> todos;
+  List<TodoEntity> _todos;
   final TodoRepository todoRepository;
   final NotificationRepository notificationRepository;
 
   HomeProvider({
     required this.navigator,
-    required this.todos,
+    required List<TodoEntity> todos,
     required this.todoRepository,
     required this.notificationRepository,
-  });
+  }) : _todos = todos;
 
   DateTime _currentTime = DateTime.now();
   DateTime get currentTime => _currentTime;
 
-
-
-  List<TodoEntity> get inCompleteTodos => todos
+  bool get todosIsEmpty => _todos.isEmpty;
+  List<TodoEntity> get inCompleteTodos => _todos
       .where(
         (todo) =>
             todo.isComplete == false && todo.duaDate.isAfter(DateTime.now()),
       )
       .toList();
-  List<TodoEntity> get overdueTodos => todos
+  List<TodoEntity> get overdueTodos => _todos
       .where(
         (todo) =>
             todo.isComplete == false && todo.duaDate.isBefore(DateTime.now()),
       )
       .toList();
   List<TodoEntity> get completedTodos =>
-      todos.where((todo) => todo.isComplete == true).toList();
+      _todos.where((todo) => todo.isComplete == true).toList();
+
+  Timer? _timer;
 
   void startMinuteTimer() {
-    Future.doWhile(() async {
-      final now = DateTime.now();
-      final next = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        now.hour,
-        now.minute + 1,
-      );
+    _timer?.cancel();
 
-      await Future.delayed(next.difference(now));
+    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      _currentTime = DateTime.now();
       notifyListeners();
-      return true;
     });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   Future<void> deleteTodo(int todoId, bool isShowDialog) async {
@@ -78,11 +77,11 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future<void> openPageDetail({int? todoId}) async {
-    final todo = todos.where((todo) => todo.id == todoId).singleOrNull;
+    final todo = _todos.where((todo) => todo.id == todoId).singleOrNull;
     final result = await navigator.openDetailPage(todo: todo);
     if (result) {
-      todos = await todoRepository.getTodos();
-      _sortTodosByDuaDateDesc();
+      _todos = await todoRepository.getTodos();
+      notifyListeners();
     }
   }
 
@@ -107,11 +106,11 @@ class HomeProvider extends ChangeNotifier {
           Colors.red,
         );
       } else {
-        final index = todos.indexWhere(
+        final index = _todos.indexWhere(
           (element) => element.id == updatedTodo.id,
         );
         if (index != -1) {
-          todos[index] = updatedTodo;
+          _todos[index] = updatedTodo;
           await notificationRepository.cancelNotification(updatedTodo.id!);
           navigator.showSnackBar(
             S.current.home_message_complete_task,
@@ -131,7 +130,7 @@ class HomeProvider extends ChangeNotifier {
     try {
       final result = await todoRepository.deleteTodo(id);
       if (!result) return;
-      todos.removeWhere((todo) => todo.id == id);
+      _todos.removeWhere((todo) => todo.id == id);
       await notificationRepository.cancelNotification(id);
       notifyListeners();
       navigator.showSnackBar(S.current.home_message_delete_task, Colors.green);
@@ -140,10 +139,5 @@ class HomeProvider extends ChangeNotifier {
       notifyListeners();
       navigator.showSnackBar(S.current.error_message_delete_task, Colors.red);
     }
-  }
-
-  void _sortTodosByDuaDateDesc() {
-    todos.sort((a, b) => a.duaDate.compareTo(b.duaDate));
-    notifyListeners();
   }
 }

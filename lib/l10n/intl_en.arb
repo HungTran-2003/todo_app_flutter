@@ -51,6 +51,7 @@
   "home_button_add_new_task": "Add New Task",
   "home_empty_list_todo": "Let's create a new task",
   "home_completed": "Completed",
+  "home_overdue": "Overdue",
   "home_message_complete_task": "Completed Task Successful",
   "home_message_delete_task": "Delete Task Successful",
 

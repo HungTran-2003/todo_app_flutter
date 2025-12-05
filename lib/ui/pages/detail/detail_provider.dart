@@ -26,7 +26,6 @@ class DetailProvider extends ChangeNotifier {
 
   void changeCategory(int index) {
     categoryIndex = index;
-    log("$categoryIndex ada");
     notifyListeners();
   }
 
