@@ -549,6 +549,36 @@ class S {
     return Intl.message('Yes', name: 'dialog_confirm', desc: '', args: []);
   }
 
+  /// `Change Username`
+  String get dialog_title_change_name {
+    return Intl.message(
+      'Change Username',
+      name: 'dialog_title_change_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a new name`
+  String get dialog_title_input_change_name {
+    return Intl.message(
+      'Enter a new name',
+      name: 'dialog_title_input_change_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a new name`
+  String get dialog_title_input_hint {
+    return Intl.message(
+      'Enter a new name',
+      name: 'dialog_title_input_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add New Task`
   String get detail_title_add_task {
     return Intl.message(

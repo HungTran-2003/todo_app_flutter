@@ -62,6 +62,9 @@
   "dialog_description_delete": "Are you sure you want to delete this task?",
   "dialog_cancel": "Cancel",
   "dialog_confirm": "Yes",
+  "dialog_title_change_name": "Change Username",
+  "dialog_title_input_change_name": "Enter a new name",
+  "dialog_title_input_hint": "Enter a new name",
 
   "detail_title_add_task": "Add New Task",
   "detail_title_detail": "Detail Task",

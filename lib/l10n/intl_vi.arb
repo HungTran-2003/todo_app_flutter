@@ -53,6 +53,10 @@
   "home_overdue": "Quá hạn",
   "home_message_complete_task": "Hoàn thành thành công",
   "home_message_delete_task": "Xoá thành công",
+  "dialog_title_change_name": "Đổi tên tài khoản",
+  "dialog_title_input_change_name": "Nhập tên mới",
+  "dialog_title_input_hint": "Nhập tên mới",
+
 
   "validator_message_confirm_password": "Mật khẩu không khớp",
 

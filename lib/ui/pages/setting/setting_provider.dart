@@ -21,11 +21,13 @@ class SettingProvider extends ChangeNotifier {
     required this.userRepository,
   });
 
-  UserInfoEntity? userInfo;
+  UserInfoEntity? _userInfo;
+  UserInfoEntity? get userInfo => _userInfo;
+
 
   Future<void> fetchUserInfo() async {
-    userInfo = await userRepository.getUserInfo();
-    log(userInfo!.toJson().toString());
+    _userInfo = await userRepository.getUserInfo();
+    log(_userInfo!.toJson().toString());
     notifyListeners();
   }
 
@@ -61,7 +63,7 @@ class SettingProvider extends ChangeNotifier {
 
       userInfo!.avatarPath = "$path?refresh=${DateTime.now().millisecondsSinceEpoch}";
       final updatedUserInfo = await userRepository.updateUserInfo(userInfo!);
-      userInfo = updatedUserInfo;
+      _userInfo = updatedUserInfo;
       notifyListeners();
       navigator.showSnackBar("Upload Image Success", Colors.green);
     } catch (e) {
@@ -69,6 +71,23 @@ class SettingProvider extends ChangeNotifier {
       navigator.showSnackBar("Error Upload Image", Colors.red);
     }
     navigator.hideLoadingOverlay();
+  }
+
+  Future<void> changeUserName(String userName) async{
+    if(userInfo == null) return;
+    navigator.showLoadingOverlay();
+    userInfo!.userName = userName;
+    try{
+      final updatedUserInfo = await userRepository.updateUserInfo(userInfo!);
+      _userInfo = updatedUserInfo;
+      navigator.showSnackBar("Change Name Success", Colors.green);
+      notifyListeners();
+    }catch(e){
+      log(e.toString());
+      navigator.showSnackBar("Error Change Name", Colors.red);
+    }
+    navigator.hideLoadingOverlay();
+    notifyListeners();
   }
 
 }

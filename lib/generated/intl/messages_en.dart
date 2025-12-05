@@ -75,8 +75,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "dialog_description_delete": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to delete this task?",
     ),
+    "dialog_title_change_name": MessageLookupByLibrary.simpleMessage(
+      "Change Username",
+    ),
     "dialog_title_confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
     "dialog_title_delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "dialog_title_input_change_name": MessageLookupByLibrary.simpleMessage(
+      "Enter a new name",
+    ),
+    "dialog_title_input_hint": MessageLookupByLibrary.simpleMessage(
+      "Enter a new name",
+    ),
     "error_message_change_task": MessageLookupByLibrary.simpleMessage(
       "Change Task Error",
     ),

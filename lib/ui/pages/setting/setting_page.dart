@@ -20,6 +20,8 @@ import 'package:todo_app/ui/pages/setting/setting_provider.dart';
 import 'package:todo_app/ui/pages/setting/widgets/avatar_image_cache.dart';
 import 'package:todo_app/ui/pages/setting/widgets/item_setting.dart';
 import 'package:todo_app/ui/widgets/app_bar/app_bar_widget.dart';
+import 'package:todo_app/ui/widgets/button/app_button.dart';
+import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
 
 class SettingViewArguments {
   final int completedTodos;
@@ -79,7 +81,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
     _setup();
   }
 
-  void _setup() async{
+  void _setup() async {
     await _provider.fetchUserInfo();
   }
 
@@ -131,9 +133,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
       children: [
         Selector<SettingProvider, String>(
           builder: (context, avatarUrl, child) {
-            return AvatarImageCache(
-              url: avatarUrl,
-            );
+            return AvatarImageCache(url: avatarUrl);
           },
           selector: (context, provider) => provider.userInfo?.avatarUrl ?? "",
         ),
@@ -141,7 +141,9 @@ class _SettingChildPageState extends State<SettingChildPage> {
         Selector<SettingProvider, String>(
           builder: (context, userName, child) {
             return Text(
-              userName.isEmpty ? S.of(context).setting_user_name_default : userName,
+              userName.isEmpty
+                  ? S.of(context).setting_user_name_default
+                  : userName,
               style: AppTextStyles.bMediumSemiBold,
             );
           },
@@ -199,9 +201,9 @@ class _SettingChildPageState extends State<SettingChildPage> {
       children: [
         Text(S.of(context).setting_menu_settings, style: AppTextStyles.bMedium),
 
-        Selector<TodoProvider, Locale> (
+        Selector<TodoProvider, Locale>(
           selector: (context, provider) => provider.locale,
-          builder: (context, locale, child){
+          builder: (context, locale, child) {
             return ItemSettingWidget(
               assetIcon: locale == Language.english.local
                   ? AppSvgs.iconFlagEnglish
@@ -212,7 +214,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
               },
             );
           },
-        )
+        ),
       ],
     );
   }
@@ -228,7 +230,10 @@ class _SettingChildPageState extends State<SettingChildPage> {
           assetIcon: AppSvgs.iconUser,
           title: S.of(context).setting_menu_account_1,
           onPressed: () async {
-            await _provider.showSimpleNotification();
+            final result = await showPopupInput(context);
+            if (result != null) {
+              _provider.changeUserName(result);
+            }
           },
         ),
 
@@ -244,35 +249,38 @@ class _SettingChildPageState extends State<SettingChildPage> {
           assetIcon: AppSvgs.iconCamera,
           title: S.of(context).setting_menu_account_3,
           onPressed: () {
-            showModalBottomSheet(context: context, builder: (_){
-              return SizedBox(
-                height: 200,
-                child: Column(
-                  spacing: 8,
-                  children: [
-                    Text("Chon ", style: AppTextStyles.bMediumMedium,),
+            showModalBottomSheet(
+              context: context,
+              builder: (_) {
+                return SizedBox(
+                  height: 200,
+                  child: Column(
+                    spacing: 8,
+                    children: [
+                      Text("Chon ", style: AppTextStyles.bMediumMedium),
 
-                    ListTile(
-                      leading: const Icon(Icons.photo_camera_outlined),
-                      title: const Text("Chụp ảnh"),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        await _provider.changeImage(1);
-                      },
-                    ),
+                      ListTile(
+                        leading: const Icon(Icons.photo_camera_outlined),
+                        title: const Text("Chụp ảnh"),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          await _provider.changeImage(1);
+                        },
+                      ),
 
-                    ListTile(
-                      leading: const Icon(Icons.photo_library_outlined),
-                      title: const Text("Chọn từ thư viện"),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        await _provider.changeImage(2);
-                      },
-                    ),
-                  ],
-                )
-              );
-            });
+                      ListTile(
+                        leading: const Icon(Icons.photo_library_outlined),
+                        title: const Text("Chọn từ thư viện"),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          await _provider.changeImage(2);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
           },
         ),
       ],
@@ -327,6 +335,50 @@ class _SettingChildPageState extends State<SettingChildPage> {
           },
         ),
       ],
+    );
+  }
+
+  Future<String?> showPopupInput(BuildContext context) async {
+    final textController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    return await showDialog(
+      context: context,
+      builder: (_) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(AppDimens.paddingNormal),
+            child: Form(
+              key: formKey,
+              child: Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: AppDimens.marginLarge,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 16.0,
+                  children: [
+                    Text(
+                      S.of(context).dialog_title_change_name,
+                      style: AppTextStyles.bMediumMedium,
+                    ),
+                    AppTextField(
+                      controller: textController,
+                      title: S.of(context).dialog_title_input_change_name,
+                      hint: S.of(context).dialog_title_input_hint,
+                    ),
+                    AppButton(label: S.of(context).dialog_confirm, onPressed: (){
+                      Navigator.pop(context, textController.text);
+                    },)
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

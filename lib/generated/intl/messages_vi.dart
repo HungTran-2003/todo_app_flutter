@@ -75,8 +75,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "dialog_description_delete": MessageLookupByLibrary.simpleMessage(
       "Bạn có chắc muốn xoá công việc này?",
     ),
+    "dialog_title_change_name": MessageLookupByLibrary.simpleMessage(
+      "Đổi tên tài khoản",
+    ),
     "dialog_title_confirm": MessageLookupByLibrary.simpleMessage("Xác nhận"),
     "dialog_title_delete": MessageLookupByLibrary.simpleMessage("Xoá"),
+    "dialog_title_input_change_name": MessageLookupByLibrary.simpleMessage(
+      "Nhập tên mới",
+    ),
+    "dialog_title_input_hint": MessageLookupByLibrary.simpleMessage(
+      "Nhập tên mới",
+    ),
     "error_message_change_task": MessageLookupByLibrary.simpleMessage(
       "Lỗi cập nhật",
     ),
