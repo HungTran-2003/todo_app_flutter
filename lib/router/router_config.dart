@@ -21,53 +21,52 @@ class AppRouter {
     debugLogDiagnostics: true,
   );
 
-  static const String splash = "/";
-  static const String onBoarding = "onboarding";
-  static const String home = "home";
-  static const String login = "login";
-  static const String register = "register";
-  static const String detail = "detail";
-  static const String setting = "setting";
+  static const String splash = "/splash";
+  static const String onBoarding = "/onboarding";
+  static const String home = "/home";
+  static const String login = "/login";
+  static const String register = "/register";
+  static const String detail = "/detail";
+  static const String setting = "/setting";
 
   static final _routes = <RouteBase>[
     GoRoute(
+      name: splash,
       path: splash,
       builder: (context, state) => const SplashPage(),
-      routes: [
-        GoRoute(
-          name: onBoarding,
-          path: onBoarding,
-          builder: (context, state) => const OnboardingPage(),
-        ),
-        GoRoute(
-          name: login,
-          path: login,
-          builder: (context, state) => const SignInPage(),
-        ),
-        GoRoute(
-          name: register,
-          path: register,
-          builder: (context, state) => const SignUpPage(),
-        ),
-        GoRoute(
-          name: home,
-          path: home,
-          builder: (context, state) =>
-              HomePage(todos: state.extra as List<TodoEntity>),
-        ),
-        GoRoute(
-          name: detail,
-          path: detail,
-          builder: (context, state) =>
-              DetailPage(todo: state.extra as TodoEntity?),
-        ),
-        GoRoute(
-          name: setting,
-          path: setting,
-          builder: (context, state) =>
-              SettingPage(arguments: state.extra as SettingViewArguments),
-        ),
-      ],
+    ),
+    GoRoute(
+      name: onBoarding,
+      path: onBoarding,
+      builder: (context, state) => const OnboardingPage(),
+    ),
+    GoRoute(
+      name: login,
+      path: login,
+      builder: (context, state) => const SignInPage(),
+    ),
+    GoRoute(
+      name: register,
+      path: register,
+      builder: (context, state) => const SignUpPage(),
+    ),
+    GoRoute(
+      name: home,
+      path: home,
+      builder: (context, state) =>
+          HomePage(todos: state.extra as List<TodoEntity>),
+    ),
+    GoRoute(
+      name: detail,
+      path: detail,
+      builder: (context, state) =>
+          DetailPage(todo: state.extra as TodoEntity?),
+    ),
+    GoRoute(
+      name: setting,
+      path: setting,
+      builder: (context, state) =>
+          SettingPage(arguments: state.extra as SettingViewArguments),
     ),
   ];
 }
