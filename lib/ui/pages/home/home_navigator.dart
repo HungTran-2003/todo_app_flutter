@@ -10,7 +10,7 @@ class HomeNavigator extends AppNavigator {
     return await pushName(AppRouter.detail, arguments: todo);
   }
 
-  Future<void> openSettingPage({
+  Future<void> openPageSetting({
     int completedTodos = 0,
     int inCompleteTodos = 0,
   }) async {

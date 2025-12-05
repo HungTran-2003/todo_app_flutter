@@ -21,7 +21,10 @@ class HomeProvider extends ChangeNotifier {
     required this.notificationRepository,
   });
 
-  DateTime currentTime = DateTime.now();
+  DateTime _currentTime = DateTime.now();
+  DateTime get currentTime => _currentTime;
+
+
 
   List<TodoEntity> get inCompleteTodos => todos
       .where(
@@ -29,14 +32,14 @@ class HomeProvider extends ChangeNotifier {
             todo.isComplete == false && todo.duaDate.isAfter(DateTime.now()),
       )
       .toList();
-  List<TodoEntity> get completedTodos =>
-      todos.where((todo) => todo.isComplete == true).toList();
   List<TodoEntity> get overdueTodos => todos
       .where(
         (todo) =>
             todo.isComplete == false && todo.duaDate.isBefore(DateTime.now()),
       )
       .toList();
+  List<TodoEntity> get completedTodos =>
+      todos.where((todo) => todo.isComplete == true).toList();
 
   void startMinuteTimer() {
     Future.doWhile(() async {
@@ -83,10 +86,18 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> openPageSetting() async {
+    final countCompleted = completedTodos.length;
+    final countInComplete = inCompleteTodos.length + overdueTodos.length;
+    await navigator.openPageSetting(
+      completedTodos: countCompleted,
+      inCompleteTodos: countInComplete,
+    );
+  }
+
   Future<void> completedTodo(int todoId) async {
     navigator.showLoadingOverlay();
     try {
-
       final todo = inCompleteTodos.where((todo) => todo.id == todoId).single;
       todo.isComplete = true;
       final updatedTodo = await todoRepository.updateTodo(todo);

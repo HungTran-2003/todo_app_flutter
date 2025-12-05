@@ -53,10 +53,6 @@ class _MyPageState extends State<HomeChildPage> {
     _setup();
   }
 
-  List<TodoEntity> _inCompleteTodos = [];
-  List<TodoEntity> _completedTodos = [];
-  List<TodoEntity> _overdueTodos = [];
-
   void _setup() {
     _provider.startMinuteTimer();
   }
@@ -64,13 +60,13 @@ class _MyPageState extends State<HomeChildPage> {
   @override
   Widget build(BuildContext context) {
     final time = context.select<HomeProvider, DateTime>((p) => p.currentTime);
-    _inCompleteTodos = context.select<HomeProvider, List<TodoEntity>>(
+    final _inCompleteTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.inCompleteTodos,
     );
-    _completedTodos = context.select<HomeProvider, List<TodoEntity>>(
+    final _completedTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.completedTodos,
     );
-    _overdueTodos = context.select<HomeProvider, List<TodoEntity>>(
+    final _overdueTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.overdueTodos,
     );
 
@@ -92,7 +88,13 @@ class _MyPageState extends State<HomeChildPage> {
                         style: AppTextStyles.wMaxLargeSemiBold,
                       ),
                       const SizedBox(height: 32.0),
-                      Expanded(child: _buildListItemsWidgets()),
+                      Expanded(
+                        child: _buildListItemsWidgets(
+                          _inCompleteTodos,
+                          _completedTodos,
+                          _overdueTodos,
+                        ),
+                      ),
                       const SizedBox(height: 24.0),
                     ],
                   ),
@@ -129,18 +131,19 @@ class _MyPageState extends State<HomeChildPage> {
         AppIconButton(
           assetIcon: AppSvgs.iconSetting,
           onPressed: () {
-            _provider.navigator.openSettingPage(
-              completedTodos: _completedTodos.length,
-              inCompleteTodos: _inCompleteTodos.length,
-            );
+            _provider.openPageSetting();
           },
         ),
       ],
     );
   }
 
-  Widget _buildListItemsWidgets() {
-    if (_inCompleteTodos.isEmpty && _completedTodos.isEmpty) {
+  Widget _buildListItemsWidgets(
+    List<TodoEntity> inCompleteTodos,
+    List<TodoEntity> completedTodos,
+    List<TodoEntity> overdueTodos,
+  ) {
+    if (inCompleteTodos.isEmpty && completedTodos.isEmpty) {
       return Center(
         child: Text(
           S.of(context).home_empty_list_todo,
@@ -152,9 +155,9 @@ class _MyPageState extends State<HomeChildPage> {
       child: ListView(
         physics: const ClampingScrollPhysics(),
         children: [
-          _inCompleteTodos.isNotEmpty
+          inCompleteTodos.isNotEmpty
               ? TodoSections(
-                  todos: _inCompleteTodos,
+                  todos: inCompleteTodos,
                   onPressed: (todoId) {
                     _provider.openPageDetail(todoId: todoId);
                   },
@@ -168,7 +171,7 @@ class _MyPageState extends State<HomeChildPage> {
               : const SizedBox(height: 80.0),
 
           TodoSections(
-            todos: _overdueTodos,
+            todos: overdueTodos,
             sectionTitle: "Overdue",
             onPressed: (todoId) {
               _provider.openPageDetail(todoId: todoId);
@@ -182,7 +185,7 @@ class _MyPageState extends State<HomeChildPage> {
           ),
 
           TodoSections(
-            todos: _completedTodos,
+            todos: completedTodos,
             sectionTitle: S.of(context).home_completed,
             onPressed: (todoId) {},
             clickCheckBox: (todoId) {},
