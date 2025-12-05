@@ -19,7 +19,8 @@ class SplashProvider extends ChangeNotifier {
   final TodoRepository todoRepository;
   final NotificationRepository notificationRepository;
 
-  bool isLoading = false;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
   String message = "";
 
   SplashProvider({
@@ -29,58 +30,69 @@ class SplashProvider extends ChangeNotifier {
     required this.notificationRepository,
   });
 
-  Future<void> login() async {
-    isLoading = true;
-    message = S.current.splash_message_signing_in;
-    log(message);
-    notifyListeners();
+  Future<void> initializeApp() async {
+    _setLoading(true, S.current.splash_message_signing_in);
     try {
+      await notificationRepository.init();
       final refreshToken = await AppSecureStorage.instance.getRefreshToken();
-      User? user;
-
       if (refreshToken != null) {
-        user = await authRepository.signInWithToken(refreshToken);
-        if (user == null) {
-          navigator.showSnackBar(
-            S.current.error_message_session_expired,
-            Colors.orange,
-          );
-          navigator.openSignIn();
-          return;
-        }
-      } else {
-        final isFirstLogin = await AppSharePreferences.isFirstLogin();
-        log("isFirstLogin: $isFirstLogin");
-        if (isFirstLogin) {
-          navigator.openSignIn();
-          return;
-        } else {
-          final udid = await DeviceUntil.getUDID();
-          user = await authRepository.signInWithEmail(
-            AppUtils.generateDeviceEmail(udid),
-            udid,
-          );
-          if (user != null) {
-            await AppSharePreferences.setFirstRun(value: false);
-          } else {
-            navigator.openOnBoardingPage();
-            return;
-          }
-        }
+        await _handleLoginWithToken(refreshToken);
+        return;
       }
-
-      message = S.current.splash_message_fetching_data;
-      notifyListeners();
-      final todos = await _fetchInitialData();
-
-      message = S.current.splash_message_done;
-      notifyListeners();
-      navigator.openHomePage(todos);
-    } catch (e) {
+      final isFirstRun = await AppSharePreferences.isFirstRun();
+      if(isFirstRun){
+        await _handleAnonymousLogin();
+        return;
+      }
+      navigator.openSignIn();
+    } catch(e){
       log('An error occurred during login process: $e');
       navigator.showSnackBar(S.current.error_message_network, Colors.red);
       navigator.openSignIn();
     }
+
+  }
+
+  Future<void> _handleLoginWithToken(String refreshToken) async {
+    final user = await authRepository.signInWithToken(refreshToken);
+    if (user == null) {
+      navigator.showSnackBar(S.current.error_message_session_expired, Colors.orange);
+      navigator.openSignIn();
+      return;
+    }
+    await _fetchDataAndNavigate(user);
+  }
+
+  Future<void> _handleAnonymousLogin() async {
+    final udid = await DeviceUntil.getUDID();
+    final user = await authRepository.signInWithEmail(
+      AppUtils.generateDeviceEmail(udid),
+      udid,
+    );
+    if (user == null) {
+      navigator.openOnBoardingPage();
+      return;
+    }
+    await AppSharePreferences.setFirstRun(value: false);
+    await _fetchDataAndNavigate(user);
+  }
+
+  Future<void> _fetchDataAndNavigate(User user) async {
+    _updateMessage(S.current.splash_message_fetching_data);
+    final todos = await _fetchInitialData();
+    _updateMessage(S.current.splash_message_done);
+    navigator.openHomePage(todos);
+  }
+
+  void _setLoading(bool value, [String msg = ""]) {
+    _isLoading = value;
+    message = msg;
+    notifyListeners();
+  }
+
+  void _updateMessage(String msg) {
+    message = msg;
+    notifyListeners();
   }
 
   Future<List<TodoEntity>> _fetchInitialData() async {

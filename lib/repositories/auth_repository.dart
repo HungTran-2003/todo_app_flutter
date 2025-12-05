@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/database/app_secure_storage.dart';
-import 'package:todo_app/database/app_share_preferences.dart';
 import 'package:todo_app/networking/api_client.dart';
 
 abstract class AuthRepository {
@@ -75,9 +74,7 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signOut() async {
     try {
       await _apiClient.signOut();
-
       await AppSecureStorage.instance.deleteRefreshToken();
-      await AppSharePreferences.setFirstLogin();
     } catch (e) {
       log('Error during sign out: $e');
     }

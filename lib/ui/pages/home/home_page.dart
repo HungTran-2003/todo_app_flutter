@@ -60,13 +60,13 @@ class _MyPageState extends State<HomeChildPage> {
   @override
   Widget build(BuildContext context) {
     final time = context.select<HomeProvider, DateTime>((p) => p.currentTime);
-    final _inCompleteTodos = context.select<HomeProvider, List<TodoEntity>>(
+    final inCompleteTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.inCompleteTodos,
     );
-    final _completedTodos = context.select<HomeProvider, List<TodoEntity>>(
+    final completedTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.completedTodos,
     );
-    final _overdueTodos = context.select<HomeProvider, List<TodoEntity>>(
+    final overdueTodos = context.select<HomeProvider, List<TodoEntity>>(
       (p) => p.overdueTodos,
     );
 
@@ -90,9 +90,9 @@ class _MyPageState extends State<HomeChildPage> {
                       const SizedBox(height: 32.0),
                       Expanded(
                         child: _buildListItemsWidgets(
-                          _inCompleteTodos,
-                          _completedTodos,
-                          _overdueTodos,
+                          inCompleteTodos,
+                          completedTodos,
+                          overdueTodos,
                         ),
                       ),
                       const SizedBox(height: 24.0),

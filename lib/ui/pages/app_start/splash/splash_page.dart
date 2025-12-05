@@ -62,12 +62,11 @@ class _SplashChildPageState extends State<SplashChildPage>
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.bounceOut));
     _controller.forward().then((_) async {
-      await _localProvider.login();
+      await _localProvider.initializeApp();
     });
   }
 
   void _setup() async {
-    await _localProvider.notificationRepository.init();
     await _todoProvider.getInitSettings();
   }
 

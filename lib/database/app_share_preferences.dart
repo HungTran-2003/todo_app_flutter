@@ -3,7 +3,6 @@ import 'package:todo_app/models/enum/language.dart';
 
 class AppSharePreferences {
   static const _firstRunKey = "first_run";
-  static const _isFirstLoginKey = "is_first_login";
   static const _currentLanguageKey = 'current_language';
 
   static late SharedPreferences _prefs;
@@ -18,15 +17,6 @@ class AppSharePreferences {
 
   static Future<void> setFirstRun({bool value = true}) async {
     _prefs.setBool(_firstRunKey, value);
-  }
-
-  static Future<bool> isFirstLogin() async {
-    return _prefs.getBool(_isFirstLoginKey) ?? false;
-  }
-
-  static Future<void> setFirstLogin({bool value = true}) async {
-    setFirstRun(value: false);
-    _prefs.setBool(_isFirstLoginKey, value);
   }
 
   static Future<Language?> getCurrentLanguage() async {
