@@ -923,6 +923,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Bây giờ nhiệm vụ của bạn đã đến hạn.`
+  String get notification_body {
+    return Intl.message(
+      'Bây giờ nhiệm vụ của bạn đã đến hạn.',
+      name: 'notification_body',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -72,7 +72,7 @@ class _SplashChildPageState extends State<SplashChildPage>
 
   @override
   void dispose() {
-    _controller.dispose(); // Nhớ dispose để tránh rò rỉ bộ nhớ
+    _controller.dispose();
     super.dispose();
   }
 

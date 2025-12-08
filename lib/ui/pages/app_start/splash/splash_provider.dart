@@ -40,23 +40,25 @@ class SplashProvider extends ChangeNotifier {
         return;
       }
       final isFirstRun = await AppSharePreferences.isFirstRun();
-      if(isFirstRun){
+      if (isFirstRun) {
         await _handleAnonymousLogin();
         return;
       }
       navigator.openSignIn();
-    } catch(e){
+    } catch (e) {
       log('An error occurred during login process: $e');
       navigator.showSnackBar(S.current.error_message_network, Colors.red);
       navigator.openSignIn();
     }
-
   }
 
   Future<void> _handleLoginWithToken(String refreshToken) async {
     final user = await authRepository.signInWithToken(refreshToken);
     if (user == null) {
-      navigator.showSnackBar(S.current.error_message_session_expired, Colors.orange);
+      navigator.showSnackBar(
+        S.current.error_message_session_expired,
+        Colors.orange,
+      );
       navigator.openSignIn();
       return;
     }
@@ -97,6 +99,22 @@ class SplashProvider extends ChangeNotifier {
 
   Future<List<TodoEntity>> _fetchInitialData() async {
     final todos = await todoRepository.getTodos();
+    final inCompleteTodos = todos
+        .where(
+          (todo) =>
+              todo.isComplete == false && todo.duaDate.isAfter(DateTime.now()),
+        )
+        .toList();
+    await _syncNotifications(inCompleteTodos);
     return todos;
+  }
+
+  Future<void> _syncNotifications(List<TodoEntity> todos) async {
+    if (todos.isEmpty) return;
+    await notificationRepository.cancelAll();
+    await notificationRepository.syncTodoNotifications(
+      todos,
+      S.current.notification_body,
+    );
   }
 }

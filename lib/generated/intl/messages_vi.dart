@@ -125,6 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "login_message_success": MessageLookupByLibrary.simpleMessage(
       "Đăng nhập thành công",
     ),
+    "notification_body": MessageLookupByLibrary.simpleMessage(
+      "Nhiệm vụ của bạn đã đến hạn.",
+    ),
     "setting_count_task_done": m0,
     "setting_count_task_left": m1,
     "setting_menu_account": MessageLookupByLibrary.simpleMessage("Tài khoản"),

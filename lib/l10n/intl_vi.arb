@@ -106,5 +106,7 @@
   "error_message_network": "Không thể kết nối máy chủ.",
   "error_message_complete_task": "Lỗi hoàn thành",
   "error_message_delete_task": "Lỗi xoá",
-  "error_message_change_task": "Lỗi cập nhật"
+  "error_message_change_task": "Lỗi cập nhật",
+
+  "notification_body": "Nhiệm vụ của bạn đã đến hạn."
 }

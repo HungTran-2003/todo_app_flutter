@@ -106,5 +106,7 @@
   "error_message_network": "Unable to connect to the server.",
   "error_message_complete_task": "Completed Task Error",
   "error_message_delete_task": "Delete Task Error",
-  "error_message_change_task": "Change Task Error"
+  "error_message_change_task": "Change Task Error",
+
+  "notification_body": "Bây giờ nhiệm vụ của bạn đã đến hạn."
 }

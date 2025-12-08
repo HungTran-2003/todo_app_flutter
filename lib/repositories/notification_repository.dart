@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz; // Import data timezone
-import 'package:timezone/timezone.dart' as tz; // Import logic timezone
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:todo_app/models/entities/todo_entity.dart';
 
 abstract class NotificationRepository {
   Future<void> init();
+
+  Future<void> syncTodoNotifications(List<TodoEntity> todos, String body);
 
   Future<void> showNotification({
     required int id,
@@ -58,6 +61,15 @@ class NotificationRepositoryImpl implements NotificationRepository {
         }
       },
     );
+  }
+
+  @override
+  Future<void> syncTodoNotifications(List<TodoEntity> todos, String body) async {
+    for (final todo in todos) {
+      if(todo.id == null) continue;
+      log(todo.id.toString());
+      await scheduleNotification(id: todo.id!, title: todo.title, body: body, scheduledDate: todo.duaDate);
+    }
   }
 
   @override
