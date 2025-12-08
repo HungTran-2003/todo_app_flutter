@@ -16,12 +16,13 @@ class DetailProvider extends ChangeNotifier {
 
   DetailProvider({
     required this.navigator,
-    this.todo,
+    TodoEntity? todo,
     required this.todoRepository,
     required this.notificationRepository,
-  });
+  }) : _todo = todo;
 
-  TodoEntity? todo;
+  TodoEntity? _todo;
+  TodoEntity? get todo => _todo;
   int categoryIndex = 1;
 
   void changeCategory(int index) {
@@ -46,24 +47,24 @@ class DetailProvider extends ChangeNotifier {
       time.minute,
     );
 
-    if (todo == null) {
-      todo = TodoEntity(
+    if (_todo == null) {
+      _todo = TodoEntity(
         title: title,
         duaDate: duaDate,
         createAt: DateTime.now(),
         category: TodoCategory.values[categoryIndex - 1],
       );
-      todo = await _addTodo(todo!);
+      _todo = await _addTodo(_todo!);
     } else {
-      todo!.title = title;
-      todo!.duaDate = duaDate;
-      todo!.note = note;
-      todo!.updateAt = DateTime.now();
-      todo!.category = TodoCategory.values[categoryIndex - 1];
-      todo = await _changeTodo(todo!);
+      _todo!.title = title;
+      _todo!.duaDate = duaDate;
+      _todo!.note = note;
+      _todo!.updateAt = DateTime.now();
+      _todo!.category = TodoCategory.values[categoryIndex - 1];
+      _todo = await _changeTodo(_todo!);
     }
     navigator.hideLoadingOverlay();
-    if (todo == null) {
+    if (_todo == null) {
       navigator.pop(extra: false);
     } else {
       navigator.pop(extra: true);
@@ -71,7 +72,7 @@ class DetailProvider extends ChangeNotifier {
   }
 
   void setCategoryInit() {
-    categoryIndex = TodoCategory.values.indexOf(todo!.category) + 1;
+    categoryIndex = TodoCategory.values.indexOf(_todo!.category) + 1;
   }
 
   Future<TodoEntity?> _addTodo(TodoEntity todo) async {
