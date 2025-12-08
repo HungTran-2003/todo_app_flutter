@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:todo_app/models/entities/todo_entity.dart';
@@ -44,6 +45,11 @@ class NotificationRepositoryImpl implements NotificationRepository {
   @override
   Future<void> init() async {
     tz.initializeTimeZones();
+    final currentTimeZone = await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(currentTimeZone));
+    _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()!
+        .requestNotificationsPermission();
 
     const AndroidInitializationSettings initAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -105,6 +111,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       payload: payload,
+      matchDateTimeComponents: null,
     );
   }
 

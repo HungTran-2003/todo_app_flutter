@@ -111,6 +111,7 @@ class SplashProvider extends ChangeNotifier {
 
   Future<void> _syncNotifications(List<TodoEntity> todos) async {
     if (todos.isEmpty) return;
+    log("message");
     await notificationRepository.cancelAll();
     await notificationRepository.syncTodoNotifications(
       todos,

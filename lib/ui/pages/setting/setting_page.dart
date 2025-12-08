@@ -322,7 +322,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
           assetIcon: AppSvgs.iconLike,
           title: S.of(context).setting_menu_other_4,
           onPressed: () {
-            log("Support US");
+            _provider.notificationRepository.showNotification(id: 99999, title: "tesst", body: "tesst");
           },
         ),
 
