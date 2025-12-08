@@ -111,7 +111,7 @@ class DetailProvider extends ChangeNotifier {
       await notificationRepository.scheduleNotification(
         id: updatedTodo.id!,
         title: updatedTodo.title,
-        body: "test",
+        body: S.current.notification_body,
         scheduledDate: updatedTodo.duaDate,
       );
       return todo;
