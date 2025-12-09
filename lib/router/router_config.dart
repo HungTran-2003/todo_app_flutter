@@ -59,8 +59,7 @@ class AppRouter {
     GoRoute(
       name: detail,
       path: detail,
-      builder: (context, state) =>
-          DetailPage(todo: state.extra as TodoEntity?),
+      builder: (context, state) => DetailPage(todo: state.extra as TodoEntity?),
     ),
     GoRoute(
       name: setting,

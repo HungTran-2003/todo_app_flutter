@@ -24,13 +24,11 @@ class SettingProvider extends ChangeNotifier {
   UserInfoEntity? _userInfo;
   UserInfoEntity? get userInfo => _userInfo;
 
-
   Future<void> fetchUserInfo() async {
     _userInfo = await userRepository.getUserInfo();
     log(_userInfo!.toJson().toString());
     notifyListeners();
   }
-
 
   Future<void> logout() async {
     await authRepository.signOut();
@@ -61,7 +59,8 @@ class SettingProvider extends ChangeNotifier {
       navigator.showLoadingOverlay();
       final path = await userRepository.uploadAvatar(fileBytes);
 
-      userInfo!.avatarPath = "$path?refresh=${DateTime.now().millisecondsSinceEpoch}";
+      userInfo!.avatarPath =
+          "$path?refresh=${DateTime.now().millisecondsSinceEpoch}";
       final updatedUserInfo = await userRepository.updateUserInfo(userInfo!);
       _userInfo = updatedUserInfo;
       notifyListeners();
@@ -73,21 +72,20 @@ class SettingProvider extends ChangeNotifier {
     navigator.hideLoadingOverlay();
   }
 
-  Future<void> changeUserName(String userName) async{
-    if(userInfo == null) return;
+  Future<void> changeUserName(String userName) async {
+    if (userInfo == null) return;
     navigator.showLoadingOverlay();
     userInfo!.userName = userName;
-    try{
+    try {
       final updatedUserInfo = await userRepository.updateUserInfo(userInfo!);
       _userInfo = updatedUserInfo;
       navigator.showSnackBar("Change Name Success", Colors.green);
       notifyListeners();
-    }catch(e){
+    } catch (e) {
       log(e.toString());
       navigator.showSnackBar("Error Change Name", Colors.red);
     }
     navigator.hideLoadingOverlay();
     notifyListeners();
   }
-
 }

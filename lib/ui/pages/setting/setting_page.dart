@@ -322,7 +322,11 @@ class _SettingChildPageState extends State<SettingChildPage> {
           assetIcon: AppSvgs.iconLike,
           title: S.of(context).setting_menu_other_4,
           onPressed: () {
-            _provider.notificationRepository.showNotification(id: 99999, title: "tesst", body: "tesst");
+            _provider.notificationRepository.showNotification(
+              id: 99999,
+              title: "tesst",
+              body: "tesst",
+            );
           },
         ),
 
@@ -369,9 +373,12 @@ class _SettingChildPageState extends State<SettingChildPage> {
                       title: S.of(context).dialog_title_input_change_name,
                       hint: S.of(context).dialog_title_input_hint,
                     ),
-                    AppButton(label: S.of(context).dialog_confirm, onPressed: (){
-                      Navigator.pop(context, textController.text);
-                    },)
+                    AppButton(
+                      label: S.of(context).dialog_confirm,
+                      onPressed: () {
+                        Navigator.pop(context, textController.text);
+                      },
+                    ),
                   ],
                 ),
               ),

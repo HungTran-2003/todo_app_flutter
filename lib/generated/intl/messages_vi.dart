@@ -119,6 +119,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "home_overdue": MessageLookupByLibrary.simpleMessage("Quá hạn"),
     "home_title": MessageLookupByLibrary.simpleMessage("Danh sách Todo"),
+    "home_title_empty_list_todo": MessageLookupByLibrary.simpleMessage(
+      "Bạn đã hoàn thành hết task.",
+    ),
     "login_message_failed": MessageLookupByLibrary.simpleMessage(
       "Đăng nhập thất bại",
     ),

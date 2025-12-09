@@ -35,11 +35,13 @@ class SplashProvider extends ChangeNotifier {
     try {
       await notificationRepository.init();
       final refreshToken = await AppSecureStorage.instance.getRefreshToken();
+      log('refreshToken: $refreshToken');
       if (refreshToken != null) {
         await _handleLoginWithToken(refreshToken);
         return;
       }
       final isFirstRun = await AppSharePreferences.isFirstRun();
+      log('isFirstRun: $isFirstRun');
       if (isFirstRun) {
         await _handleAnonymousLogin();
         return;

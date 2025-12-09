@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/global_provider/app_provider.dart';
@@ -58,9 +56,6 @@ class _MyAppState extends State<MyApp> {
 
       child: Selector<TodoProvider, Locale>(
         builder: (context, locale, child) {
-          log(
-            'Locale instance: ${locale.toString()} | hashCode: ${identityHashCode(locale)}',
-          );
           return _buildMaterialApp(locale: locale);
         },
         selector: (context, provider) => provider.locale,

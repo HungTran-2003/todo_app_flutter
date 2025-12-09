@@ -97,7 +97,9 @@ class HomeProvider extends ChangeNotifier {
   Future<void> completedTodo(int todoId) async {
     navigator.showLoadingOverlay();
     try {
-      TodoEntity? todo = inCompleteTodos.where((todo) => todo.id == todoId).singleOrNull;
+      TodoEntity? todo = inCompleteTodos
+          .where((todo) => todo.id == todoId)
+          .singleOrNull;
       todo ??= overdueTodos.where((todo) => todo.id == todoId).single;
       if (todo.isComplete == false) {
         todo.isComplete = true;

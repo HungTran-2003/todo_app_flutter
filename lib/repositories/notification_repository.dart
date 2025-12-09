@@ -47,9 +47,11 @@ class NotificationRepositoryImpl implements NotificationRepository {
     tz.initializeTimeZones();
     final currentTimeZone = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(currentTimeZone));
-    _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()!
-        .requestNotificationsPermission();
+    _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.requestNotificationsPermission();
 
     const AndroidInitializationSettings initAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -70,11 +72,19 @@ class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   @override
-  Future<void> syncTodoNotifications(List<TodoEntity> todos, String body) async {
+  Future<void> syncTodoNotifications(
+    List<TodoEntity> todos,
+    String body,
+  ) async {
     for (final todo in todos) {
-      if(todo.id == null) continue;
+      if (todo.id == null) continue;
       log(todo.id.toString());
-      await scheduleNotification(id: todo.id!, title: todo.title, body: body, scheduledDate: todo.duaDate);
+      await scheduleNotification(
+        id: todo.id!,
+        title: todo.title,
+        body: body,
+        scheduledDate: todo.duaDate,
+      );
     }
   }
 

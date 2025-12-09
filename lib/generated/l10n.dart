@@ -499,6 +499,16 @@ class S {
     );
   }
 
+  /// `You have completed all of your tasks`
+  String get home_title_empty_list_todo {
+    return Intl.message(
+      'You have completed all of your tasks',
+      name: 'home_title_empty_list_todo',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password does not match`
   String get validator_message_confirm_password {
     return Intl.message(

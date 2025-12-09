@@ -77,9 +77,7 @@ class _MyPageState extends State<HomeChildPage> {
                         style: AppTextStyles.wMaxLargeSemiBold,
                       ),
                       const SizedBox(height: 32.0),
-                      Expanded(
-                        child: _buildListItemsWidgets(),
-                      ),
+                      Expanded(child: _buildListItemsWidgets()),
                       const SizedBox(height: 24.0),
                     ],
                   ),
@@ -131,8 +129,8 @@ class _MyPageState extends State<HomeChildPage> {
   Widget _buildListItemsWidgets() {
     return Selector<HomeProvider, bool>(
       selector: (context, provider) => provider.todosIsEmpty,
-      builder: (context, value, child){
-        if(value){
+      builder: (context, value, child) {
+        if (value) {
           return Center(
             child: Text(
               S.of(context).home_empty_list_todo,
@@ -148,7 +146,7 @@ class _MyPageState extends State<HomeChildPage> {
                 selector: (context, provider) => provider.inCompleteTodos,
                 builder: (context, inCompleteTodos, child) {
                   if (inCompleteTodos.isEmpty) {
-                    return const SizedBox(height: 80.0);
+                    return _buildWidgetEmptyList();
                   }
                   return TodoSections(
                     todos: inCompleteTodos,
@@ -162,44 +160,61 @@ class _MyPageState extends State<HomeChildPage> {
                       _provider.deleteTodo(todoId, value);
                     },
                   );
-                }
+                },
               ),
               Selector<HomeProvider, List<TodoEntity>>(
-                  selector: (context, provider) => provider.overdueTodos,
-                  builder: (context, inCompleteTodos, child) {
-                    return TodoSections(
-                      todos: inCompleteTodos,
-                      sectionTitle: S.of(context).home_overdue,
-                      onPressed: (todoId) {
-                        _provider.openPageDetail(todoId: todoId);
-                      },
-                      clickCheckBox: (todoId) {
-                        _provider.completedTodo(todoId);
-                      },
-                      delete: (value, todoId) {
-                        _provider.deleteTodo(todoId, value);
-                      },
-                    );
-                  }
+                selector: (context, provider) => provider.overdueTodos,
+                builder: (context, inCompleteTodos, child) {
+                  return TodoSections(
+                    todos: inCompleteTodos,
+                    sectionTitle: S.of(context).home_overdue,
+                    onPressed: (todoId) {
+                      _provider.openPageDetail(todoId: todoId);
+                    },
+                    clickCheckBox: (todoId) {
+                      _provider.completedTodo(todoId);
+                    },
+                    delete: (value, todoId) {
+                      _provider.deleteTodo(todoId, value);
+                    },
+                  );
+                },
               ),
               Selector<HomeProvider, List<TodoEntity>>(
-                  selector: (context, provider) => provider.completedTodos,
-                  builder: (context, inCompleteTodos, child) {
-                    return TodoSections(
-                      todos: inCompleteTodos,
-                      sectionTitle: S.of(context).home_completed,
-                      onPressed: (todoId) {},
-                      clickCheckBox: (todoId) {},
-                      delete: (value, todoId) {
-                        _provider.deleteTodo(todoId, value);
-                      },
-                    );
-                  }
-              )
+                selector: (context, provider) => provider.completedTodos,
+                builder: (context, inCompleteTodos, child) {
+                  return TodoSections(
+                    todos: inCompleteTodos,
+                    sectionTitle: S.of(context).home_completed,
+                    onPressed: (todoId) {},
+                    clickCheckBox: (todoId) {},
+                    delete: (value, todoId) {
+                      _provider.deleteTodo(todoId, value);
+                    },
+                  );
+                },
+              ),
             ],
           ),
         );
-      }
+      },
+    );
+  }
+
+  Widget _buildWidgetEmptyList() {
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+      ),
+      child: Center(
+        child: Text(
+          S.of(context).home_title_empty_list_todo,
+          style: AppTextStyles.bMediumSemiBold.copyWith(color: Colors.green),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

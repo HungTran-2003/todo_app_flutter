@@ -7,9 +7,7 @@ abstract class UserRepository {
 
   Future<UserInfoEntity> updateUserInfo(UserInfoEntity userInfo);
 
-
   Future<String> uploadAvatar(Uint8List file);
-
 }
 
 class UserRepositoryImpl extends UserRepository {

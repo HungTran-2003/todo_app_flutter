@@ -119,6 +119,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "home_overdue": MessageLookupByLibrary.simpleMessage("Overdue"),
     "home_title": MessageLookupByLibrary.simpleMessage("My Todo List"),
+    "home_title_empty_list_todo": MessageLookupByLibrary.simpleMessage(
+      "You have completed all of your tasks",
+    ),
     "login_message_failed": MessageLookupByLibrary.simpleMessage(
       "Login failed",
     ),

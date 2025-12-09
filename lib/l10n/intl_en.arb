@@ -54,6 +54,7 @@
   "home_overdue": "Overdue",
   "home_message_complete_task": "Completed Task Successful",
   "home_message_delete_task": "Delete Task Successful",
+  "home_title_empty_list_todo": "You have completed all of your tasks",
 
   "validator_message_confirm_password": "Password does not match",
 

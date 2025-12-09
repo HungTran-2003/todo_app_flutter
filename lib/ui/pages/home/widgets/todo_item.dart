@@ -47,24 +47,24 @@ class TodoItem extends StatelessWidget {
           },
           confirmDismiss: () async {
             return await showDialog<bool>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(S.current.dialog_title_confirm),
-                  content: Text(S.current.dialog_description_delete),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: Text(S.current.dialog_cancel),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: Text(S.current.dialog_confirm),
-                    ),
-                  ],
-                );
-              },
-            ) ??
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(S.current.dialog_title_confirm),
+                      content: Text(S.current.dialog_description_delete),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text(S.current.dialog_cancel),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: Text(S.current.dialog_confirm),
+                        ),
+                      ],
+                    );
+                  },
+                ) ??
                 false;
           },
           closeOnCancel: true,
@@ -102,7 +102,8 @@ class TodoItem extends StatelessWidget {
   }
 
   Widget _buildItemTodo(BuildContext context) {
-    final bool isOverdue = !todo.isComplete && todo.duaDate.isBefore(DateTime.now());
+    final bool isOverdue =
+        !todo.isComplete && todo.duaDate.isBefore(DateTime.now());
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -179,7 +180,7 @@ class TodoItem extends StatelessWidget {
         return AppColors.iconEvent;
       case TodoCategory.goal:
         return AppColors.iconGoal;
-    // Không cần default vì enum đã bao phủ hết các trường hợp
+      // Không cần default vì enum đã bao phủ hết các trường hợp
     }
   }
 }
