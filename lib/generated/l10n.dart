@@ -18,10 +18,8 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(
-      _current != null,
-      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
-    );
+    assert(_current != null,
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
@@ -43,10 +41,8 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(
-      instance != null,
-      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
-    );
+    assert(instance != null,
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -116,17 +112,32 @@ class S {
 
   /// `NEXT`
   String get button_next {
-    return Intl.message('NEXT', name: 'button_next', desc: '', args: []);
+    return Intl.message(
+      'NEXT',
+      name: 'button_next',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `SKIP`
   String get button_skip {
-    return Intl.message('SKIP', name: 'button_skip', desc: '', args: []);
+    return Intl.message(
+      'SKIP',
+      name: 'button_skip',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Login`
   String get button_login {
-    return Intl.message('Login', name: 'button_login', desc: '', args: []);
+    return Intl.message(
+      'Login',
+      name: 'button_login',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Create Account`
@@ -161,7 +172,12 @@ class S {
 
   /// `BACK`
   String get button_back {
-    return Intl.message('BACK', name: 'button_back', desc: '', args: []);
+    return Intl.message(
+      'BACK',
+      name: 'button_back',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Welcome to Todo`
@@ -236,7 +252,12 @@ class S {
 
   /// `Email`
   String get sign_in_email {
-    return Intl.message('Email', name: 'sign_in_email', desc: '', args: []);
+    return Intl.message(
+      'Email',
+      name: 'sign_in_email',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Email`
@@ -281,7 +302,12 @@ class S {
 
   /// `Sign in`
   String get sign_in {
-    return Intl.message('Sign in', name: 'sign_in', desc: '', args: []);
+    return Intl.message(
+      'Sign in',
+      name: 'sign_in',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Create new account`
@@ -326,7 +352,12 @@ class S {
 
   /// `Sign Up`
   String get sign_up_title {
-    return Intl.message('Sign Up', name: 'sign_up_title', desc: '', args: []);
+    return Intl.message(
+      'Sign Up',
+      name: 'sign_up_title',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Create an account so you can explore all the existing jobs`
@@ -341,7 +372,12 @@ class S {
 
   /// `Email`
   String get sign_up_email {
-    return Intl.message('Email', name: 'sign_up_email', desc: '', args: []);
+    return Intl.message(
+      'Email',
+      name: 'sign_up_email',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Email`
@@ -396,7 +432,12 @@ class S {
 
   /// `Sign Up`
   String get sign_up {
-    return Intl.message('Sign Up', name: 'sign_up', desc: '', args: []);
+    return Intl.message(
+      'Sign Up',
+      name: 'sign_up',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Already have an account`
@@ -441,7 +482,12 @@ class S {
 
   /// `My Todo List`
   String get home_title {
-    return Intl.message('My Todo List', name: 'home_title', desc: '', args: []);
+    return Intl.message(
+      'My Todo List',
+      name: 'home_title',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Add New Task`
@@ -476,7 +522,12 @@ class S {
 
   /// `Overdue`
   String get home_overdue {
-    return Intl.message('Overdue', name: 'home_overdue', desc: '', args: []);
+    return Intl.message(
+      'Overdue',
+      name: 'home_overdue',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Completed Task Successful`
@@ -551,12 +602,22 @@ class S {
 
   /// `Cancel`
   String get dialog_cancel {
-    return Intl.message('Cancel', name: 'dialog_cancel', desc: '', args: []);
+    return Intl.message(
+      'Cancel',
+      name: 'dialog_cancel',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Yes`
   String get dialog_confirm {
-    return Intl.message('Yes', name: 'dialog_confirm', desc: '', args: []);
+    return Intl.message(
+      'Yes',
+      name: 'dialog_confirm',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Change Username`
@@ -611,7 +672,12 @@ class S {
 
   /// `Save`
   String get detail_button_save {
-    return Intl.message('Save', name: 'detail_button_save', desc: '', args: []);
+    return Intl.message(
+      'Save',
+      name: 'detail_button_save',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Task Title`
@@ -646,32 +712,62 @@ class S {
 
   /// `Date`
   String get detail_date {
-    return Intl.message('Date', name: 'detail_date', desc: '', args: []);
+    return Intl.message(
+      'Date',
+      name: 'detail_date',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Date`
   String get detail_date_hint {
-    return Intl.message('Date', name: 'detail_date_hint', desc: '', args: []);
+    return Intl.message(
+      'Date',
+      name: 'detail_date_hint',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Time`
   String get detail_time {
-    return Intl.message('Time', name: 'detail_time', desc: '', args: []);
+    return Intl.message(
+      'Time',
+      name: 'detail_time',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Time`
   String get detail_time_hint {
-    return Intl.message('Time', name: 'detail_time_hint', desc: '', args: []);
+    return Intl.message(
+      'Time',
+      name: 'detail_time_hint',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Notes`
   String get detail_notes {
-    return Intl.message('Notes', name: 'detail_notes', desc: '', args: []);
+    return Intl.message(
+      'Notes',
+      name: 'detail_notes',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Notes`
   String get detail_notes_hint {
-    return Intl.message('Notes', name: 'detail_notes_hint', desc: '', args: []);
+    return Intl.message(
+      'Notes',
+      name: 'detail_notes_hint',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Add Task Successful`
@@ -716,7 +812,12 @@ class S {
 
   /// `Setting`
   String get setting_title {
-    return Intl.message('Setting', name: 'setting_title', desc: '', args: []);
+    return Intl.message(
+      'Setting',
+      name: 'setting_title',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Profile`
@@ -821,7 +922,12 @@ class S {
 
   /// `Todo`
   String get setting_menu_other {
-    return Intl.message('Todo', name: 'setting_menu_other', desc: '', args: []);
+    return Intl.message(
+      'Todo',
+      name: 'setting_menu_other',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `About US`

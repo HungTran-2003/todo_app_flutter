@@ -7,6 +7,7 @@ import 'package:todo_app/ui/pages/auth/sign_in/sign_in_page.dart';
 import 'package:todo_app/ui/pages/auth/sign_up/sign_up_page.dart';
 import 'package:todo_app/ui/pages/detail/detail_page.dart';
 import 'package:todo_app/ui/pages/home/home_page.dart';
+import 'package:todo_app/ui/pages/movie/movie_page.dart';
 import 'package:todo_app/ui/pages/setting/setting_page.dart';
 
 class AppRouter {
@@ -28,6 +29,7 @@ class AppRouter {
   static const String register = "/register";
   static const String detail = "/detail";
   static const String setting = "/setting";
+  static const String movie = "/movie";
 
   static final _routes = <RouteBase>[
     GoRoute(
@@ -67,5 +69,10 @@ class AppRouter {
       builder: (context, state) =>
           SettingPage(arguments: state.extra as SettingViewArguments),
     ),
+    GoRoute(
+      name: movie,
+      path: movie,
+      builder: (context, state) => const MoviePage(),
+    )
   ];
 }

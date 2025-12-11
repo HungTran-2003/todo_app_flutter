@@ -9,14 +9,13 @@ import 'package:todo_app/common/app_svgs.dart';
 import 'package:todo_app/common/app_text_style.dart';
 import 'package:todo_app/generated/l10n.dart';
 import 'package:todo_app/models/entities/todo_entity.dart';
-import 'package:todo_app/repositories/notification_repository.dart'
-    show NotificationRepository;
+import 'package:todo_app/repositories/notification_repository.dart';
 import 'package:todo_app/repositories/todo_repository.dart';
 import 'package:todo_app/ui/pages/detail/detail_navigator.dart';
 import 'package:todo_app/ui/pages/detail/detail_provider.dart';
-import 'package:todo_app/ui/widgets/button/app_icon_button.dart';
 import 'package:todo_app/ui/widgets/app_bar/app_bar_widget.dart';
 import 'package:todo_app/ui/widgets/button/app_button.dart';
+import 'package:todo_app/ui/widgets/button/app_icon_button.dart';
 import 'package:todo_app/ui/widgets/picker/app_date_input.dart';
 import 'package:todo_app/ui/widgets/text_field/app_text_field.dart';
 import 'package:todo_app/utils/app_date_util.dart';
@@ -37,7 +36,7 @@ class DetailPage extends StatelessWidget {
           notificationRepository: context.read<NotificationRepository>(),
         );
       },
-      child: DetailChildPage(),
+      child: const DetailChildPage(),
     );
   }
 }
@@ -154,7 +153,6 @@ class _DetailChildPageState extends State<DetailChildPage> {
               ],
             ),
             Row(
-              spacing: 8.0,
               children: [
                 Expanded(
                   child: AppDateInput(
@@ -173,7 +171,7 @@ class _DetailChildPageState extends State<DetailChildPage> {
                     },
                   ),
                 ),
-
+                const SizedBox(width: 8.0),
                 Expanded(
                   child: AppDateInput(
                     controller: _timeController,
@@ -213,7 +211,6 @@ class _DetailChildPageState extends State<DetailChildPage> {
       selector: (context, provider) => provider.categoryIndex,
       builder: (context, categoryIndex, child) {
         return Row(
-          spacing: 16,
           children: [
             AppIconButton(
               assetIcon: AppSvgs.note,

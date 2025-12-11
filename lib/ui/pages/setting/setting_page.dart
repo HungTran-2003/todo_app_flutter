@@ -306,7 +306,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
           assetIcon: AppSvgs.iconCircle,
           title: S.of(context).setting_menu_other_2,
           onPressed: () {
-            log("FAQ");
+            _provider.navigator.openMoviePage();
           },
         ),
 
