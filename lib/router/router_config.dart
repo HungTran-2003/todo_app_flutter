@@ -6,6 +6,7 @@ import 'package:todo_app/ui/pages/app_start/splash/splash_page.dart';
 import 'package:todo_app/ui/pages/auth/sign_in/sign_in_page.dart';
 import 'package:todo_app/ui/pages/auth/sign_up/sign_up_page.dart';
 import 'package:todo_app/ui/pages/detail/detail_page.dart';
+import 'package:todo_app/ui/pages/focus/focus_page.dart';
 import 'package:todo_app/ui/pages/home/home_page.dart';
 import 'package:todo_app/ui/pages/movie/movie_page.dart';
 import 'package:todo_app/ui/pages/setting/setting_page.dart';
@@ -30,6 +31,8 @@ class AppRouter {
   static const String detail = "/detail";
   static const String setting = "/setting";
   static const String movie = "/movie";
+  static const String focus = "/focus";
+
 
   static final _routes = <RouteBase>[
     GoRoute(
@@ -73,6 +76,11 @@ class AppRouter {
       name: movie,
       path: movie,
       builder: (context, state) => const MoviePage(),
+    ),
+    GoRoute(
+      name: focus,
+      path: focus,
+      builder: (context, state) => const FocusPage(),
     )
   ];
 }

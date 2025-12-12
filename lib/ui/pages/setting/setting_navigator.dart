@@ -7,4 +7,8 @@ class SettingNavigator extends AppNavigator {
   Future<void> openMoviePage(){
     return pushName(AppRouter.movie);
   }
+
+  Future<void> openFocusPage(){
+    return pushName(AppRouter.focus);
+  }
 }

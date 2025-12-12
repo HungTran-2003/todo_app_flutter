@@ -298,7 +298,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
           assetIcon: AppSvgs.iconMenu,
           title: S.of(context).setting_menu_other_1,
           onPressed: () {
-            log("About US");
+            _provider.navigator.openFocusPage();
           },
         ),
 
