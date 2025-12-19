@@ -23,10 +23,11 @@ class DetailProvider extends ChangeNotifier {
 
   TodoEntity? _todo;
   TodoEntity? get todo => _todo;
-  int categoryIndex = 1;
+  int _categoryIndex = 1;
+  int get categoryIndex => _categoryIndex;
 
   void changeCategory(int index) {
-    categoryIndex = index;
+    _categoryIndex = index;
     notifyListeners();
   }
 
@@ -72,7 +73,7 @@ class DetailProvider extends ChangeNotifier {
   }
 
   void setCategoryInit() {
-    categoryIndex = TodoCategory.values.indexOf(_todo!.category) + 1;
+    _categoryIndex = TodoCategory.values.indexOf(_todo!.category) + 1;
   }
 
   Future<TodoEntity?> _addTodo(TodoEntity todo) async {
@@ -82,7 +83,7 @@ class DetailProvider extends ChangeNotifier {
       await notificationRepository.scheduleNotification(
         id: newTodo.id!,
         title: newTodo.title,
-        body: "test",
+        body: S.current.notification_body,
         scheduledDate: newTodo.duaDate,
       );
       navigator.showSnackBar(
