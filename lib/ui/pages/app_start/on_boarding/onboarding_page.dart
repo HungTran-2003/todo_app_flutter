@@ -111,7 +111,7 @@ class _OnboardingPageState extends State<OnboardingChildPage> {
               Positioned(
                 left: 0,
                 right: 0,
-                top: 296 + 50,
+                top: 346,
                 child: Center(
                   child: SimplePageIndicator(
                     pageCount: assetsImages.length,

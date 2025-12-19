@@ -42,11 +42,10 @@ class TodoItem extends StatelessWidget {
         motion: const DrawerMotion(),
         extentRatio: 0.3,
         dismissible: DismissiblePane(
-          onDismissed: () {
-            delete(false);
-          },
+          onDismissed: () {},
           confirmDismiss: () async {
-            return await showDialog<bool>(
+            final isDelete =
+                await showDialog<bool>(
                   context: context,
                   builder: (context) {
                     return AlertDialog(
@@ -66,6 +65,10 @@ class TodoItem extends StatelessWidget {
                   },
                 ) ??
                 false;
+            if (isDelete) {
+              delete(false);
+            }
+            return isDelete;
           },
           closeOnCancel: true,
         ),

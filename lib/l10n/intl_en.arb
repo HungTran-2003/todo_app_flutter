@@ -90,17 +90,20 @@
   "setting_count_task_left": "{count} Task left",
   "setting_count_task_done": "{count} Task done",
   "setting_menu_settings": "App Settings",
-  "setting_menu_settings_1": "Change Language",
+  "setting_menu_change_language": "Change Language",
   "setting_menu_account": "Account",
-  "setting_menu_account_1": "Change account name",
-  "setting_menu_account_2": "Change account password",
-  "setting_menu_account_3": "Change account Image",
+  "setting_menu_account_change_name": "Change account name",
+  "setting_menu_account_change_password": "Change account password",
+  "setting_menu_account_change_image": "Change account Image",
   "setting_menu_other": "Todo",
-  "setting_menu_other_1": "About US",
-  "setting_menu_other_2": "FAQ",
-  "setting_menu_other_3": "Help & Feedback",
-  "setting_menu_other_4": "Support US",
+  "setting_menu_about_us": "About US",
+  "setting_menu_other_FAQ": "FAQ",
+  "setting_menu_help_feedback": "Help & Feedback",
+  "setting_menu_support_us": "Support US",
   "setting_menu_logout": "Log out",
+  "setting_menu_title_image" : "Pick image",
+  "setting_menu_title_camera" : "Camera",
+  "setting_menu_title_gallery" : "Gallery",
 
   "error_message_session_expired": "Login session has expired",
   "error_message_system": "System Error",
@@ -109,5 +112,5 @@
   "error_message_delete_task": "Delete Task Error",
   "error_message_change_task": "Change Task Error",
 
-  "notification_body": "Bây giờ nhiệm vụ của bạn đã đến hạn."
+  "notification_body": "Now your assignment is due."
 }

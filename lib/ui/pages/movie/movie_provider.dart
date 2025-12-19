@@ -10,23 +10,24 @@ class MovieProvider extends ChangeNotifier {
   final MovieNavigator navigator;
 
   MovieProvider({required this.navigator});
-  
+
   VideoPlayerController? _videoController;
   VideoPlayerController? get videoPlayerController => _videoController;
 
   bool _areControlsVisible = false;
   bool get areControlsVisible => _areControlsVisible;
 
-
   Timer? _controlsTimer;
-
 
   Future<void> initializeVideoPlayer() async {
     await Future.delayed(const Duration(seconds: 1));
-    final movie = MovieEntity(id: 1, name: "test", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
-    _videoController = VideoPlayerController.networkUrl(
-      Uri.parse(movie.url),
+    final movie = MovieEntity(
+      id: 1,
+      name: "test",
+      url:
+          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
     );
+    _videoController = VideoPlayerController.networkUrl(Uri.parse(movie.url));
     try {
       await _videoController!.initialize();
       _videoController!.play();
@@ -79,4 +80,3 @@ class MovieProvider extends ChangeNotifier {
     super.dispose();
   }
 }
-

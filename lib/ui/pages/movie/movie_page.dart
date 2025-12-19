@@ -65,12 +65,12 @@ class _MovieChildPageState extends State<MovieChildPage> {
       ),
       body: Container(
         margin: const EdgeInsets.all(AppDimens.paddingNormal),
-        child: _buildShowVideo()
+        child: _buildShowVideo(),
       ),
     );
   }
 
-  Widget _buildShowVideo(){
+  Widget _buildShowVideo() {
     return Selector<MovieProvider, VideoPlayerController?>(
       selector: (context, provider) => provider.videoPlayerController,
       builder: (context, videoPlayerController, child) {
@@ -157,15 +157,17 @@ class _MovieChildPageState extends State<MovieChildPage> {
                               max: value.duration.inMilliseconds.toDouble(),
                               onChanged: (v) {
                                 _provider.seekVideo(
-                                    Duration(milliseconds: v.round()));
+                                  Duration(milliseconds: v.round()),
+                                );
                               },
                             ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
-                                  AppDimens.marginNormal,
-                                  0,
-                                  AppDimens.marginNormal,
-                                  AppDimens.marginSmall),
+                                AppDimens.marginNormal,
+                                0,
+                                AppDimens.marginNormal,
+                                AppDimens.marginSmall,
+                              ),
                               child: Row(
                                 children: [
                                   Text(
@@ -176,7 +178,7 @@ class _MovieChildPageState extends State<MovieChildPage> {
                                   Text(
                                     _formatDuration(value.duration),
                                     style: const TextStyle(color: Colors.white),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -193,7 +195,4 @@ class _MovieChildPageState extends State<MovieChildPage> {
       },
     );
   }
-
-
-
 }

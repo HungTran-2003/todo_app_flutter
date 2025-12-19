@@ -44,10 +44,10 @@ class SettingProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> changeImage(int choose) async {
+  Future<void> changeImage(bool isCapture) async {
     final picker = ImagePicker();
     XFile? pickedFile;
-    if (choose == 1) {
+    if (isCapture) {
       pickedFile = await picker.pickImage(source: ImageSource.camera);
     } else {
       pickedFile = await picker.pickImage(source: ImageSource.gallery);

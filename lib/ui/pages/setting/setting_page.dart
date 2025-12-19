@@ -208,7 +208,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
               assetIcon: locale == Language.english.local
                   ? AppSvgs.iconFlagEnglish
                   : AppSvgs.iconFlagVietNam,
-              title: S.of(context).setting_menu_settings_1,
+              title: S.of(context).setting_menu_change_language,
               onPressed: () {
                 _todoProvider.changeLocale();
               },
@@ -228,7 +228,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconUser,
-          title: S.of(context).setting_menu_account_1,
+          title: S.of(context).setting_menu_account_change_name,
           onPressed: () async {
             final result = await showPopupInput(context);
             if (result != null) {
@@ -239,7 +239,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconKey,
-          title: S.of(context).setting_menu_account_2,
+          title: S.of(context).setting_menu_account_change_password,
           onPressed: () {
             log("Change account password");
           },
@@ -247,7 +247,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconCamera,
-          title: S.of(context).setting_menu_account_3,
+          title: S.of(context).setting_menu_account_change_image,
           onPressed: () {
             showModalBottomSheet(
               context: context,
@@ -257,23 +257,26 @@ class _SettingChildPageState extends State<SettingChildPage> {
                   child: Column(
                     spacing: 8,
                     children: [
-                      Text("Chon ", style: AppTextStyles.bMediumMedium),
+                      Text(
+                        S.of(context).setting_menu_title_image,
+                        style: AppTextStyles.bMediumMedium,
+                      ),
 
                       ListTile(
                         leading: const Icon(Icons.photo_camera_outlined),
-                        title: const Text("Chụp ảnh"),
+                        title: Text(S.of(context).setting_menu_title_image),
                         onTap: () async {
                           Navigator.pop(context);
-                          await _provider.changeImage(1);
+                          await _provider.changeImage(true);
                         },
                       ),
 
                       ListTile(
                         leading: const Icon(Icons.photo_library_outlined),
-                        title: const Text("Chọn từ thư viện"),
+                        title: Text(S.of(context).setting_menu_title_gallery),
                         onTap: () async {
                           Navigator.pop(context);
-                          await _provider.changeImage(2);
+                          await _provider.changeImage(false);
                         },
                       ),
                     ],
@@ -296,23 +299,19 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconMenu,
-          title: S.of(context).setting_menu_other_1,
-          onPressed: () {
-            _provider.navigator.openFocusPage();
-          },
+          title: S.of(context).setting_menu_about_us,
+          onPressed: () {},
         ),
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconCircle,
-          title: S.of(context).setting_menu_other_2,
-          onPressed: () {
-            _provider.navigator.openMoviePage();
-          },
+          title: S.of(context).setting_menu_other_FAQ,
+          onPressed: () {},
         ),
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconFlash,
-          title: S.of(context).setting_menu_other_3,
+          title: S.of(context).setting_menu_help_feedback,
           onPressed: () {
             log("Help & Feedback");
           },
@@ -320,7 +319,7 @@ class _SettingChildPageState extends State<SettingChildPage> {
 
         ItemSettingWidget(
           assetIcon: AppSvgs.iconLike,
-          title: S.of(context).setting_menu_other_4,
+          title: S.of(context).setting_menu_support_us,
           onPressed: () {
             _provider.notificationRepository.showNotification(
               id: 99999,
